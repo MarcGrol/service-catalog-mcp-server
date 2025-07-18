@@ -1,4 +1,4 @@
-package main
+package project
 
 import (
 	"context"
@@ -47,7 +47,7 @@ func New(s *server.MCPServer, store mystore.Store[ProjectConfig]) *ProjectServic
 	}
 }
 
-func (p *ProjectService) initialize(ctx context.Context) error {
+func (p *ProjectService) Initialize(ctx context.Context) error {
 	err := p.preprovision(ctx)
 	if err != nil {
 		return err

@@ -9,6 +9,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/learnmcp/mystore"
+	"github.com/MarcGrol/learnmcp/project"
 )
 
 func main() {
@@ -32,14 +33,14 @@ func main() {
 		server.WithLogging())
 	//setupSimpleTools(s)
 
-	projectStore, projectStoreCleanup, err := mystore.New[ProjectConfig](ctx)
+	projectStore, projectStoreCleanup, err := mystore.New[project.ProjectConfig](ctx)
 	if err != nil {
 		log.Fatalf("Error creating basket store: %s", err)
 	}
 	defer projectStoreCleanup()
 
-	projectService := New(s, projectStore)
-	projectService.initialize(ctx)
+	projectService := project.New(s, projectStore)
+	projectService.Initialize(ctx)
 
 	if *useStreamable {
 		// Option 2: Streamable HTTP Transport
