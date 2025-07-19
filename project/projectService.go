@@ -30,7 +30,7 @@ type ProjectConfig struct {
 }
 
 type TaskItem struct {
-	ProjectName string     `projectName:"id"`
+	ProjectName string     `projectName:"projectName"`
 	ID          int        `json:"id"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
@@ -314,7 +314,7 @@ func (p *ProjectService) listTaskHandler() func(ctx context.Context, request mcp
 			return nil, err
 		}
 		if !exists {
-			return mcp.NewToolResultErrorFromErr(fmt.Sprintf("project %s not found", projectName), err), nil
+			mcp.NewToolResultError(fmt.Sprintf("project %s not found", projectName))
 		}
 
 		// Simulate search results
