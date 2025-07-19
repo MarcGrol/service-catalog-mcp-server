@@ -1,41 +1,42 @@
 # Claude Desktop Configuration
 
 ## 1. Build and Prepare Your Server
-# First, build your advanced MCP server
-go install ./...
+ 
+First, build your advanced MCP server
 
-# Make sure it works with stdio (not HTTP for Claude Desktop)
-./learnmcp
+    go install ./...
+
+Make sure it works with stdio (not HTTP for Claude Desktop)
+
+    ./learnmcp
 
 ## 2. Configure Claude Desktop
 
-# Edit your Claude Desktop configuration file:
-# macOS: ~/.config/claude-desktop/claude_desktop_config.json
-# Windows: %APPDATA%\Claude\claude_desktop_config.json
+    # Edit your Claude Desktop configuration file:
+    # macOS: ~/.config/claude-desktop/claude_desktop_config.json
+    # Windows: %APPDATA%\Claude\claude_desktop_config.json
 
-{
-  "mcpServers": {
-    "aproject-server": {
-      "command": "/Users/marcgrol/go/bin//learnmcp",
-      "args": [],
-      "env": {}
+    {
+        "mcpServers": {
+            "aproject-server": {
+            "command": "/Users/marcgrol/go/bin//learnmcp",
+            "args": [],
+            "env": {}
+            }
+        }
     }
-  }
-}
 
-# IMPORTANT: Use the full absolute path to your compiled binary!
-# Example: "/Users/yourusername/projects/mcp-demo/advanced-mcp-server"
+IMPORTANT: Use the full absolute path to your compiled binary!
+Example: "/Users/yourusername/projects/mcp-demo/advanced-mcp-server"
 
 ## 3. Restart Claude Desktop
 
-# After saving the config, completely quit and restart Claude Desktop
-# Check the Developer tab in settings to see if your server connected
+After saving the config, completely quit and restart Claude Desktop
+heck the Developer tab in settings to see if your server connected
 
 ## 4. Test Prompts in Claude Desktop
 
-# =============================================================================
-# TOOLS EXPLORATION PROMPTS
-# =============================================================================
+### TOOLS EXPLORATION PROMPTS
 
 "What tools are available in the advanced project manager?"
 
@@ -53,9 +54,7 @@ go install ./...
 
 "What happens if I try to create a project without providing a name?"
 
-# =============================================================================
-# RESOURCES EXPLORATION PROMPTS  
-# =============================================================================
+### RESOURCES EXPLORATION PROMPTS  
 
 "What resources are available in the project manager?"
 
@@ -71,9 +70,7 @@ go install ./...
 
 "Based on the project statistics, what recommendations do you have for improving productivity?"
 
-# =============================================================================
-# PROMPTS EXPLORATION PROMPTS
-# =============================================================================
+### PROMPTS EXPLORATION PROMPTS
 
 "What prompts are available in the project manager?"
 
@@ -91,9 +88,7 @@ go install ./...
 
 "What's the difference between the project planning prompt for a web project vs an API project?"
 
-# =============================================================================
-# INTEGRATION AND WORKFLOW PROMPTS
-# =============================================================================
+### INTEGRATION AND WORKFLOW PROMPTS
 
 "Walk me through creating a complete project workflow: create a project, add some tasks, check the resources, and then use prompts to plan the next steps."
 
@@ -107,9 +102,7 @@ go install ./...
 
 "What's missing from this project management system that you would need for real-world use?"
 
-# =============================================================================
-# UNDERSTANDING MCP CONCEPTS
-# =============================================================================
+### UNDERSTANDING MCP CONCEPTS
 
 "Explain the difference between the tools, resources, and prompts in this system. Give me specific examples from what's available."
 
@@ -121,9 +114,7 @@ go install ./...
 
 "If you were building an AI assistant for project management, how would you use these MCP capabilities?"
 
-# =============================================================================
-# TESTING EDGE CASES AND PARAMETERS
-# =============================================================================
+### TESTING EDGE CASES AND PARAMETERS
 
 "Try to create a project with comma-separated authors and see how the system handles it."
 
