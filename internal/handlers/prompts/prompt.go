@@ -11,6 +11,6 @@ type Prompt struct {
 	Handler func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)
 }
 
-func (h Prompt) Funcs() (mcp.Prompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)) {
+func (h Prompt) Attrs() (mcp.Prompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)) {
 	return h.Prompt, h.Handler
 }

@@ -11,6 +11,6 @@ type Tool struct {
 	Handler func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)
 }
 
-func (h Tool) Funcs() (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
+func (h Tool) Attrs() (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
 	return h.Tool, h.Handler
 }

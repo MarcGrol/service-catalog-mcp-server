@@ -11,6 +11,6 @@ type Resouce struct {
 	Handler  func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)
 }
 
-func (h Resouce) Funcs() (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
+func (h Resouce) Attrs() (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
 	return h.Resource, h.Handler
 }
