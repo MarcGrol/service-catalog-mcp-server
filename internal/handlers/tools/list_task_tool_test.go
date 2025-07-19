@@ -1,4 +1,4 @@
-package handlers
+package tools
 
 import (
 	"context"
@@ -22,8 +22,8 @@ func TestListTaskToolAndHandler_StoreError(t *testing.T) {
 	//store.EXPECT().Get(ctx, gomock.Any()).Return(model.Project{}, false, assert.AnError)
 
 	// when
-	_, handler := NewListTaskToolAndHandler(store)
-	result, err := handler(ctx, createRequest("list_tasks", nil))
+	tool := NewListTaskTool(store)
+	result, err := tool.Handler(ctx, createRequest("list_tasks", nil))
 
 	// then
 	assert.NoError(t, err)
@@ -42,8 +42,8 @@ func TestListTaskToolAndHandler_MissingProject(t *testing.T) {
 	})
 
 	// when
-	_, handler := NewListTaskToolAndHandler(store)
-	result, err := handler(ctx, createRequest("list_tasks",
+	tool := NewListTaskTool(store)
+	result, err := tool.Handler(ctx, createRequest("list_tasks",
 		map[string]interface{}{
 			"project_name": "B",
 		}))
@@ -65,8 +65,8 @@ func TestListTaskToolAndHandler_Success(t *testing.T) {
 	})
 
 	// when
-	_, handler := NewListTaskToolAndHandler(store)
-	result, err := handler(ctx, createRequest("list_tasks", nil))
+	tool := NewListTaskTool(store)
+	result, err := tool.Handler(ctx, createRequest("list_tasks", nil))
 
 	// then
 	assert.NoError(t, err)

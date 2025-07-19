@@ -1,4 +1,4 @@
-package handlers
+package resources
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewDocsResourceAndHandler returns the MCP resource contract and handler for documentation.
-func NewDocsResourceAndHandler() (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
+// NewDocsResource returns the MCP resource contract and handler for documentation.
+func NewDocsResource() Resouce {
 	resource := mcp.NewResource(
 		"docs://readme",
 		"Project documentation and README",
@@ -50,5 +50,8 @@ Connect this server to your MCP client (Claude Desktop, Cursor, etc.) and start 
 			},
 		}, nil
 	}
-	return resource, handler
+	return Resouce{
+		Resource: resource,
+		Handler:  handler,
+	}
 }

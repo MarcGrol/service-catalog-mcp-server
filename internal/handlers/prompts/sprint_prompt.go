@@ -1,4 +1,4 @@
-package handlers
+package prompts
 
 import (
 	"context"
@@ -8,8 +8,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewSprintPromptAndHandler returns the MCP prompt contract and handler for sprint planning.
-func NewSprintPromptAndHandler() (mcp.Prompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)) {
+// NewSprintPrompt returns the MCP prompt contract and handler for sprint planning.
+func NewSprintPrompt() Prompt {
 	prompt := mcp.NewPrompt(
 		"sprint_planning",
 		mcp.WithPromptDescription("Assist with agile sprint planning and task breakdown"),
@@ -64,5 +64,8 @@ Focus on creating realistic, achievable sprint goals that deliver value to stake
 			},
 		}, nil
 	}
-	return prompt, handler
+	return Prompt{
+		Prompt:  prompt,
+		Handler: handler,
+	}
 }

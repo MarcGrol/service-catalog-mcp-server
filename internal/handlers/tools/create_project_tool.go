@@ -1,4 +1,4 @@
-package handlers
+package tools
 
 import (
 	"context"
@@ -11,8 +11,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewCreateProjectToolAndHandler returns the MCP tool definition and its handler implementation together.
-func NewCreateProjectToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
+// NewCreateProjectTool returns the MCP tool definition and its handler implementation together.
+func NewCreateProjectTool(store mystore.Store[model.Project]) Tool {
 	tool := mcp.NewTool(
 		"create_project",
 		mcp.WithDescription("Create a new project configuration"),
@@ -59,5 +59,8 @@ func NewCreateProjectToolAndHandler(store mystore.Store[model.Project]) (mcp.Too
 
 		return mcp.NewToolResultText(result), nil
 	}
-	return tool, handler
+	return Tool{
+		Tool:    tool,
+		Handler: handler,
+	}
 }

@@ -1,4 +1,4 @@
-package handlers
+package prompts
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewReviewPromptAndHandler returns the MCP prompt contract and handler for code review.
-func NewReviewPromptAndHandler() (mcp.Prompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)) {
+// NewReviewPrompt returns the MCP prompt contract and handler for code review.
+func NewReviewPrompt() Prompt {
 	prompt := mcp.NewPrompt(
 		"code_review",
 		mcp.WithPromptDescription("Generate code review guidelines and checklist"),
@@ -58,5 +58,8 @@ Provide constructive feedback with specific suggestions for improvement.`,
 			},
 		}, nil
 	}
-	return prompt, handler
+	return Prompt{
+		Prompt:  prompt,
+		Handler: handler,
+	}
 }

@@ -1,4 +1,4 @@
-package handlers
+package resources
 
 import (
 	"context"
@@ -11,8 +11,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewStatsResourceAndHandler returns the MCP resource contract and handler for project statistics.
-func NewStatsResourceAndHandler(store mystore.Store[model.Project]) (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
+// NewStatsResource returns the MCP resource contract and handler for project statistics.
+func NewStatsResource(store mystore.Store[model.Project]) Resouce {
 	resource := mcp.NewResource(
 		"stats://project",
 		"Project statistics and metrics",
@@ -66,5 +66,8 @@ func NewStatsResourceAndHandler(store mystore.Store[model.Project]) (mcp.Resourc
 			},
 		}, nil
 	}
-	return resource, handler
+	return Resouce{
+		Resource: resource,
+		Handler:  handler,
+	}
 }

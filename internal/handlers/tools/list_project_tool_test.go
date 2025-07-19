@@ -1,4 +1,4 @@
-package handlers
+package tools
 
 import (
 	"context"
@@ -21,8 +21,8 @@ func TestListProjectToolAndHandler_StoreError(t *testing.T) {
 	store.EXPECT().List(ctx).Return(nil, assert.AnError)
 
 	// when
-	_, handler := NewListProjectToolAndHandler(store)
-	result, err := handler(ctx, createRequest("list_projects", nil))
+	tool := NewListProjectTool(store)
+	result, err := tool.Handler(ctx, createRequest("list_projects", nil))
 
 	// then
 	assert.NoError(t, err)
@@ -37,8 +37,8 @@ func TestListProjectToolAndHandler_Success(t *testing.T) {
 	store.Put(ctx, "A", model.Project{Name: "A", Description: "descA"})
 
 	// when
-	_, handler := NewListProjectToolAndHandler(store)
-	result, err := handler(ctx, createRequest("list_projects", nil))
+	tool := NewListProjectTool(store)
+	result, err := tool.Handler(ctx, createRequest("list_projects", nil))
 
 	// then
 	assert.NoError(t, err)

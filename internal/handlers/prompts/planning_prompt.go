@@ -1,4 +1,4 @@
-package handlers
+package prompts
 
 import (
 	"context"
@@ -8,8 +8,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewPlanningPromptAndHandler returns the MCP prompt contract and handler for project planning.
-func NewPlanningPromptAndHandler() (mcp.Prompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)) {
+// NewPlanningPrompt returns the MCP prompt contract and handler for project planning.
+func NewPlanningPrompt() Prompt {
 	prompt := mcp.NewPrompt(
 		"project_planning",
 		mcp.WithPromptDescription("Help plan and structure a new project"),
@@ -64,5 +64,8 @@ Consider best practices for %s development and provide actionable advice.`,
 			},
 		}, nil
 	}
-	return prompt, handler
+	return Prompt{
+		Prompt:  prompt,
+		Handler: handler,
+	}
 }

@@ -7,7 +7,10 @@ import (
 
 	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/learnmcp/internal/handlers"
+	"github.com/MarcGrol/learnmcp/internal/handlers/prompts"
+	"github.com/MarcGrol/learnmcp/internal/handlers/resources"
+	"github.com/MarcGrol/learnmcp/internal/handlers/tools"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
 )
@@ -46,39 +49,39 @@ func (p *ProjectService) Initialize(ctx context.Context) error {
 
 func (p *ProjectService) setupTools() {
 	// Project management tool
-	p.server.AddTool(handlers.NewListProjectToolAndHandler(p.store))
-	p.server.AddTool(handlers.NewCreateProjectToolAndHandler(p.store))
-	p.server.AddTool(handlers.NewListProjectToolAndHandler(p.store))
-	p.server.AddTool(handlers.NewCreateTaskToolAndHandler(p.store))
+	p.server.AddTool(tools.NewListProjectTool(p.store).Funcs())
+	p.server.AddTool(tools.NewCreateProjectTool(p.store).Funcs())
+	p.server.AddTool(tools.NewListTaskTool(p.store).Funcs())
+	p.server.AddTool(tools.NewCreateTaskTool(p.store).Funcs())
 
 	// Search tool
-	p.server.AddTool(handlers.NewSearchContentToolAndHandler(p.store))
+	p.server.AddTool(tools.NewSearchContentTool(p.store).Funcs())
 
 	// Analytics tool
-	p.server.AddTool(handlers.NewGenerateAnalyticsToolAndHandler(p.store))
+	p.server.AddTool(tools.NewGenerateAnalyticsTool(p.store).Funcs())
 }
 
 func (p *ProjectService) setupResources() {
 	// Project management resource
-	p.server.AddResource(handlers.NewProjectListResourceAndHandler(p.store))
-	p.server.AddResource(handlers.NewTasksListResourceAndHandler(p.store))
+	p.server.AddResource(resources.NewProjectListResource(p.store).Funcs())
+	p.server.AddResource(resources.NewTasksListResource(p.store).Funcs())
 
 	// Project statistics resource
-	p.server.AddResource(handlers.NewStatsResourceAndHandler(p.store))
+	p.server.AddResource(resources.NewStatsResource(p.store).Funcs())
 
 	// Documentation resource
-	p.server.AddResource(handlers.NewDocsResourceAndHandler())
+	p.server.AddResource(resources.NewDocsResource().Funcs())
 }
 
 func (p *ProjectService) setupPrompts() {
 	// Project planning prompt
-	p.server.AddPrompt(handlers.NewPlanningPromptAndHandler())
+	p.server.AddPrompt(prompts.NewPlanningPrompt().Funcs())
 
 	// Code review prompt
-	p.server.AddPrompt(handlers.NewReviewPromptAndHandler())
+	p.server.AddPrompt(prompts.NewReviewPrompt().Funcs())
 
 	// Sprint planning prompt
-	p.server.AddPrompt(handlers.NewSprintPromptAndHandler())
+	p.server.AddPrompt(prompts.NewSprintPrompt().Funcs())
 }
 
 func (p *ProjectService) preprovision(c context.Context) error {

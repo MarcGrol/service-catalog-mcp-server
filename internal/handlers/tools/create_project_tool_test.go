@@ -1,4 +1,4 @@
-package handlers
+package tools
 
 import (
 	"context"
@@ -27,8 +27,8 @@ func TestCreateProjectToolAndHandler_InvalidInput(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			// when
-			_, handler := NewCreateProjectToolAndHandler(store)
-			result, err := handler(ctx, createRequest("create_project", tc.args))
+			tool := NewCreateProjectTool(store)
+			result, err := tool.Handler(ctx, createRequest("create_project", tc.args))
 			// then
 			assert.NoError(t, err)
 			assert.True(t, result.IsError)
@@ -51,8 +51,8 @@ func TestCreateProjectToolAndHandler_StoreError(t *testing.T) {
 	store.EXPECT().List(gomock.Any()).Return([]model.Project{}, nil)
 
 	// when
-	_, handler := NewCreateProjectToolAndHandler(store)
-	result, err := handler(ctx, createRequest("create_project",
+	tool := NewCreateProjectTool(store)
+	result, err := tool.Handler(ctx, createRequest("create_project",
 		map[string]interface{}{
 			"name":        "proj",
 			"description": "desc",
@@ -69,10 +69,10 @@ func TestCreateProjectToolAndHandler_Success(t *testing.T) {
 
 	// given
 	store, _, _ := mystore.NewInMemoryStore[model.Project](ctx)
-	_, handler := NewCreateProjectToolAndHandler(store)
+	tool := NewCreateProjectTool(store)
 
 	// when
-	result, err := handler(ctx, createRequest("create_project", map[string]interface{}{
+	result, err := tool.Handler(ctx, createRequest("create_project", map[string]interface{}{
 		"name":        "proj",
 		"description": "desc",
 		"authors":     []string{"A"},

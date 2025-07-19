@@ -1,4 +1,4 @@
-package handlers
+package resources
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 )
 
 // NewProjectConfigResourceAndHandler returns the MCP resource contract and handler for project configuration.
-func NewProjectListResourceAndHandler(store mystore.Store[model.Project]) (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
+func NewProjectListResource(store mystore.Store[model.Project]) Resouce {
 	resource := mcp.NewResource(
 		"project://config",
 		"Current project configuration",
@@ -40,5 +40,8 @@ func NewProjectListResourceAndHandler(store mystore.Store[model.Project]) (mcp.R
 			},
 		}, nil
 	}
-	return resource, handler
+	return Resouce{
+		Resource: resource,
+		Handler:  handler,
+	}
 }

@@ -1,4 +1,4 @@
-package handlers
+package tools
 
 import (
 	"context"
@@ -10,8 +10,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewListTaskToolAndHandler returns the MCP tool definition and its handler for listing tasks.
-func NewListTaskToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
+// NewListTaskTool returns the MCP tool definition and its handler for listing tasks.
+func NewListTaskTool(store mystore.Store[model.Project]) Tool {
 	tool := mcp.NewTool(
 		"list_tasks",
 		mcp.WithDescription("Lists all tasks or all tasks of a project"),
@@ -47,5 +47,8 @@ func NewListTaskToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool, fu
 		result := fmt.Sprintf("Currently available tasks within project %s:\n\n%s", projectName, strings.Join(results, "\n"))
 		return mcp.NewToolResultText(result), nil
 	}
-	return tool, handler
+	return Tool{
+		Tool:    tool,
+		Handler: handler,
+	}
 }
