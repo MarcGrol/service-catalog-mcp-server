@@ -22,7 +22,7 @@ func NewListTaskToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool, fu
 		if projectName == "" {
 			projects, err := store.List(ctx)
 			if err != nil {
-				return mcp.NewToolResultErrorFromErr("Error listing projects", err), err
+				return mcp.NewToolResultErrorFromErr("Error listing tasks", err), nil
 			}
 			tasks := []string{}
 			for _, p := range projects {
@@ -35,7 +35,7 @@ func NewListTaskToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool, fu
 		}
 		project, exists, err := store.Get(ctx, projectName)
 		if err != nil {
-			return nil, err
+			return mcp.NewToolResultText(fmt.Sprintf("error getting project %s: %s", projectName, err)), nil
 		}
 		if !exists {
 			return mcp.NewToolResultError(fmt.Sprintf("project %s not found", projectName)), nil
