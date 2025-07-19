@@ -7,10 +7,10 @@ import (
 )
 
 type Prompt struct {
-	Prompt  mcp.Prompt
-	Handler func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)
+	Contract mcp.Prompt
+	Handler  func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)
 }
 
 func (h Prompt) Attrs() (mcp.Prompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error)) {
-	return h.Prompt, h.Handler
+	return h.Contract, h.Handler
 }

@@ -13,24 +13,22 @@ import (
 
 // NewListProjectTool returns the MCP tool definition and its handler for listing projects.
 func NewListProjectTool(store mystore.Store[model.Project]) Tool {
-	tool := mcp.NewTool(
-		"list_projects",
-		mcp.WithDescription("Lists all projects"),
-	)
-	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-		projects, err := store.List(ctx)
-		if err != nil {
-			return mcp.NewToolResultErrorFromErr("Error listing projects", err), nil
-		}
-		results := []string{}
-		for _, p := range projects {
-			results = append(results, fmt.Sprintf("%s: %s", p.Name, p.Description))
-		}
-		result := fmt.Sprintf("Currently available project:\n\n%s", strings.Join(results, "\n"))
-		return mcp.NewToolResultText(result), nil
-	}
 	return Tool{
-		Tool:    tool,
-		Handler: handler,
+		Contract: mcp.NewTool(
+			"list_projects",
+			mcp.WithDescription("Lists all projects"),
+		),
+		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			projects, err := store.List(ctx)
+			if err != nil {
+				return mcp.NewToolResultErrorFromErr("Error listing projects", err), nil
+			}
+			results := []string{}
+			for _, p := range projects {
+				results = append(results, fmt.Sprintf("%s: %s", p.Name, p.Description))
+			}
+			result := fmt.Sprintf("Currently available project:\n\n%s", strings.Join(results, "\n"))
+			return mcp.NewToolResultText(result), nil
+		},
 	}
 }

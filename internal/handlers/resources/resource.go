@@ -6,11 +6,11 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
-type Resouce struct {
-	Resource mcp.Resource
+type Resource struct {
+	Contract mcp.Resource
 	Handler  func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)
 }
 
-func (h Resouce) Attrs() (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
-	return h.Resource, h.Handler
+func (h Resource) Attrs() (mcp.Resource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error)) {
+	return h.Contract, h.Handler
 }

@@ -7,10 +7,10 @@ import (
 )
 
 type Tool struct {
-	Tool    mcp.Tool
-	Handler func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)
+	Contract mcp.Tool
+	Handler  func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)
 }
 
 func (h Tool) Attrs() (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
-	return h.Tool, h.Handler
+	return h.Contract, h.Handler
 }
