@@ -7,7 +7,9 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/learnmcp/internal/config"
-	"github.com/MarcGrol/learnmcp/mystore"
+	"github.com/MarcGrol/learnmcp/internal/model"
+
+	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/MarcGrol/learnmcp/project"
 	"github.com/MarcGrol/learnmcp/transport"
 )
@@ -35,7 +37,7 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		server.WithToolCapabilities(true),
 		server.WithLogging())
 
-	projectStore, projectStoreCleanup, err := mystore.New[project.ProjectConfig](ctx)
+	projectStore, projectStoreCleanup, err := mystore.New[model.Project](ctx)
 	if err != nil {
 		return nil, err
 	}

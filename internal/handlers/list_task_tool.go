@@ -1,0 +1,51 @@
+package handlers
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/MarcGrol/learnmcp/internal/model"
+	"github.com/MarcGrol/learnmcp/internal/mystore"
+	"github.com/mark3labs/mcp-go/mcp"
+)
+
+// NewListTaskToolAndHandler returns the MCP tool definition and its handler for listing tasks.
+func NewListTaskToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
+	tool := mcp.NewTool(
+		"list_tasks",
+		mcp.WithDescription("Lists all tasks or all tasks of a project"),
+		mcp.WithString("project_name", mcp.Description("Project that we want to list the tasks of")),
+	)
+	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		projectName := request.GetString("project_name", "")
+		if projectName == "" {
+			projects, err := store.List(ctx)
+			if err != nil {
+				return mcp.NewToolResultErrorFromErr("Error listing projects", err), err
+			}
+			tasks := []string{}
+			for _, p := range projects {
+				for _, t := range p.Tasks {
+					tasks = append(tasks, fmt.Sprintf("%s: %d - %s - %s", p.Name, t.ID, t.Title, t.Description))
+				}
+			}
+			result := fmt.Sprintf("Currently available tasks:\n\n%s", strings.Join(tasks, "\n"))
+			return mcp.NewToolResultText(result), nil
+		}
+		project, exists, err := store.Get(ctx, projectName)
+		if err != nil {
+			return nil, err
+		}
+		if !exists {
+			return mcp.NewToolResultError(fmt.Sprintf("project %s not found", projectName)), nil
+		}
+		results := []string{}
+		for _, t := range project.Tasks {
+			results = append(results, fmt.Sprintf("%d: %s - %s - %s", t.ID, projectName, t.Title, t.Description))
+		}
+		result := fmt.Sprintf("Currently available tasks within project %s:\n\n%s", projectName, strings.Join(results, "\n"))
+		return mcp.NewToolResultText(result), nil
+	}
+	return tool, handler
+}

@@ -1,10 +1,10 @@
-package models
+package model
 
 import (
 	"time"
 )
 
-type ProjectConfig struct {
+type Project struct {
 	Name         string            `json:"name"`
 	Version      string            `json:"version"`
 	Description  string            `json:"description"`
@@ -15,7 +15,7 @@ type ProjectConfig struct {
 }
 
 type TaskItem struct {
-	ProjectName string     `json:"project_name"`
+	ProjectName string     `projectName:"projectName"`
 	ID          int        `json:"id"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`

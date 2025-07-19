@@ -8,15 +8,15 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 
-	"github.com/MarcGrol/learnmcp/mystore"
-	"github.com/MarcGrol/learnmcp/pkg/models"
+	"github.com/MarcGrol/learnmcp/internal/model"
+	"github.com/MarcGrol/learnmcp/internal/mystore"
 )
 
 type ResourceHandlers struct {
-	store mystore.Store[models.ProjectConfig]
+	store mystore.Store[model.Project]
 }
 
-func NewResourceHandlers(store mystore.Store[models.ProjectConfig]) *ResourceHandlers {
+func NewResourceHandlers(store mystore.Store[model.Project]) *ResourceHandlers {
 	return &ResourceHandlers{
 		store: store,
 	}
@@ -51,7 +51,7 @@ func (h *ResourceHandlers) ProjectResourceHandler() func(ctx context.Context, re
 
 func (h *ResourceHandlers) TasksResourceHandler() func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
 	return func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
-		tasks := []models.TaskItem{}
+		tasks := []model.TaskItem{}
 
 		projects, err := h.store.List(ctx)
 		if err != nil {
@@ -83,7 +83,7 @@ func (h *ResourceHandlers) TasksResourceHandler() func(ctx context.Context, requ
 
 func (h *ResourceHandlers) StatsResourceHandler() func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
 	return func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
-		tasks := []models.TaskItem{}
+		tasks := []model.TaskItem{}
 
 		projects, err := h.store.List(ctx)
 		if err != nil {

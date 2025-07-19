@@ -8,21 +8,18 @@ import (
 	"time"
 
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/learnmcp/mystore"
-	"github.com/MarcGrol/learnmcp/pkg/models"
+	"github.com/MarcGrol/learnmcp/internal/model"
+	"github.com/MarcGrol/learnmcp/internal/mystore"
 )
 
 type ProjectHandlers struct {
-	mcpServer *server.MCPServer
-	store     mystore.Store[models.ProjectConfig]
+	store mystore.Store[model.Project]
 }
 
-func NewProjectHandlers(s *server.MCPServer, store mystore.Store[models.ProjectConfig]) *ProjectHandlers {
+func NewProjectHandlers(store mystore.Store[model.Project]) *ProjectHandlers {
 	return &ProjectHandlers{
-		mcpServer: s,
-		store:     store,
+		store: store,
 	}
 }
 
@@ -60,7 +57,7 @@ func (h *ProjectHandlers) CreateProjectHandler() func(ctx context.Context, reque
 
 		authors := request.GetStringSlice("authors", []string{"Anonymous Developer"})
 
-		projectConfig := models.ProjectConfig{
+		projectConfig := model.Project{
 			Name:        name,
 			Version:     "1.0.0",
 			Description: description,
@@ -100,7 +97,7 @@ func (h *ProjectHandlers) ListTaskHandler() func(ctx context.Context, request mc
 			tasks := []string{}
 			for _, p := range projects {
 				for _, t := range p.Tasks {
-					tasks = append(tasks, fmt.Sprintf("%s: %s - %s - %s", p.Name, t.ID, t.Title, t.Description))
+					tasks = append(tasks, fmt.Sprintf("%s: %d - %s - %s", p.Name, t.ID, t.Title, t.Description))
 				}
 			}
 
@@ -120,7 +117,7 @@ func (h *ProjectHandlers) ListTaskHandler() func(ctx context.Context, request mc
 		// Simulate search results
 		results := []string{}
 		for _, t := range project.Tasks {
-			results = append(results, fmt.Sprintf("%s: %s - %s - %s", t.ID, projectName, t.Title, t.Description))
+			results = append(results, fmt.Sprintf("%d: %s - %s - %s", t.ID, projectName, t.Title, t.Description))
 		}
 
 		result := fmt.Sprintf("Currently available tasks within project %s:\n\n%s", projectName,
@@ -145,7 +142,7 @@ func (h *ProjectHandlers) CreateTaskHandler() func(ctx context.Context, request 
 		description := request.GetString("description", "")
 		priority := request.GetString("priority", "medium")
 
-		task := models.TaskItem{
+		task := model.TaskItem{
 			ProjectName: projectName,
 			ID:          int(time.Now().Unix()),
 			Title:       title,
