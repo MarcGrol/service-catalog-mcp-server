@@ -3,7 +3,7 @@
 # Test script for STATELESS Streamable HTTP MCP Server
 # This should work without session management!
 
-BASE_URL="http://localhost:3000/mcp"
+BASE_URL="http://localhost:8080/mcp"
 
 echo "=== Testing STATELESS MCP Server ==="
 echo "Server should be running with: ./mcp-server -http"

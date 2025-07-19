@@ -2,7 +2,6 @@ package project
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/mark3labs/mcp-go/server"
@@ -32,16 +31,11 @@ func (p *ProjectService) Initialize(ctx context.Context) error {
 		return err
 	}
 
-	// Add tools
 	p.setupTools()
 
-	// Add resources
 	p.setupResources()
 
-	// Add prompts
 	p.setupPrompts()
-
-	log.Println("Starting Advanced MCP Server with Tools, Resources, and Prompts...")
 
 	return nil
 }
