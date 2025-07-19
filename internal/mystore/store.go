@@ -9,12 +9,14 @@ import (
 
 type InMemoryStore[T any] struct {
 	sync.Mutex
-	Items map[string]T
+	Items          map[string]T
+	TemporaryItems map[string]T
 }
 
 func NewInMemoryStore[T any](c context.Context) (*InMemoryStore[T], func(), error) {
 	return &InMemoryStore[T]{
-		Items: make(map[string]T),
+		Items:          make(map[string]T),
+		TemporaryItems: make(map[string]T),
 	}, func() {}, nil
 }
 

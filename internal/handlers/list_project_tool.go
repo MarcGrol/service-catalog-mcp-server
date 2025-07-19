@@ -20,7 +20,7 @@ func NewListProjectToolAndHandler(store mystore.Store[model.Project]) (mcp.Tool,
 	handler := func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 		projects, err := store.List(ctx)
 		if err != nil {
-			return mcp.NewToolResultErrorFromErr("Error listing projects", err), err
+			return mcp.NewToolResultErrorFromErr("Error listing projects", err), nil
 		}
 		results := []string{}
 		for _, p := range projects {

@@ -15,7 +15,7 @@ type Filter struct {
 	Op    string // e.g., "eq", "gt", "lt"
 }
 
-//go:generate mockgen -source=api.go -package mystore -destination store_mock.go Store
+// do not go:generate mockgen -source=store_api.go -package mystore -destination store_mock.go Store
 type Store[T any] interface {
 	RunInTransaction(c context.Context, f func(c context.Context) error) error
 	Put(c context.Context, uid string, value T) error

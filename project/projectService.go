@@ -47,14 +47,8 @@ func (p *ProjectService) Initialize(ctx context.Context) error {
 func (p *ProjectService) setupTools() {
 	// Project management tool
 	p.server.AddTool(handlers.NewListProjectToolAndHandler(p.store))
-
-	// Project management tool (contract and enforcement together)
 	p.server.AddTool(handlers.NewCreateProjectToolAndHandler(p.store))
-
-	// Task management tool
 	p.server.AddTool(handlers.NewListProjectToolAndHandler(p.store))
-
-	// Task management tool
 	p.server.AddTool(handlers.NewCreateTaskToolAndHandler(p.store))
 
 	// Search tool
@@ -65,11 +59,8 @@ func (p *ProjectService) setupTools() {
 }
 
 func (p *ProjectService) setupResources() {
-	// Project configuration resource
-
+	// Project management resource
 	p.server.AddResource(handlers.NewProjectListResourceAndHandler(p.store))
-
-	// Tasks list resource
 	p.server.AddResource(handlers.NewTasksListResourceAndHandler(p.store))
 
 	// Project statistics resource
