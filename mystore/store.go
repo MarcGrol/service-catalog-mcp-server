@@ -1,4 +1,3 @@
-# File: mystore/store.go
 package mystore
 
 import (
@@ -7,17 +6,6 @@ import (
 	"strings"
 	"sync"
 )
-
-// ctxTransactionKey is an unexported type for context keys to avoid collisions.
-type ctxTransactionKey struct{}
-
-// Filter is a placeholder type for filtering operations in the Query method.
-// Its actual structure would depend on the specific filtering logic required.
-type Filter struct {
-	Field string
-	Value string
-	Op    string // e.g., "eq", "gt", "lt"
-}
 
 type InMemoryStore[T any] struct {
 	sync.Mutex

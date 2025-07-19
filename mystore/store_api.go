@@ -4,12 +4,15 @@ import (
 	"context"
 )
 
+// ctxTransactionKey is an unexported type for context keys to avoid collisions.
 type ctxTransactionKey struct{}
 
+// Filter is a placeholder type for filtering operations in the Query method.
+// Its actual structure would depend on the specific filtering logic required.
 type Filter struct {
-	Field   string
-	Compare string
-	Value   any
+	Field string
+	Value string
+	Op    string // e.g., "eq", "gt", "lt"
 }
 
 //go:generate mockgen -source=api.go -package mystore -destination store_mock.go Store
