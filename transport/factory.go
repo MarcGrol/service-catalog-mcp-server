@@ -5,7 +5,7 @@ import (
 )
 
 type ServerTransport interface {
-	Start(addr string) error
+	Start() error
 }
 
 func NewServerTransport(s *server.MCPServer, useSSE, useStreamable bool, port, baseURL string) ServerTransport {

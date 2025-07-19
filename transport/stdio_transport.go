@@ -16,7 +16,7 @@ func NewStdioTransport(s *server.MCPServer) *StdioTransport {
 	}
 }
 
-func (t *StdioTransport) Start(addr string) error {
+func (t *StdioTransport) Start() error {
 	log.Println("Starting MCP server with stdio transport...")
 	return server.ServeStdio(t.mcpServer)
 }

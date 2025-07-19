@@ -21,7 +21,7 @@ func NewSSETransport(s *server.MCPServer, baseURL, port string) *SSETransport {
 	}
 }
 
-func (t *SSETransport) Start(addr string) error {
+func (t *SSETransport) Start() error {
 	fullBaseURL := fmt.Sprintf("%s:%s", t.baseURL, t.port)
 
 	sseServer := server.NewSSEServer(t.mcpServer,

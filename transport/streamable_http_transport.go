@@ -18,7 +18,7 @@ func NewStreamableHTTPTransport(s *server.MCPServer, port string) *StreamableHTT
 	}
 }
 
-func (t *StreamableHTTPTransport) Start(addr string) error {
+func (t *StreamableHTTPTransport) Start() error {
 	streamableServer := server.NewStreamableHTTPServer(t.mcpServer,
 		server.WithStateLess(true),
 	)

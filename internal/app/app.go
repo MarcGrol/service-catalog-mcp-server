@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"log"
 
 	"github.com/mark3labs/mcp-go/server"
 
@@ -51,8 +50,7 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 }
 
 func (a *Application) Run() error {
-	log.Printf("Starting MCP server on port %s", a.config.Port)
-	if err := a.serverTransport.Start(":" + a.config.Port); err != nil {
+	if err := a.serverTransport.Start(); err != nil {
 		return err
 	}
 	return nil
