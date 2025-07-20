@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -19,15 +20,17 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			mcp.WithDescription("Lists all modules in the catalog."),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			log.Printf("Start NewListModulesTool")
 			modules, err := repo.ListModules(ctx)
 			if err != nil {
 				return mcp.NewToolResultErrorFromErr("Error listing modules", err), nil
 			}
 			results := []string{}
-			for _, p := range modules {
-				results = append(results, fmt.Sprintf("%s: %s", p.Name, p.Description))
+			for _, mod := range modules {
+				results = append(results, fmt.Sprintf("%s: %s", mod.Name, mod.Description))
 			}
-			result := fmt.Sprintf("Found modules:\n\n%s", strings.Join(results, "\n"))
+			result := fmt.Sprintf("Found %d modules:\n%s\n",
+				len(results), strings.Join(results, "\n"))
 			return mcp.NewToolResultText(result), nil
 		},
 	}

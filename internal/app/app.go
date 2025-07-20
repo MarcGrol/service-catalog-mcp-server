@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/mark3labs/mcp-go/server"
 
@@ -31,12 +32,14 @@ func New(cfg config.Config) *Application {
 func (a *Application) Initialize(ctx context.Context) (func(), error) {
 	// Create a new MCP server
 	a.mcpServer = server.NewMCPServer(
-		"Marc's project MCP Server", // Server name
-		"1.0.0",                     // Version
+		"Marc's MCP Server", // Server name
+		"1.0.0",             // Version
 		server.WithResourceCapabilities(true, true),
 		server.WithPromptCapabilities(true),
 		server.WithToolCapabilities(true),
 		server.WithLogging())
+
+	//simple.SetupSimpleTools(a.mcpServer)
 
 	projectStore, projectStoreCleanup, err := mystore.New[model.Project](ctx)
 	if err != nil {
@@ -49,6 +52,10 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 
 	{
 		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
+		err := catalogRepo.Open(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("error opening database: %s", err)
+		}
 		a.serviceCatalog = servicecatalog.New(a.mcpServer, catalogRepo)
 		a.serviceCatalog.Initialize(ctx)
 	}

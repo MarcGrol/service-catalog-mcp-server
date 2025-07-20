@@ -27,7 +27,7 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			for _, p := range interfaces {
 				results = append(results, fmt.Sprintf("%s: %s", p.InterfaceID, p.Description))
 			}
-			result := fmt.Sprintf("Found interfaces:\n\n%s", strings.Join(results, "\n"))
+			result := fmt.Sprintf("Found %d interfaces:\n\n%s", len(results), strings.Join(results, "\n"))
 			return mcp.NewToolResultText(result), nil
 		},
 	}

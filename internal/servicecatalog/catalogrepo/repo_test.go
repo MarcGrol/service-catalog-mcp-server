@@ -3,7 +3,6 @@ package catalogrepo
 import (
 	"context"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"log"
 	"testing"
@@ -11,53 +10,51 @@ import (
 
 func TestIt(t *testing.T) {
 	ctx := context.TODO()
-
-	database := flag.String("database", "./service-catalog.sqlite", "Database filename")
-	flag.Parse()
-
-	repo := New(*database)
+	repo := New("/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
 	err := repo.Open(ctx)
 	if err != nil {
 		log.Fatalf("connect error: %s", err)
 	}
 	defer repo.Close(ctx)
 
-	{
-		modules, err := repo.ListModules(ctx)
-		if err != nil {
-			log.Fatalf("select error: %s", err)
+	if false {
+		{
+			modules, err := repo.ListModules(ctx)
+			if err != nil {
+				log.Fatalf("select error: %s", err)
+			}
+			for _, m := range modules {
+				fmt.Printf("%+v\n", m)
+			}
 		}
-		for _, m := range modules {
-			fmt.Printf("%+v\n", m)
+
+		{
+			interfaces, err := repo.ListInterfaces(ctx)
+			if err != nil {
+				log.Fatalf("select error: %s", err)
+			}
+			for _, m := range interfaces {
+				fmt.Printf("%+v\n", m)
+			}
 		}
 	}
 
 	{
-		interfaces, err := repo.ListInterfaces(ctx)
+		interfaceID := "psp"
+		fmt.Printf("Details of module %s:\n", interfaceID)
+
+		module, exists, err := repo.GetModuleOnID(ctx, interfaceID)
 		if err != nil {
-			log.Fatalf("select error: %s", err)
+			log.Fatalf("get error: %s", err)
 		}
-		for _, m := range interfaces {
-			fmt.Printf("%+v\n", m)
+		if !exists {
+			log.Fatalf("module not exists")
 		}
+		asJson, _ := json.MarshalIndent(module, "", "  ")
+		fmt.Printf("%s\n", asJson)
 	}
 
 	if false {
-		{
-			interfaceID := "psp"
-			fmt.Printf("Details of module %s:\n", interfaceID)
-
-			module, exists, err := repo.GetModuleOnID(ctx, interfaceID)
-			if err != nil {
-				log.Fatalf("get error: %s", err)
-			}
-			if !exists {
-				log.Fatalf("module not exists")
-			}
-			asJson, _ := json.MarshalIndent(module, "", "  ")
-			fmt.Printf("%s\n", asJson)
-		}
-
 		{
 			interfaceID := "com.adyen.services.acm.AcmService"
 			fmt.Printf("Details of interface %s:\n", interfaceID)

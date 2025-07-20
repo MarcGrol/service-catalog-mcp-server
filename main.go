@@ -9,6 +9,9 @@ import (
 )
 
 func main() {
+	// Set log flags for more detailed output
+	log.SetFlags(log.LstdFlags | log.Lshortfile | log.Lmicroseconds)
+
 	ctx := context.Background()
 
 	cfg := config.LoadConfig()

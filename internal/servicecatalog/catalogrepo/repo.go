@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/glebarez/go-sqlite"
 	"github.com/jmoiron/sqlx"
@@ -25,12 +26,14 @@ func newCatalogRepo(filename string) *CatalogRepo {
 }
 
 func (repo *CatalogRepo) Open(ctx context.Context) error {
-	var err error
+	log.Printf("Opening database: %s", repo.filename)
 
+	var err error
 	if repo.db != nil {
 		// already opened
 		return nil
 	}
+
 	repo.db, err = sqlx.Connect("sqlite", repo.filename)
 	if err != nil {
 		return fmt.Errorf("connect error: %s", err)
@@ -39,6 +42,7 @@ func (repo *CatalogRepo) Open(ctx context.Context) error {
 }
 
 func (repo *CatalogRepo) Close(ctx context.Context) error {
+	log.Printf("Closing database: %s", repo.filename)
 	if repo.db == nil {
 		// already closed
 		return nil
@@ -48,18 +52,20 @@ func (repo *CatalogRepo) Close(ctx context.Context) error {
 
 func (repo *CatalogRepo) ListModules(ctx context.Context) ([]Module, error) {
 	if repo.db == nil {
-		// already opened
+		log.Printf("database not yet opened")
 		return nil, fmt.Errorf("database not yet opened")
 	}
 
 	modules := []Module{}
-	err := repo.db.Select(&modules, "SELECT * FROM enriched_module ORDER BY module_id ASC")
+	err := repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC LIMIT 100")
 	if err != nil {
 		if err == sql.ErrNoRows {
+			log.Printf("No results")
 			return modules, nil
 		}
 		return nil, fmt.Errorf("select error: %s", err)
 	}
+
 	return modules, nil
 }
 

@@ -22,7 +22,6 @@ func New(s *server.MCPServer, repo catalogrepo.Cataloger) *ServiceCatalog {
 }
 
 func (p *ServiceCatalog) Initialize(ctx context.Context) error {
-
 	p.register()
 
 	return nil
