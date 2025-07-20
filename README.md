@@ -19,7 +19,7 @@ Make sure it works with stdio (not HTTP for Claude Desktop)
     {
         "mcpServers": {
             "aproject-server": {
-            "command": "/Users/marcgrol/go/bin//learnmcp",
+            "command": "/Users/marcgrol/go/bin/learnmcp",
             "args": [],
             "env": {}
             }
