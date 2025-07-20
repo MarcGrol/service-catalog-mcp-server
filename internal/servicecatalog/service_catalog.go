@@ -33,6 +33,9 @@ func (p *ServiceCatalog) register() {
 		handlers.NewLGetSingleModuleTool(p.repo),
 		handlers.NewListInterfacesTool(p.repo),
 		handlers.NewLGetSingleInterfaceTool(p.repo),
+		handlers.NewListModulesOfTeamsTool(p.repo),
+		handlers.NewListMDatabaseConsumersTool(p.repo),
+		handlers.NewListInterfaceConsumersTool(p.repo),
 	)
 
 	p.server.AddResources(

@@ -52,7 +52,6 @@ func (repo *CatalogRepo) Close(ctx context.Context) error {
 
 func (repo *CatalogRepo) ListModules(ctx context.Context) ([]Module, error) {
 	if repo.db == nil {
-		log.Printf("database not yet opened")
 		return nil, fmt.Errorf("database not yet opened")
 	}
 
@@ -60,7 +59,6 @@ func (repo *CatalogRepo) ListModules(ctx context.Context) ([]Module, error) {
 	err := repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC LIMIT 100")
 	if err != nil {
 		if err == sql.ErrNoRows {
-			log.Printf("No results")
 			return modules, nil
 		}
 		return nil, fmt.Errorf("select error: %s", err)

@@ -9,7 +9,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-func setupSimpleTools(s *server.MCPServer) {
+func SetupSimpleTools(s *server.MCPServer) {
 
 	// Add a simple greeting tool
 	greetTool := mcp.NewTool(

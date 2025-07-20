@@ -13,9 +13,9 @@ type Cataloger interface {
 	GetModuleOnID(ctx context.Context, id string) (Module, bool, error)
 	ListInterfaces(ctx context.Context) ([]Interface, error)
 	GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error)
+	ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error)
 	ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error)
 	ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error)
-	ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error)
 }
 
 type Module struct {
