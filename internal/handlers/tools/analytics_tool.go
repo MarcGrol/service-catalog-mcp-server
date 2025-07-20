@@ -4,15 +4,17 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewGenerateAnalyticsTool returns the MCP tool definition and its handler for generating analytics.
-func NewGenerateAnalyticsTool(store mystore.Store[model.Project]) Tool {
-	return Tool{
-		Contract: mcp.NewTool(
+func NewGenerateAnalyticsTool(store mystore.Store[model.Project]) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool(
 			"generate_analytics",
 			mcp.WithDescription("Generate project analytics and reports"),
 			mcp.WithString("report_type", mcp.Required(), mcp.Description("Type of report: summary, tasks, timeline")),

@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewSearchContentTool returns the MCP tool definition and its handler for searching content.
-func NewSearchContentTool(store mystore.Store[model.Project]) Tool {
-	return Tool{
-		Contract: mcp.NewTool(
+func NewSearchContentTool(store mystore.Store[model.Project]) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool(
 			"search_content",
 			mcp.WithDescription("Search for content in projects and tasks"),
 			mcp.WithString("query", mcp.Required(), mcp.Description("Search query")),

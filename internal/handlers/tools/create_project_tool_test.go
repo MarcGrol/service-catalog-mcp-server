@@ -29,6 +29,7 @@ func TestCreateProjectToolAndHandler_InvalidInput(t *testing.T) {
 			// when
 			tool := NewCreateProjectTool(store)
 			result, err := tool.Handler(ctx, createRequest("create_project", tc.args))
+
 			// then
 			assert.NoError(t, err)
 			assert.True(t, result.IsError)

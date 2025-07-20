@@ -9,12 +9,13 @@ import (
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 // NewStatsResource returns the MCP resource contract and handler for project statistics.
-func NewStatsResource(store mystore.Store[model.Project]) Resource {
-	return Resource{
-		Contract: mcp.NewResource(
+func NewStatsResource(store mystore.Store[model.Project]) server.ServerResource {
+	return server.ServerResource{
+		Resource: mcp.NewResource(
 			"stats://project",
 			"Project statistics and metrics",
 			mcp.WithMIMEType("application/json"),

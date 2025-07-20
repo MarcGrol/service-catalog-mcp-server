@@ -6,12 +6,13 @@ import (
 	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 // NewPlanningPrompt returns the MCP prompt contract and handler for project planning.
-func NewPlanningPrompt() Prompt {
-	return Prompt{
-		Contract: mcp.NewPrompt(
+func NewPlanningPrompt() server.ServerPrompt {
+	return server.ServerPrompt{
+		Prompt: mcp.NewPrompt(
 			"project_planning",
 			mcp.WithPromptDescription("Help plan and structure a new project"),
 			mcp.WithArgument("project_type", mcp.RequiredArgument(), mcp.ArgumentDescription("Type of project: web, mobile, api, library")),

@@ -5,16 +5,17 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewListProjectTool returns the MCP tool definition and its handler for listing projects.
-func NewListProjectTool(store mystore.Store[model.Project]) Tool {
-	return Tool{
-		Contract: mcp.NewTool(
+func NewListProjectTool(store mystore.Store[model.Project]) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool(
 			"list_projects",
 			mcp.WithDescription("Lists all projects"),
 		),

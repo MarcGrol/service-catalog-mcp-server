@@ -5,12 +5,13 @@ import (
 	"fmt"
 
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 // NewReviewPrompt returns the MCP prompt contract and handler for code review.
-func NewReviewPrompt() Prompt {
-	return Prompt{
-		Contract: mcp.NewPrompt(
+func NewReviewPrompt() server.ServerPrompt {
+	return server.ServerPrompt{
+		Prompt: mcp.NewPrompt(
 			"code_review",
 			mcp.WithPromptDescription("Generate code review guidelines and checklist"),
 			mcp.WithArgument("language", mcp.RequiredArgument(), mcp.ArgumentDescription("Programming language")),

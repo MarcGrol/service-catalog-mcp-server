@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewTasksListResource returns the MCP resource contract and handler for the tasks list.
-func NewTasksListResource(store mystore.Store[model.Project]) Resource {
-	return Resource{
-		Contract: mcp.NewResource(
+func NewTasksListResource(store mystore.Store[model.Project]) server.ServerResource {
+	return server.ServerResource{
+		Resource: mcp.NewResource(
 			"tasks://list",
 			"List of all tasks in the project",
 			mcp.WithMIMEType("application/json"),

@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewCreateTaskTool returns the MCP tool definition and its handler for creating tasks.
-func NewCreateTaskTool(store mystore.Store[model.Project]) Tool {
-	return Tool{
-		Contract: mcp.NewTool(
+func NewCreateTaskTool(store mystore.Store[model.Project]) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool(
 			"create_task",
 			mcp.WithDescription("Create a new task"),
 			mcp.WithString("project_name", mcp.Required(), mcp.Description("Project that this task must be added to")),

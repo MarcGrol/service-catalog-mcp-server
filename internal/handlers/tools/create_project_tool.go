@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
-// NewCreateProjectTool returns the MCP tool definition and its handler implementation together.
-func NewCreateProjectTool(store mystore.Store[model.Project]) Tool {
-	return Tool{
-		Contract: mcp.NewTool(
+// NewCreateProjectTool returns the MCP tool definition and its handler impleme server.ServerTool ntation together.
+func NewCreateProjectTool(store mystore.Store[model.Project]) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool(
 			"create_project",
 			mcp.WithDescription("Create a new project configuration"),
 			mcp.WithString("name", mcp.Required(), mcp.Description("Project name")),

@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 // NewDocsResource returns the MCP resource contract and handler for documentation.
-func NewDocsResource() Resource {
-	return Resource{
-		Contract: mcp.NewResource(
+func NewDocsResource() server.ServerResource {
+	return server.ServerResource{
+		Resource: mcp.NewResource(
 			"docs://readme",
 			"Project documentation and README",
 			mcp.WithMIMEType("text/markdown"),

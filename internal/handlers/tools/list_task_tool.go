@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewListTaskTool returns the MCP tool definition and its handler for listing tasks.
-func NewListTaskTool(store mystore.Store[model.Project]) Tool {
-	return Tool{
-		Contract: mcp.NewTool(
+func NewListTaskTool(store mystore.Store[model.Project]) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool(
 			"list_tasks",
 			mcp.WithDescription("Lists all tasks or all tasks of a project"),
 			mcp.WithString("project_name", mcp.Description("Project that we want to list the tasks of")),

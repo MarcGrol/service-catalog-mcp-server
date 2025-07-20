@@ -31,54 +31,37 @@ func (p *ProjectService) Initialize(ctx context.Context) error {
 		return err
 	}
 
-	p.setupTools()
-
-	p.setupResources()
-
-	p.setupPrompts()
+	p.register()
 
 	return nil
 }
 
-func (p *ProjectService) setupTools() {
-	// Project management tool
-	p.server.AddTool(tools.NewListProjectTool(p.store).Attrs())
-	p.server.AddTool(tools.NewCreateProjectTool(p.store).Attrs())
-	p.server.AddTool(tools.NewListTaskTool(p.store).Attrs())
-	p.server.AddTool(tools.NewCreateTaskTool(p.store).Attrs())
+func (p *ProjectService) register() {
+	p.server.AddTools(
+		tools.NewListProjectTool(p.store),
+		tools.NewCreateProjectTool(p.store),
+		tools.NewListTaskTool(p.store),
+		tools.NewCreateTaskTool(p.store),
+		tools.NewSearchContentTool(p.store),
+		tools.NewGenerateAnalyticsTool(p.store),
+	)
 
-	// Search tool
-	p.server.AddTool(tools.NewSearchContentTool(p.store).Attrs())
+	p.server.AddResources(
+		resources.NewProjectListResource(p.store),
+		resources.NewTasksListResource(p.store),
+		resources.NewStatsResource(p.store),
+		resources.NewDocsResource(),
+	)
 
-	// Analytics tool
-	p.server.AddTool(tools.NewGenerateAnalyticsTool(p.store).Attrs())
-}
-
-func (p *ProjectService) setupResources() {
-	// Project management resource
-	p.server.AddResource(resources.NewProjectListResource(p.store).Attrs())
-	p.server.AddResource(resources.NewTasksListResource(p.store).Attrs())
-
-	// Project statistics resource
-	p.server.AddResource(resources.NewStatsResource(p.store).Attrs())
-
-	// Documentation resource
-	p.server.AddResource(resources.NewDocsResource().Attrs())
-}
-
-func (p *ProjectService) setupPrompts() {
-	// Project planning prompt
-	p.server.AddPrompt(prompts.NewPlanningPrompt().Attrs())
-
-	// Code review prompt
-	p.server.AddPrompt(prompts.NewReviewPrompt().Attrs())
-
-	// Sprint planning prompt
-	p.server.AddPrompt(prompts.NewSprintPrompt().Attrs())
+	p.server.AddPrompts(
+		prompts.NewPlanningPrompt(),
+		prompts.NewReviewPrompt(),
+		prompts.NewSprintPrompt(),
+	)
 }
 
 func (p *ProjectService) preprovision(c context.Context) error {
-	// Start with one sample project
+	// Start with one sample project as example
 
 	name := "Sample Project"
 

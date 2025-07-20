@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // NewProjectConfigResourceAndHandler returns the MCP resource contract and handler for project configuration.
-func NewProjectListResource(store mystore.Store[model.Project]) Resource {
-	return Resource{
-		Contract: mcp.NewResource(
+func NewProjectListResource(store mystore.Store[model.Project]) server.ServerResource {
+	return server.ServerResource{
+		Resource: mcp.NewResource(
 			"project://config",
 			"Current project configuration",
 			mcp.WithMIMEType("application/json"),

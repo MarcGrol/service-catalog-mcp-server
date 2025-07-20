@@ -6,12 +6,13 @@ import (
 	"strconv"
 
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/mark3labs/mcp-go/server"
 )
 
 // NewSprintPrompt returns the MCP prompt contract and handler for sprint planning.
-func NewSprintPrompt() Prompt {
-	return Prompt{
-		Contract: mcp.NewPrompt(
+func NewSprintPrompt() server.ServerPrompt {
+	return server.ServerPrompt{
+		Prompt: mcp.NewPrompt(
 			"sprint_planning",
 			mcp.WithPromptDescription("Assist with agile sprint planning and task breakdown"),
 			mcp.WithArgument("sprint_length", mcp.ArgumentDescription("Sprint length in days")),
