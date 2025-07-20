@@ -7,7 +7,6 @@ import (
 
 	"github.com/MarcGrol/learnmcp/internal/config"
 	"github.com/MarcGrol/learnmcp/internal/model"
-
 	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/MarcGrol/learnmcp/internal/project"
 	"github.com/MarcGrol/learnmcp/internal/transport"

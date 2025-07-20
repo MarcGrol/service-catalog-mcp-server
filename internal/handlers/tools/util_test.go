@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/learnmcp/internal/model"
-	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/MarcGrol/learnmcp/internal/model"
+	"github.com/MarcGrol/learnmcp/internal/mystore"
 )
 
 func createRequest(name string, args map[string]interface{}) mcp.CallToolRequest {

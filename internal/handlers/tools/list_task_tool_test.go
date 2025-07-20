@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/learnmcp/internal/model"
-	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
+
+	"github.com/MarcGrol/learnmcp/internal/model"
+	"github.com/MarcGrol/learnmcp/internal/mystore"
 )
 
 func TestListTaskToolAndHandler_StoreError(t *testing.T) {
