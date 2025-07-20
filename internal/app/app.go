@@ -7,8 +7,6 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/learnmcp/internal/config"
-	"github.com/MarcGrol/learnmcp/internal/model"
-	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/MarcGrol/learnmcp/internal/project"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
@@ -41,14 +39,15 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 
 	//simple.SetupSimpleTools(a.mcpServer)
 
-	projectStore, projectStoreCleanup, err := mystore.New[model.Project](ctx)
-	if err != nil {
-		return nil, err
-	}
-	{
-		a.projectService = project.New(a.mcpServer, projectStore)
-		a.projectService.Initialize(ctx)
-	}
+	// projectStore, projectStoreCleanup, err := mystore.New[model.Project](ctx)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// {
+	// 	a.projectService = project.New(a.mcpServer, projectStore)
+	// 	a.projectService.Initialize(ctx)
+	// }
+	fakeCleanup := func() {}
 
 	{
 		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
@@ -62,7 +61,7 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 
 	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL)
 
-	return projectStoreCleanup, nil
+	return fakeCleanup, nil
 }
 
 func (a *Application) Run() error {

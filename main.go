@@ -22,7 +22,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error initializing application: %v", err)
 	}
-	defer cleanup()
+	if cleanup != nil {
+		defer cleanup()
+	}
 
 	if err := application.Run(); err != nil {
 		log.Fatalf("Error running application: %v", err)
