@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/MarcGrol/learnmcp/internal/model"
-	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
+
+	"github.com/MarcGrol/learnmcp/internal/model"
+	"github.com/MarcGrol/learnmcp/internal/mystore"
 )
 
 // NewStatsResource returns the MCP resource contract and handler for project statistics.

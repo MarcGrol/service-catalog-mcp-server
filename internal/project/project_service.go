@@ -6,11 +6,11 @@ import (
 
 	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/learnmcp/internal/handlers/prompts"
-	"github.com/MarcGrol/learnmcp/internal/handlers/resources"
-	"github.com/MarcGrol/learnmcp/internal/handlers/tools"
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
+	"github.com/MarcGrol/learnmcp/internal/project/handlers/prompts"
+	"github.com/MarcGrol/learnmcp/internal/project/handlers/resources"
+	"github.com/MarcGrol/learnmcp/internal/project/handlers/tools"
 )
 
 type ProjectService struct {

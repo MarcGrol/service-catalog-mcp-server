@@ -9,6 +9,8 @@ import (
 	"github.com/MarcGrol/learnmcp/internal/model"
 	"github.com/MarcGrol/learnmcp/internal/mystore"
 	"github.com/MarcGrol/learnmcp/internal/project"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/learnmcp/internal/transport"
 )
 
@@ -16,6 +18,7 @@ type Application struct {
 	config          config.Config
 	mcpServer       *server.MCPServer
 	projectService  *project.ProjectService
+	serviceCatalog  *servicecatalog.ServiceCatalog
 	serverTransport transport.ServerTransport
 }
 
@@ -39,9 +42,16 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 	if err != nil {
 		return nil, err
 	}
+	{
+		a.projectService = project.New(a.mcpServer, projectStore)
+		a.projectService.Initialize(ctx)
+	}
 
-	a.projectService = project.New(a.mcpServer, projectStore)
-	a.projectService.Initialize(ctx)
+	{
+		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
+		a.serviceCatalog = servicecatalog.New(a.mcpServer, catalogRepo)
+		a.serviceCatalog.Initialize(ctx)
+	}
 
 	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL)
 
