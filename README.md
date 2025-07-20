@@ -2,7 +2,7 @@
 
 ## 1. Build and Prepare Your Server
  
-First, build your advanced MCP server
+First, build your MCP server specialized in project management
 
     go install ./...
 
