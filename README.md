@@ -131,9 +131,13 @@ heck the Developer tab in settings to see if your server connected
 Watch for these behaviors in Claude Desktop:
 
 ✅ **Tool Calls**: Claude will show "Using tool: create_project" before executing
+
 ✅ **Resource Access**: Claude will read resources automatically for context  
+
 ✅ **Prompt Usage**: Claude will use prompts to generate better responses
+
 ✅ **Error Handling**: See how Claude handles invalid parameters
+
 ✅ **Data Flow**: Notice how tools create data that resources then expose
 
 ## 6. Advanced Exploration
