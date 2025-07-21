@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/MarcGrol/learnmcp/internal/constants"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -276,7 +277,7 @@ func TestListTeams(t *testing.T) {
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := New("/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
+	repo := New(constants.DatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/MarcGrol/learnmcp/internal/constants"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
 	"github.com/mark3labs/mcp-go/mcp"
@@ -13,7 +14,7 @@ import (
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := catalogrepo.New("/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
+	repo := catalogrepo.New(constants.DatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {

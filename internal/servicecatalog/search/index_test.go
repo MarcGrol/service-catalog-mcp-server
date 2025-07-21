@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/MarcGrol/learnmcp/internal/constants"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 )
 
@@ -52,7 +53,7 @@ func TestSearchIndex_Search(t *testing.T) {
 func setup(t *testing.T) (catalogrepo.Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := catalogrepo.New("/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
+	repo := catalogrepo.New(constants.DatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {
