@@ -30,7 +30,7 @@ func (p *ServiceCatalog) Initialize(ctx context.Context) error {
 func (p *ServiceCatalog) register() {
 	p.server.AddTools(
 		handlers.NewListModulesTool(p.repo),
-		handlers.NewLGetSingleModuleTool(p.repo),
+		handlers.NewGetSingleModuleTool(p.repo),
 		handlers.NewListInterfacesTool(p.repo),
 		handlers.NewLGetSingleInterfaceTool(p.repo),
 		handlers.NewListModulesOfTeamsTool(p.repo),

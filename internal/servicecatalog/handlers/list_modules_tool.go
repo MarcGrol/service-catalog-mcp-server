@@ -17,12 +17,19 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 		Tool: mcp.NewTool(
 			"list_modules",
 			mcp.WithDescription("Lists all modules in the catalog."),
+			mcp.WithString("filter_keyword", mcp.Description("The keyword to filter modules by.")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			modules, err := repo.ListModules(ctx)
+			var err error
+			modules := []catalogrepo.Module{}
+
+			keyword := request.GetString("module_id", "")
+
+			modules, err = repo.ListModules(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultErrorFromErr("Error listing modules", err), nil
 			}
+
 			results := []string{}
 			for _, mod := range modules {
 				results = append(results, fmt.Sprintf("%s: %s", mod.Name, mod.Description))

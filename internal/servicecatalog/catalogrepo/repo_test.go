@@ -17,9 +17,21 @@ func TestIt(t *testing.T) {
 	}
 	defer repo.Close(ctx)
 
+	{
+		keyword := "kyc"
+		fmt.Printf("List modules with keyword %s:\n", keyword)
+		modules, err := repo.ListModules(ctx, keyword)
+		if err != nil {
+			log.Fatalf("select error: %s", err)
+		}
+		for _, m := range modules {
+			fmt.Printf("%+v\n", m)
+		}
+	}
+
 	if false {
 		{
-			modules, err := repo.ListModules(ctx)
+			modules, err := repo.ListModules(ctx, "")
 			if err != nil {
 				log.Fatalf("select error: %s", err)
 			}
@@ -27,7 +39,6 @@ func TestIt(t *testing.T) {
 				fmt.Printf("%+v\n", m)
 			}
 		}
-
 		{
 			interfaces, err := repo.ListInterfaces(ctx)
 			if err != nil {
@@ -37,24 +48,22 @@ func TestIt(t *testing.T) {
 				fmt.Printf("%+v\n", m)
 			}
 		}
-	}
 
-	{
-		interfaceID := "psp"
-		fmt.Printf("Details of module %s:\n", interfaceID)
+		{
+			interfaceID := "psp"
+			fmt.Printf("Details of module %s:\n", interfaceID)
 
-		module, exists, err := repo.GetModuleOnID(ctx, interfaceID)
-		if err != nil {
-			log.Fatalf("get error: %s", err)
+			module, exists, err := repo.GetModuleOnID(ctx, interfaceID)
+			if err != nil {
+				log.Fatalf("get error: %s", err)
+			}
+			if !exists {
+				log.Fatalf("module not exists")
+			}
+			asJson, _ := json.MarshalIndent(module, "", "  ")
+			fmt.Printf("%s\n", asJson)
 		}
-		if !exists {
-			log.Fatalf("module not exists")
-		}
-		asJson, _ := json.MarshalIndent(module, "", "  ")
-		fmt.Printf("%s\n", asJson)
-	}
 
-	if false {
 		{
 			interfaceID := "com.adyen.services.acm.AcmService"
 			fmt.Printf("Details of interface %s:\n", interfaceID)

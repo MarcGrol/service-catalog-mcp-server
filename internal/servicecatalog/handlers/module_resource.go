@@ -20,7 +20,7 @@ func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
 			mcp.WithMIMEType("application/json"),
 		),
 		Handler: func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
-			modules, err := repo.ListModules(ctx)
+			modules, err := repo.ListModules(ctx, "")
 			if err != nil {
 				return nil, fmt.Errorf("error listing modules: %s", err)
 			}

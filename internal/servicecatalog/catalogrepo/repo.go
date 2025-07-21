@@ -50,20 +50,31 @@ func (repo *CatalogRepo) Close(ctx context.Context) error {
 	return repo.db.Close()
 }
 
-func (repo *CatalogRepo) ListModules(ctx context.Context) ([]Module, error) {
+func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Module, error) {
 	if repo.db == nil {
 		return nil, fmt.Errorf("database not yet opened")
 	}
 
+	var err error
 	modules := []Module{}
-	err := repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC")
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return modules, nil
+	if keyword == "" {
+		// This must use module and fails with enriched_module. Don't know why.
+		// Currently returns about 2500 entries. Acceptable for now.
+		err = repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC")
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return modules, nil
+			}
+			return nil, fmt.Errorf("select error: %s", err)
 		}
-		return nil, fmt.Errorf("select error: %s", err)
+	} else {
+		err = repo.db.Select(&modules, "SELECT * FROM module WHERE module_id LIKE $1 ORDER BY line_count DESC", "%"+keyword+"%")
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return modules, nil
+			}
+		}
 	}
-
 	return modules, nil
 }
 

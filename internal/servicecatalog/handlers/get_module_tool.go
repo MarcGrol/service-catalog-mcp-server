@@ -12,7 +12,7 @@ import (
 )
 
 // NewListInterfacesTool returns the MCP tool definition and its handler for listing interfaces.
-func NewLGetSingleModuleTool(repo catalogrepo.Cataloger) server.ServerTool {
+func NewGetSingleModuleTool(repo catalogrepo.Cataloger) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"get_module",
