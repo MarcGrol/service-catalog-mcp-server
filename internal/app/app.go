@@ -31,13 +31,13 @@ func New(cfg config.Config) *Application {
 func (a *Application) Initialize(ctx context.Context) (func(), error) {
 	// Create a new MCP server
 	a.mcpServer = server.NewMCPServer(
-		"Marc's MCP Server", // Server name
-		"1.0.0",             // Version
+		"Marc's MCP Server",
+		"1.0.0",
 		server.WithResourceCapabilities(true, true),
 		server.WithPromptCapabilities(true),
 		server.WithToolCapabilities(true),
 		server.WithLogging(),
-		server.WithHooks(hooks()))
+		server.WithHooks(loggingHooks()))
 
 	{
 		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
@@ -64,19 +64,45 @@ func (a *Application) Run() error {
 	return nil
 }
 
-func hooks() *server.Hooks {
+func loggingHooks() *server.Hooks {
 	return &server.Hooks{
 		OnBeforeCallTool: []server.OnBeforeCallToolFunc{
 			func(ctx context.Context, id any, req *mcp.CallToolRequest) {
-				name := req.Params.Name
-				args := req.Params.Arguments
-				log.Info().Any("request_id", id).Str("name", name).Any("args", args).Send()
+				log.Info().
+					Str("method", "tool").
+					Any("request_id", id).
+					Str("name", req.Params.Name).
+					Any("args", req.Params.Arguments).
+					Send()
 			},
 		},
 		OnAfterCallTool: []server.OnAfterCallToolFunc{
-			func(ctx context.Context, id any, message *mcp.CallToolRequest, result *mcp.CallToolResult) {
-				success := !result.IsError
-				log.Info().Any("request_id", id).Bool("success", success).Send()
+			func(ctx context.Context, id any, req *mcp.CallToolRequest, resp *mcp.CallToolResult) {
+				log.Info().
+					Str("method", "tool").
+					Any("request_id", id).
+					Str("name", req.Params.Name).
+					Any("args", req.Params.Arguments).
+					Bool("success", !resp.IsError).Send()
+			},
+		},
+		OnBeforeReadResource: []server.OnBeforeReadResourceFunc{
+			func(ctx context.Context, id any, req *mcp.ReadResourceRequest) {
+				log.Info().Str("method", "resource").
+					Any("request_id", id).
+					Str("method", req.Request.Method).
+					Any("args", req.Params.Arguments).
+					Send()
+			},
+		},
+		OnAfterReadResource: []server.OnAfterReadResourceFunc{
+			func(ctx context.Context, id any, req *mcp.ReadResourceRequest, resp *mcp.ReadResourceResult) {
+				log.Info().
+					Str("method", "resource").
+					Any("request_id", id).
+					Str("method", req.Request.Method).
+					Any("args", req.Params.Arguments).
+					Send()
 			},
 		},
 	}
