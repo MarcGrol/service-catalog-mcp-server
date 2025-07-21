@@ -2,7 +2,6 @@ package mystore
 
 import (
 	"context"
-	"log"
 	"strings"
 	"sync"
 )
@@ -28,7 +27,6 @@ func (s *InMemoryStore[T]) RunInTransaction(c context.Context, f func(c context.
 	ctx := context.WithValue(c, ctxTransactionKey{}, true)
 
 	// Within this block everything is transactional
-	log.Printf("Func %p with context %p", f, ctx)
 	err := f(ctx)
 	if err != nil {
 		// Rollback: lock is released by defer

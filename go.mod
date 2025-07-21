@@ -6,6 +6,7 @@ require (
 	github.com/glebarez/go-sqlite v1.22.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/mark3labs/mcp-go v0.34.0
+	github.com/rs/zerolog v1.34.0
 	github.com/sahilm/fuzzy v0.1.1
 	github.com/samber/lo v1.51.0
 	github.com/stretchr/testify v1.10.0
@@ -18,6 +19,7 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-sqlite3 v1.14.28 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

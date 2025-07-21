@@ -25,7 +25,7 @@ func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search.Index) server
 			moduleID, err := request.RequireString("module_id")
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InvalidInput("Missing module_id",
+					resp.InvalidInput(ctx, "Missing module_id",
 						"module_id",
 						"Use a valid module identifier")), nil
 			}
@@ -34,19 +34,19 @@ func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search.Index) server
 			module, exists, err := repo.GetModuleOnID(ctx, moduleID)
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InternalError(
+					resp.InternalError(ctx,
 						fmt.Sprintf("error getting module %s: %s", moduleID, err))), nil
 			}
 			if !exists {
 				return mcp.NewToolResultError(
-					resp.NotFound(
+					resp.NotFound(ctx,
 						fmt.Sprintf("Module with ID %s not found", moduleID),
 						"interface_id",
 						idx.Search(ctx, moduleID).Modules,
 					)), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(module)), nil
+			return mcp.NewToolResultText(resp.Success(ctx, module)), nil
 		},
 	}
 }

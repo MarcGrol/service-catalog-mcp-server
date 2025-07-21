@@ -25,7 +25,7 @@ func NewLGetSingleInterfaceTool(repo catalogrepo.Cataloger, idx search.Index) se
 			interfaceID, err := request.RequireString("interface_id")
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InvalidInput("Missing interface_id",
+					resp.InvalidInput(ctx, "Missing interface_id",
 						"interface_id",
 						"Use a valid interface identifier")), nil
 			}
@@ -34,19 +34,19 @@ func NewLGetSingleInterfaceTool(repo catalogrepo.Cataloger, idx search.Index) se
 			iface, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InternalError(
+					resp.InternalError(ctx,
 						fmt.Sprintf("error getting interface %s: %s", interfaceID, err))), nil
 			}
 			if !exists {
 				return mcp.NewToolResultError(
-					resp.NotFound(
+					resp.NotFound(ctx,
 						fmt.Sprintf("Interface with ID %s not found", interfaceID),
 						"interface_id",
 						idx.Search(ctx, interfaceID).Interfaces,
 					)), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(iface)), nil
+			return mcp.NewToolResultText(resp.Success(ctx, iface)), nil
 		},
 	}
 }

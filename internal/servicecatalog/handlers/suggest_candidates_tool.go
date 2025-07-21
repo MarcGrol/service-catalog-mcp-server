@@ -22,7 +22,7 @@ func NewSuggestCandidatesTool(index search.Index) server.ServerTool {
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			keyword, err := request.RequireString("keyword")
 			if err != nil {
-				resp.InvalidInput("Missing keyword",
+				resp.InvalidInput(ctx, "Missing keyword",
 					"keyword",
 					"Use a valid keyword")
 			}
@@ -31,11 +31,11 @@ func NewSuggestCandidatesTool(index search.Index) server.ServerTool {
 			searchResult := index.Search(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InternalError(
+					resp.InternalError(ctx,
 						fmt.Sprintf("error searching for candidates like %s: %s", keyword, err))), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(searchResult)), nil
+			return mcp.NewToolResultText(resp.Success(ctx, searchResult)), nil
 		},
 	}
 }

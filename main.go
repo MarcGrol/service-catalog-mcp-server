@@ -2,15 +2,17 @@ package main
 
 import (
 	"context"
-	"log"
+	"time"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/learnmcp/internal/app"
 	"github.com/MarcGrol/learnmcp/internal/config"
 )
 
 func main() {
-	// Set log flags for more detailed output
-	log.SetFlags(log.LstdFlags | log.Lshortfile | log.Lmicroseconds)
+	zerolog.TimeFieldFormat = time.RFC3339
 
 	ctx := context.Background()
 
@@ -20,13 +22,13 @@ func main() {
 
 	cleanup, err := application.Initialize(ctx)
 	if err != nil {
-		log.Fatalf("Error initializing application: %v", err)
+		log.Fatal().Msgf("Error initializing application: %v", err)
 	}
 	if cleanup != nil {
 		defer cleanup()
 	}
 
 	if err := application.Run(); err != nil {
-		log.Fatalf("Error running application: %v", err)
+		log.Fatal().Msgf("Error running application: %v", err)
 	}
 }

@@ -27,7 +27,7 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			modules, err := repo.ListModules(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InternalError(
+					resp.InternalError(ctx,
 						fmt.Sprintf("error listing modules with keyword %s: %s", keyword, err))), nil
 			}
 
@@ -39,7 +39,7 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 					Description: mod.Description,
 				})
 			}
-			return mcp.NewToolResultText(resp.Success(results)), nil
+			return mcp.NewToolResultText(resp.Success(ctx, results)), nil
 		},
 	}
 }

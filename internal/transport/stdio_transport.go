@@ -1,9 +1,8 @@
 package transport
 
 import (
-	"log"
-
 	"github.com/mark3labs/mcp-go/server"
+	"github.com/rs/zerolog/log"
 )
 
 type StdioTransport struct {
@@ -17,6 +16,6 @@ func NewStdioTransport(s *server.MCPServer) *StdioTransport {
 }
 
 func (t *StdioTransport) Start() error {
-	log.Println("Starting MCP server with stdio transport...")
+	log.Info().Msgf("Starting MCP server with stdio transport...")
 	return server.ServeStdio(t.mcpServer)
 }

@@ -30,7 +30,7 @@ func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
 				mcp.TextResourceContents{
 					URI:      request.Params.URI,
 					MIMEType: "application/json",
-					Text:     resp.Success(modules),
+					Text:     resp.Success(ctx, modules),
 				},
 			}, nil
 		},

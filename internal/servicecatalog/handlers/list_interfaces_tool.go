@@ -22,8 +22,9 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			// call business logic
 			interfaces, err := repo.ListInterfaces(ctx)
 			if err != nil {
-				return mcp.NewToolResultError(resp.InternalError(
-					fmt.Sprintf("error listing interfaces: %s", err))), nil
+				return mcp.NewToolResultError(
+					resp.InternalError(ctx,
+						fmt.Sprintf("error listing interfaces with keyword: %s", err))), nil
 			}
 
 			results := []interfaceDescriptor{}
@@ -34,7 +35,7 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 					Kind:        i.Kind,
 				})
 			}
-			return mcp.NewToolResultText(resp.Success(results)), nil
+			return mcp.NewToolResultText(resp.Success(ctx, results)), nil
 		},
 	}
 }

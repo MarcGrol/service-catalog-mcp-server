@@ -1,16 +1,17 @@
 package resp
 
 import (
+	"context"
 	"encoding/json"
 )
 
 type mcpStatus string
 
 const (
-	statusSuccess      mcpStatus = "success"
-	statusError        mcpStatus = "error"
-	statusNotFound     mcpStatus = "not_found"
-	statusInvalidInput mcpStatus = "invalid_innput"
+	statusSuccess       mcpStatus = "success"
+	statusInternalError mcpStatus = "error"
+	statusNotFound      mcpStatus = "not_found"
+	statusInvalidInput  mcpStatus = "invalid_innput"
 )
 
 type mcpSuccessResponse struct {
@@ -31,16 +32,17 @@ type mcpErrorDetails struct {
 	Details               string `json:"details,omitempty"`
 }
 
-func Success(data interface{}) string {
+func Success(ctx context.Context, data interface{}) string {
 	resp := mcpSuccessResponse{
 		Status: statusSuccess,
 		Data:   data,
 	}
 	jsonResp, _ := json.MarshalIndent(resp, "", "  ")
+
 	return string(jsonResp)
 }
 
-func InvalidInput(msg string, invalidOrMissimgField string, hint string) string {
+func InvalidInput(ctx context.Context, msg string, invalidOrMissimgField string, hint string) string {
 	resp := mcpErrorResponse{
 		Status: statusInvalidInput,
 		Error: mcpErrorDetails{
@@ -50,10 +52,11 @@ func InvalidInput(msg string, invalidOrMissimgField string, hint string) string 
 		},
 	}
 	jsonResp, _ := json.MarshalIndent(resp, "", "  ")
+
 	return string(jsonResp)
 }
 
-func NotFound(msg string, fieldName string, suggestions []string) string {
+func NotFound(ctx context.Context, msg string, fieldName string, suggestions []string) string {
 	resp := mcpErrorResponse{
 		Status: statusNotFound,
 		Error: mcpErrorDetails{
@@ -64,17 +67,19 @@ func NotFound(msg string, fieldName string, suggestions []string) string {
 		},
 	}
 	jsonResp, _ := json.MarshalIndent(resp, "", "  ")
+
 	return string(jsonResp)
 }
 
-func InternalError(msg string) string {
+func InternalError(ctx context.Context, msg string) string {
 	resp := mcpErrorResponse{
-		Status: statusError,
+		Status: statusInternalError,
 		Error: mcpErrorDetails{
 			Message: "Internal server error",
 			Details: msg,
 		},
 	}
 	jsonResp, _ := json.MarshalIndent(resp, "", "  ")
+
 	return string(jsonResp)
 }

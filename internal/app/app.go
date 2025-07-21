@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
+	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/learnmcp/internal/config"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog"
@@ -34,7 +36,8 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		server.WithResourceCapabilities(true, true),
 		server.WithPromptCapabilities(true),
 		server.WithToolCapabilities(true),
-		server.WithLogging())
+		server.WithLogging(),
+		server.WithHooks(hooks()))
 
 	{
 		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
@@ -59,4 +62,22 @@ func (a *Application) Run() error {
 		return err
 	}
 	return nil
+}
+
+func hooks() *server.Hooks {
+	return &server.Hooks{
+		OnBeforeCallTool: []server.OnBeforeCallToolFunc{
+			func(ctx context.Context, id any, req *mcp.CallToolRequest) {
+				name := req.Params.Name
+				args := req.Params.Arguments
+				log.Info().Any("request_id", id).Str("name", name).Any("args", args).Send()
+			},
+		},
+		OnAfterCallTool: []server.OnAfterCallToolFunc{
+			func(ctx context.Context, id any, message *mcp.CallToolRequest, result *mcp.CallToolResult) {
+				success := !result.IsError
+				log.Info().Any("request_id", id).Bool("success", success).Send()
+			},
+		},
+	}
 }

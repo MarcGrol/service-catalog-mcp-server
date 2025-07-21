@@ -2,7 +2,8 @@ package transport
 
 import (
 	"fmt"
-	"log"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/mark3labs/mcp-go/server"
 )
@@ -28,9 +29,9 @@ func (t *SSETransport) Start() error {
 		server.WithBaseURL(fullBaseURL),
 	)
 
-	log.Printf("Starting MCP server with SSE transport on %s", fullBaseURL)
-	log.Printf("SSE endpoint: %s/sse", fullBaseURL)
-	log.Printf("Message endpoint: %s/message", fullBaseURL)
+	log.Info().Msgf("Starting MCP server with SSE transport on %s", fullBaseURL)
+	log.Info().Msgf("SSE endpoint: %s/sse", fullBaseURL)
+	log.Info().Msgf("Message endpoint: %s/message", fullBaseURL)
 
 	if err := sseServer.Start(":" + t.port); err != nil {
 		return err

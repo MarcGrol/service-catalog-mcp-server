@@ -1,7 +1,7 @@
 package transport
 
 import (
-	"log"
+	"github.com/rs/zerolog/log"
 
 	"github.com/mark3labs/mcp-go/server"
 )
@@ -22,9 +22,9 @@ func (t *StreamableHTTPTransport) Start() error {
 	streamableServer := server.NewStreamableHTTPServer(t.mcpServer,
 		server.WithStateLess(true),
 	)
-	log.Printf("Starting MCP server with Streamable HTTP transport on :%s", t.port)
-	log.Printf("HTTP endpoint: http://localhost:%s/mcp (direct JSON-RPC calls)", t.port)
-	log.Println("Test with: curl -X POST http://localhost:" + t.port + "/mcp -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}'")
+	log.Info().Msgf("Starting MCP server with Streamable HTTP transport on :%s", t.port)
+	log.Info().Msgf("HTTP endpoint: http://localhost:%s/mcp (direct JSON-RPC calls)", t.port)
+	log.Info().Msg("Test with: curl -X POST http://localhost:" + t.port + "/mcp -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}'")
 
 	if err := streamableServer.Start(":" + t.port); err != nil {
 		return err

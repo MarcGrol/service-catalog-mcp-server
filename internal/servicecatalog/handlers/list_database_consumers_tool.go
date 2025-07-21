@@ -25,7 +25,7 @@ func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 			databaseID, err := request.RequireString("database_id")
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InvalidInput("Missing database_id",
+					resp.InvalidInput(ctx, "Missing database_id",
 						"database_id",
 						"Use a valid database identifier")), nil
 			}
@@ -33,19 +33,19 @@ func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 			// call business logic
 			moduleNames, exists, err := repo.ListDatabaseConsumers(ctx, databaseID)
 			if err != nil {
-				return mcp.NewToolResultError(resp.InternalError(
+				return mcp.NewToolResultError(resp.InternalError(ctx,
 					fmt.Sprintf("error getting database %s: %s", databaseID, err))), nil
 			}
 			if !exists {
 				return mcp.NewToolResultError(
-					resp.NotFound(
+					resp.NotFound(ctx,
 						fmt.Sprintf("Module with ID %s not found", databaseID),
 						"database_id",
 						idx.Search(ctx, databaseID).Databases,
 					)), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(moduleNames)), nil
+			return mcp.NewToolResultText(resp.Success(ctx, moduleNames)), nil
 		},
 	}
 }
