@@ -3,11 +3,11 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"github.com/MarcGrol/learnmcp/internal/resp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 )
 
@@ -20,23 +20,24 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			mcp.WithString("filter_keyword", mcp.Description("The keyword to filter modules by.")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			var err error
-			modules := []catalogrepo.Module{}
-
+			// extract params
 			keyword := request.GetString("module_id", "")
 
+			// call business logic
+			var err error
+			modules := []catalogrepo.Module{}
 			modules, err = repo.ListModules(ctx, keyword)
 			if err != nil {
-				return mcp.NewToolResultErrorFromErr("Error listing modules", err), nil
+				return mcp.NewToolResultError(
+					resp.InternalError(
+						fmt.Sprintf("error listing modules with keyword %s: %s", keyword, err))), nil
 			}
 
 			results := []string{}
 			for _, mod := range modules {
 				results = append(results, fmt.Sprintf("%s: %s", mod.Name, mod.Description))
 			}
-			result := fmt.Sprintf("Found %d modules:\n%s\n",
-				len(results), strings.Join(results, "\n"))
-			return mcp.NewToolResultText(result), nil
+			return mcp.NewToolResultText(resp.Success(results)), nil
 		},
 	}
 }

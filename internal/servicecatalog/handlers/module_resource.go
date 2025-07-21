@@ -20,10 +20,13 @@ func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
 			mcp.WithMIMEType("application/json"),
 		),
 		Handler: func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
+			// call business logic
 			modules, err := repo.ListModules(ctx, "")
 			if err != nil {
 				return nil, fmt.Errorf("error listing modules: %s", err)
 			}
+
+			// return result
 			modulesJson, err := json.MarshalIndent(
 				map[string]interface{}{
 					"total_modules": len(modules),
@@ -32,6 +35,7 @@ func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
 			if err != nil {
 				return nil, err
 			}
+
 			return []mcp.ResourceContents{
 				mcp.TextResourceContents{
 					URI:      request.Params.URI,

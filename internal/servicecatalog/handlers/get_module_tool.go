@@ -6,13 +6,14 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
-	"gopkg.in/yaml.v3"
 
+	"github.com/MarcGrol/learnmcp/internal/resp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
 )
 
-// NewListInterfacesTool returns the MCP tool definition and its handler for listing interfaces.
-func NewGetSingleModuleTool(repo catalogrepo.Cataloger) server.ServerTool {
+// NewGetSingleModuleTool returns the MCP tool definition and its handler for listing interfaces.
+func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search_index.SearchIndex) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"get_module",
@@ -20,25 +21,32 @@ func NewGetSingleModuleTool(repo catalogrepo.Cataloger) server.ServerTool {
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("The ID of the module to get details for")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			// extract params
 			moduleID, err := request.RequireString("module_id")
 			if err != nil {
-				return mcp.NewToolResultError("Missing module_id"), nil
-			}
-			module, exists, err := repo.GetModuleOnID(ctx, moduleID)
-			if err != nil {
-				return mcp.NewToolResultErrorFromErr("Error getting module", err), nil
-			}
-			if !exists {
-				return mcp.NewToolResultError("Module with given ID not found"), nil
+				return mcp.NewToolResultError(
+					resp.InvalidInput("Missing module_id",
+						"module_id",
+						"Use a valid module identifier")), nil
 			}
 
-			readableResult, err := yaml.Marshal(module)
+			// call business logic
+			module, exists, err := repo.GetModuleOnID(ctx, moduleID)
 			if err != nil {
-				return mcp.NewToolResultErrorFromErr("Error serializing module to yaml", err), nil
+				return mcp.NewToolResultError(
+					resp.InternalError(
+						fmt.Sprintf("error getting module %s: %s", moduleID, err))), nil
 			}
-			result := fmt.Sprintf("Found interface %s\n\n: %s",
-				module.ModuleID, readableResult)
-			return mcp.NewToolResultText(result), nil
+			if !exists {
+				return mcp.NewToolResultError(
+					resp.NotFound(
+						fmt.Sprintf("Module with ID %s not found", moduleID),
+						"interface_id",
+						idx.Search(ctx, moduleID).Modules,
+					)), nil
+			}
+			
+			return mcp.NewToolResultText(resp.Success(module)), nil
 		},
 	}
 }

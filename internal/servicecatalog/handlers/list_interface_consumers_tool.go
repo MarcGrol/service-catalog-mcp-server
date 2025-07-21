@@ -3,16 +3,17 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"github.com/MarcGrol/learnmcp/internal/resp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
 )
 
-// NewListInterfacesTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListInterfaceConsumersTool(repo catalogrepo.Cataloger) server.ServerTool {
+// NewListInterfaceConsumersTool returns the MCP tool definition and its handler for listing interfaces.
+func NewListInterfaceConsumersTool(repo catalogrepo.Cataloger, idx search_index.SearchIndex) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_interface_consumers",
@@ -20,20 +21,32 @@ func NewListInterfaceConsumersTool(repo catalogrepo.Cataloger) server.ServerTool
 			mcp.WithString("interface_id", mcp.Required(), mcp.Description("The ID of the interface (=web-api) to list modules for")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			// extract params
 			interfaceID, err := request.RequireString("interface_id")
 			if err != nil {
-				return mcp.NewToolResultError("Missing interface_id"), nil
-			}
-			moduleNames, exists, err := repo.ListInterfaceConsumers(ctx, interfaceID)
-			if err != nil {
-				return mcp.NewToolResultErrorFromErr("Error listing modules of interface", err), nil
-			}
-			if !exists {
-				return mcp.NewToolResultError("Interface with given ID not found"), nil
+				return mcp.NewToolResultError(resp.InvalidInput("Missing interface_id",
+					"interface_id",
+					"Use a valid interface identifier")), nil
 			}
 
-			result := fmt.Sprintf("Found %d modules for interface %s:\n\n%s", len(moduleNames), interfaceID, strings.Join(moduleNames, "\n"))
-			return mcp.NewToolResultText(result), nil
+			// call business logic
+			moduleNames, exists, err := repo.ListInterfaceConsumers(ctx, interfaceID)
+			if err != nil {
+				return mcp.NewToolResultError(
+					resp.InternalError(
+						fmt.Sprintf("error listing consumers of interface %s: %s", interfaceID, err))), nil
+			}
+			if !exists {
+				return mcp.NewToolResultError(
+					resp.NotFound(
+						fmt.Sprintf("Interface with ID %s not found", interfaceID),
+						"interface_id",
+						idx.Search(ctx, interfaceID).Interfaces,
+					)), nil
+			}
+
+			// return result
+			return mcp.NewToolResultText(resp.Success(moduleNames)), nil
 		},
 	}
 }

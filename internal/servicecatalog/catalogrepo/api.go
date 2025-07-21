@@ -8,12 +8,14 @@ import (
 
 type Cataloger interface {
 	Open(ctx context.Context) error
-	Close(tx context.Context) error
+	Close(ctx context.Context) error
+	ListDatabases(ctx context.Context) ([]string, error)
+	ListTeams(ctx context.Context) ([]string, error)
 	ListModules(ctx context.Context, keyword string) ([]Module, error)
+	ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error)
 	GetModuleOnID(ctx context.Context, id string) (Module, bool, error)
 	ListInterfaces(ctx context.Context) ([]Interface, error)
 	GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error)
-	ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error)
 	ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error)
 	ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error)
 }

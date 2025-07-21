@@ -3,16 +3,17 @@ package handlers
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"github.com/MarcGrol/learnmcp/internal/resp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
 )
 
-// NewListInterfacesTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger) server.ServerTool {
+// NewListMDatabaseConsumersTool returns the MCP tool definition and its handler for listing interfaces.
+func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search_index.SearchIndex) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_database_consumers",
@@ -20,20 +21,31 @@ func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger) server.ServerTool
 			mcp.WithString("database_id", mcp.Required(), mcp.Description("The ID of the database to list modules for")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			// extract params
 			databaseID, err := request.RequireString("database_id")
 			if err != nil {
-				return mcp.NewToolResultError("Missing database_id"), nil
-			}
-			moduleNames, exists, err := repo.ListDatabaseConsumers(ctx, databaseID)
-			if err != nil {
-				return mcp.NewToolResultErrorFromErr("Error listing modules of database", err), nil
-			}
-			if !exists {
-				return mcp.NewToolResultError("Database with given ID not found"), nil
+				return mcp.NewToolResultError(
+					resp.InvalidInput("Missing database_id",
+						"database_id",
+						"Use a valid database identifier")), nil
 			}
 
-			result := fmt.Sprintf("Found %d modules for database %s:\n\n%s", len(moduleNames), databaseID, strings.Join(moduleNames, "\n"))
-			return mcp.NewToolResultText(result), nil
+			// call business logic
+			moduleNames, exists, err := repo.ListDatabaseConsumers(ctx, databaseID)
+			if err != nil {
+				return mcp.NewToolResultError(resp.InternalError(
+					fmt.Sprintf("error getting database %s: %s", databaseID, err))), nil
+			}
+			if !exists {
+				return mcp.NewToolResultError(
+					resp.NotFound(
+						fmt.Sprintf("Module with ID %s not found", databaseID),
+						"database_id",
+						idx.Search(ctx, databaseID).Databases,
+					)), nil
+			}
+
+			return mcp.NewToolResultText(resp.Success(moduleNames)), nil
 		},
 	}
 }

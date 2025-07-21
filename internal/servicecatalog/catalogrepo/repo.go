@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 
 	_ "github.com/glebarez/go-sqlite"
 	"github.com/jmoiron/sqlx"
@@ -26,7 +25,7 @@ func newCatalogRepo(filename string) *CatalogRepo {
 }
 
 func (repo *CatalogRepo) Open(ctx context.Context) error {
-	log.Printf("Opening database: %s", repo.filename)
+	//log.Printf("Opening database: %s", repo.filename)
 
 	var err error
 	if repo.db != nil {
@@ -38,11 +37,12 @@ func (repo *CatalogRepo) Open(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("connect error: %s", err)
 	}
+
 	return nil
 }
 
 func (repo *CatalogRepo) Close(ctx context.Context) error {
-	log.Printf("Closing database: %s", repo.filename)
+	//log.Printf("Closing database: %s", repo.filename)
 	if repo.db == nil {
 		// already closed
 		return nil
@@ -76,6 +76,31 @@ func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Mod
 		}
 	}
 	return modules, nil
+}
+
+func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error) {
+	if repo.db == nil {
+		// already opened
+		return nil, false, fmt.Errorf("database not yet opened")
+	}
+
+	team := ""
+	err := repo.db.Get(&team, "SELECT team_id FROM team WHERE team_id = $1", id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []string{}, false, nil
+		}
+		return []string{}, false, fmt.Errorf("select team error: %s", err)
+	}
+
+	// Who consume this interface
+	interfaces := []string{}
+	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_team WHERE team_id = $1 ORDER BY module_id", id)
+	if err != nil {
+		return []string{}, false, fmt.Errorf("select consumers error: %s", err)
+	}
+
+	return interfaces, true, nil
 }
 
 func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, bool, error) {
@@ -215,6 +240,7 @@ func (repo *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) (
 	err := repo.db.Get(&database, "SELECT database_id FROM database WHERE database_id = $1", id)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			// not found, do return others with similar names
 			return []string{}, false, nil
 		}
 		return []string{}, false, fmt.Errorf("select database error: %s", err)
@@ -230,27 +256,27 @@ func (repo *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) (
 	return interfaces, true, nil
 }
 
-func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error) {
-	if repo.db == nil {
-		// already opened
-		return nil, false, fmt.Errorf("database not yet opened")
-	}
-
-	team := ""
-	err := repo.db.Get(&team, "SELECT team_id FROM team WHERE team_id = $1", id)
+func (repo *CatalogRepo) ListDatabases(ctx context.Context) ([]string, error) {
+	databases := []string{}
+	err := repo.db.Select(&databases, "SELECT DISTINCT database_id FROM database ORDER BY database_id ASC")
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return []string{}, false, nil
+			return databases, nil
 		}
-		return []string{}, false, fmt.Errorf("select team error: %s", err)
+		return []string{}, fmt.Errorf("select database error: %s", err)
 	}
+	return databases, nil
+}
 
-	// Who consume this interface
-	interfaces := []string{}
-	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_team WHERE team_id = $1 ORDER BY module_id", id)
+func (repo *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
+	teams := []string{}
+	err := repo.db.Select(&teams, "SELECT DISTINCT team_id FROM team ORDER BY team_id ASC")
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select consumers error: %s", err)
+		if err == sql.ErrNoRows {
+			// not found, do return others with similar names
+			return teams, nil
+		}
+		return []string{}, fmt.Errorf("select team error: %s", err)
 	}
-
-	return interfaces, true, nil
+	return teams, nil
 }
