@@ -40,7 +40,7 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 }
 
 type interfaceDescriptor struct {
-	InterfaceID string `json:"interfaceID"`
+	InterfaceID string `json:"interface_id"`
 	Description string `json:"description"`
 	Kind        string `json:"kind"`
 }
