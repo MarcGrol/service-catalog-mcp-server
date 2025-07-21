@@ -56,7 +56,7 @@ func (repo *CatalogRepo) ListModules(ctx context.Context) ([]Module, error) {
 	}
 
 	modules := []Module{}
-	err := repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC LIMIT 100")
+	err := repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC")
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return modules, nil
