@@ -13,7 +13,7 @@ import (
 )
 
 // NewListMDatabaseConsumersTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search_index.SearchIndex) server.ServerTool {
+func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search_index.Index) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_database_consumers",

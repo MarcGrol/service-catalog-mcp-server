@@ -13,7 +13,7 @@ import (
 )
 
 // NewListModulesOfTeamsTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListModulesOfTeamsTool(repo catalogrepo.Cataloger, idx search_index.SearchIndex) server.ServerTool {
+func NewListModulesOfTeamsTool(repo catalogrepo.Cataloger, idx search_index.Index) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_of_teams",

@@ -7,31 +7,25 @@ import (
 
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/handlers"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
+	search "github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
 )
 
 type ServiceCatalog struct {
 	server      *server.MCPServer
 	repo        catalogrepo.Cataloger
-	searchIndex search_index.SearchIndex
+	searchIndex search.Index
 }
 
-func New(s *server.MCPServer, repo catalogrepo.Cataloger) *ServiceCatalog {
+func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Index) *ServiceCatalog {
 	return &ServiceCatalog{
-		server: s,
-		repo:   repo,
+		server:      s,
+		repo:        repo,
+		searchIndex: searchIndex,
 	}
 }
 
-func (p *ServiceCatalog) Initialize(ctx context.Context) error {
-	p.register()
+func (p *ServiceCatalog) RegisterHandlers(ctx context.Context) {
 
-	p.searchIndex = search_index.NewSearchIndex(ctx, p.repo)
-
-	return nil
-}
-
-func (p *ServiceCatalog) register() {
 	p.server.AddTools(
 		handlers.NewSuggestCandidatesTool(p.searchIndex),
 		handlers.NewListModulesTool(p.repo),
@@ -48,6 +42,6 @@ func (p *ServiceCatalog) register() {
 	)
 
 	p.server.AddPrompts(
-		handlers.NewServiceCatalogTeamPrompt(),
+		handlers.NewServiceCatalogPrompt(),
 	)
 }

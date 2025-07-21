@@ -9,7 +9,7 @@ import (
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 )
 
-type SearchIndex interface {
+type Index interface {
 	Search(ctx context.Context, keyword string) SearchResult
 }
 
@@ -20,7 +20,7 @@ type searchIndex struct {
 	Databases  []string
 }
 
-func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) SearchIndex {
+func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
 	modules, _ := cataloger.ListModules(ctx, "")
 	interfaces, _ := cataloger.ListInterfaces(ctx)
 	databases, _ := cataloger.ListDatabases(ctx)

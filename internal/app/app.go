@@ -10,6 +10,7 @@ import (
 	"github.com/MarcGrol/learnmcp/internal/project"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
 	"github.com/MarcGrol/learnmcp/internal/transport"
 )
 
@@ -55,8 +56,11 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		if err != nil {
 			return nil, fmt.Errorf("error opening database: %s", err)
 		}
-		a.serviceCatalog = servicecatalog.New(a.mcpServer, catalogRepo)
-		a.serviceCatalog.Initialize(ctx)
+
+		searchIndex := search_index.NewSearchIndex(ctx, catalogRepo)
+
+		a.serviceCatalog = servicecatalog.New(a.mcpServer, catalogRepo, searchIndex)
+		a.serviceCatalog.RegisterHandlers(ctx)
 	}
 
 	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL)

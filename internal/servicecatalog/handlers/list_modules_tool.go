@@ -24,9 +24,7 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			keyword := request.GetString("module_id", "")
 
 			// call business logic
-			var err error
-			modules := []catalogrepo.Module{}
-			modules, err = repo.ListModules(ctx, keyword)
+			modules, err := repo.ListModules(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(

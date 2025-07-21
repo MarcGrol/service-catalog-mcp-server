@@ -276,7 +276,7 @@ func TestListTeams(t *testing.T) {
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := New("/Users/marcg/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
+	repo := New("/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {

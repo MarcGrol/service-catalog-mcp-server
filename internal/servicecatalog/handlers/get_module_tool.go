@@ -13,7 +13,7 @@ import (
 )
 
 // NewGetSingleModuleTool returns the MCP tool definition and its handler for listing interfaces.
-func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search_index.SearchIndex) server.ServerTool {
+func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search_index.Index) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"get_module",
@@ -45,7 +45,7 @@ func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search_index.SearchI
 						idx.Search(ctx, moduleID).Modules,
 					)), nil
 			}
-			
+
 			return mcp.NewToolResultText(resp.Success(module)), nil
 		},
 	}

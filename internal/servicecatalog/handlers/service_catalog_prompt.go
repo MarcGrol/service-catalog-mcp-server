@@ -7,12 +7,12 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-// NewServiceCatalogTeamPrompt returns the MCP prompt contract and handler for project planning.
-func NewServiceCatalogTeamPrompt() server.ServerPrompt {
+// NewServiceCatalogPrompt returns the MCP prompt contract and handler for project planning.
+func NewServiceCatalogPrompt() server.ServerPrompt {
 	return server.ServerPrompt{
 		Prompt: mcp.NewPrompt(
-			"service_catalog_team",
-			mcp.WithPromptDescription("Help making sense of the service catalog from the perspective of a team"),
+			"service_catalog",
+			mcp.WithPromptDescription("Help making sense of the service catalog"),
 		),
 		Handler: func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
 			// call business logic
