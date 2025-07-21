@@ -9,11 +9,11 @@ import (
 
 	"github.com/MarcGrol/learnmcp/internal/resp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
 )
 
 // NewGetSingleModuleTool returns the MCP tool definition and its handler for listing interfaces.
-func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search_index.Index) server.ServerTool {
+func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"get_module",

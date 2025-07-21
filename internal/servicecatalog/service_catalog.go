@@ -7,7 +7,7 @@ import (
 
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/handlers"
-	search "github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
+	search "github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
 )
 
 type ServiceCatalog struct {

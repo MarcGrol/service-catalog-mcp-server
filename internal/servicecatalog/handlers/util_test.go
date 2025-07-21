@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search_index"
+	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 )
 
-func setup(t *testing.T) (catalogrepo.Cataloger, search_index.Index, context.Context, func()) {
+func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
 	ctx := context.TODO()
 
 	repo := catalogrepo.New("/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite")
@@ -20,7 +20,7 @@ func setup(t *testing.T) (catalogrepo.Cataloger, search_index.Index, context.Con
 		repo.Close(ctx)
 	}
 
-	idx := search_index.NewSearchIndex(ctx, repo)
+	idx := search.NewSearchIndex(ctx, repo)
 
 	return repo, idx, ctx, cleanup
 }

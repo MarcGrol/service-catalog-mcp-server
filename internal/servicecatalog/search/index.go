@@ -1,4 +1,4 @@
-package search_index
+package search
 
 import (
 	"context"
