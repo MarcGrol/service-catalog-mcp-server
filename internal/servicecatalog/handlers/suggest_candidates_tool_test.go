@@ -11,9 +11,10 @@ func TestSuggestCandidatesSuccess(t *testing.T) {
 	defer cleanup()
 
 	// when
-	result, err := NewSuggestCandidatesTool(idx).Handler(ctx, createRequest("suggest_candidates", map[string]interface{}{
-		"keyword": "partner",
-	}))
+	result, err := NewSuggestCandidatesTool(idx).Handler(ctx,
+		createRequest("suggest_candidates", map[string]interface{}{
+			"keyword": "partner",
+		}))
 
 	// then
 	assert.NoError(t, err)

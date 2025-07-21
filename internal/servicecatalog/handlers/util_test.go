@@ -40,9 +40,9 @@ func expectSuccess(t *testing.T, result *mcp.CallToolResult, successText string)
 	assert.Contains(t, content.Text, successText)
 }
 
-func expectError(t *testing.T, result *mcp.CallToolResult, successText string) {
+func expectError(t *testing.T, result *mcp.CallToolResult, errorText string) {
 	assert.True(t, result.IsError)
 	content, ok := result.Content[0].(mcp.TextContent)
 	assert.True(t, ok)
-	assert.Contains(t, content.Text, successText)
+	assert.Contains(t, content.Text, errorText)
 }

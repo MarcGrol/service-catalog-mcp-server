@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
+	"github.com/MarcGrol/learnmcp/internal/resp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 )
 
@@ -26,21 +26,11 @@ func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
 				return nil, fmt.Errorf("error listing modules: %s", err)
 			}
 
-			// return result
-			modulesJson, err := json.MarshalIndent(
-				map[string]interface{}{
-					"total_modules": len(modules),
-					"modules":       modules,
-				}, "", "  ")
-			if err != nil {
-				return nil, err
-			}
-
 			return []mcp.ResourceContents{
 				mcp.TextResourceContents{
 					URI:      request.Params.URI,
 					MIMEType: "application/json",
-					Text:     string(modulesJson),
+					Text:     resp.Success(modules),
 				},
 			}, nil
 		},

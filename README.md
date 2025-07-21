@@ -10,7 +10,7 @@ The service-catalog itself is harvested from the adyen-main codebase and describ
 
 #### 1. ```list_modules```
 
-Lists all modules in your service catalog (optionally filtered onm keyword) 
+Lists all modules in your service catalog (optionally filtered onkeyword) 
 Shows module names and short descriptions
 
 Usage: ```list_module <keyword>``` (e.g. "kyc")
