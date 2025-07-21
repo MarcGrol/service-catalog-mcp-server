@@ -7,7 +7,6 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/learnmcp/internal/config"
-	"github.com/MarcGrol/learnmcp/internal/project"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
@@ -17,7 +16,6 @@ import (
 type Application struct {
 	config          config.Config
 	mcpServer       *server.MCPServer
-	projectService  *project.ProjectService
 	serviceCatalog  *servicecatalog.ServiceCatalog
 	serverTransport transport.ServerTransport
 }
