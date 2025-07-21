@@ -36,18 +36,6 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		server.WithToolCapabilities(true),
 		server.WithLogging())
 
-	//simple.SetupSimpleTools(a.mcpServer)
-
-	// projectStore, projectStoreCleanup, err := mystore.New[model.Project](ctx)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// {
-	// 	a.projectService = project.New(a.mcpServer, projectStore)
-	// 	a.projectService.Initialize(ctx)
-	// }
-	fakeCleanup := func() {}
-
 	{
 		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
 		err := catalogRepo.Open(ctx)
@@ -63,7 +51,7 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 
 	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL)
 
-	return fakeCleanup, nil
+	return func() {}, nil
 }
 
 func (a *Application) Run() error {
