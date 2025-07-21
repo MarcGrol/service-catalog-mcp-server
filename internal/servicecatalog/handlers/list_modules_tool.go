@@ -31,11 +31,21 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 						fmt.Sprintf("error listing modules with keyword %s: %s", keyword, err))), nil
 			}
 
-			results := []string{}
+			results := []moduleDescriptor{}
 			for _, mod := range modules {
-				results = append(results, fmt.Sprintf("%s: %s", mod.Name, mod.Description))
+				results = append(results, moduleDescriptor{
+					ModuleID:    mod.ModuleID,
+					Name:        mod.Name,
+					Description: mod.Description,
+				})
 			}
 			return mcp.NewToolResultText(resp.Success(results)), nil
 		},
 	}
+}
+
+type moduleDescriptor struct {
+	ModuleID    string `json:"module_id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }

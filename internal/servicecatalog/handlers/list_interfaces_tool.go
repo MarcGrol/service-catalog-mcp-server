@@ -26,11 +26,21 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 					fmt.Sprintf("error listing interfaces: %s", err))), nil
 			}
 
-			results := []string{}
-			for _, p := range interfaces {
-				results = append(results, fmt.Sprintf("%s: %s", p.InterfaceID, p.Description))
+			results := []interfaceDescriptor{}
+			for _, i := range interfaces {
+				results = append(results, interfaceDescriptor{
+					InterfaceID: i.InterfaceID,
+					Description: i.Description,
+					Kind:        i.Kind,
+				})
 			}
 			return mcp.NewToolResultText(resp.Success(results)), nil
 		},
 	}
+}
+
+type interfaceDescriptor struct {
+	InterfaceID string `json:"interfaceID"`
+	Description string `json:"description"`
+	Kind        string `json:"kind"`
 }
