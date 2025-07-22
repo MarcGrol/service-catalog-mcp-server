@@ -27,7 +27,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 2.  **Build the project**:
     ```bash
     go mod tidy
-    go build -o mcp-server .
+    go build -o learnmcp .
     ```
 
 ## Usage
@@ -35,7 +35,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 Once built, you can run the server:
 
 ```bash
-./mcp-server
+./learnmcp
 ```
 
 
