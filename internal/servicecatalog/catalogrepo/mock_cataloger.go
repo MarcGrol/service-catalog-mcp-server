@@ -86,21 +86,6 @@ func (mr *MockCatalogerMockRecorder) GetModuleOnID(ctx, id any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleOnID", reflect.TypeOf((*MockCataloger)(nil).GetModuleOnID), ctx, id)
 }
 
-// GroupInterfaces mocks base method.
-func (m *MockCataloger) GroupInterfaces(ctx context.Context) (map[string][]Interface, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GroupInterfaces", ctx)
-	ret0, _ := ret[0].(map[string][]Interface)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GroupInterfaces indicates an expected call of GroupInterfaces.
-func (mr *MockCatalogerMockRecorder) GroupInterfaces(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GroupInterfaces", reflect.TypeOf((*MockCataloger)(nil).GroupInterfaces), ctx)
-}
-
 // ListDatabaseConsumers mocks base method.
 func (m *MockCataloger) ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error) {
 	m.ctrl.T.Helper()
