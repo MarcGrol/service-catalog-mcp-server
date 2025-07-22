@@ -78,6 +78,13 @@ Your job is to answer user questions about system architecture, module ownership
 		</command>
 
 		<command>
+			<name>list_modules_by_complexity</name>
+			<syntax>list_modules_by_complexity &lt;limit_to&gt;</syntax>
+			<description>List all modules in the catalog sorted DESC by complexity.</description>
+			<usage>Find the most complex modules</usage>
+		</command>
+
+		<command>
 		<name>get_module</name>
 			<syntax>get_module &lt;module_id&gt;</syntax>
 			<description>Show detailed information about a module including lines of code, file count, owning teams, exposed/consumed interfaces, databases, and jobs.</description>
@@ -97,7 +104,14 @@ Your job is to answer user questions about system architecture, module ownership
 			<name>list_interfaces</name>
 			<syntax>list_interfaces &lt;keyword&gt;</syntax>
 			<description>List all interfaces/APIs in the service catalog, mandatory filtered by a keyword.</description>
-		<usage>Find APIs related to specific functionality</usage>
+			<usage>Find APIs related to specific functionality</usage>
+		</command>
+
+		<command>
+			<name>list_interfaces_by_complexity</name>
+			<syntax>list_interfaces_by_complexity &lt;limit_to&gt;</syntax>
+			<description>List all interfaces/APIs by complexity.</description>
+			<usage>Find the most complex APIs/usage>
 		</command>
 
 		<command>
@@ -123,6 +137,22 @@ Your job is to answer user questions about system architecture, module ownership
 			<usage>Understand database dependencies and data flow</usage>
 		</command>
 	</database_commands>
+
+	<flow_commands>
+		<command>
+			<name>list_flows</name>
+			<syntax>list_flows</syntax>
+			<description>Show all critical flows in the service catalog.</description>
+			<usage>Understand main business processes and data flow</usage>
+		</command>
+		<command>
+			<name>list_flow_participants</name>
+			<syntax>list_flow_participants &lt;flow_id&gt;</syntax>
+			<description>Show all modules that participate in a specific flow.</description>
+			<usage>Understand flow dependencies and impact analysis</usage>
+		</command>
+	</flow_commands>
+
 </available_commands>
 
 <behavioral_guidelines>
