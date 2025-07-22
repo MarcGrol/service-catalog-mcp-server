@@ -18,7 +18,7 @@ func NewSuggestCandidatesTool(index search.Index) server.ServerTool {
 			"suggest_candidates",
 			mcp.WithDescription("Suggest matching modules, interfaces, databases, or teams based on user input."),
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to search modules, interfaces, databases, or teams for.")),
-			mcp.WithString("limit_to", mcp.Description("Maximum number of results per category to return.")),
+			mcp.WithNumber("limit_to", mcp.Description("Maximum number of results per category to return.")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			keyword, err := request.RequireString("keyword")
@@ -27,7 +27,7 @@ func NewSuggestCandidatesTool(index search.Index) server.ServerTool {
 					"keyword",
 					"Use a valid keyword")
 			}
-			limit := request.GetInt("limit_to", 5)
+			limit := request.GetInt("limit_to", 10)
 
 			// call business logic
 			searchResult := index.Search(ctx, keyword, limit)

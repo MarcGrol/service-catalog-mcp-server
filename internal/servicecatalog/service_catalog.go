@@ -29,6 +29,7 @@ func (p *ServiceCatalog) RegisterHandlers(ctx context.Context) {
 	p.server.AddTools(
 		handlers.NewSuggestCandidatesTool(p.searchIndex),
 		handlers.NewListModulesTool(p.repo),
+		handlers.NewListModulesByComplexityTool(p.repo),
 		handlers.NewGetSingleModuleTool(p.repo, p.searchIndex),
 		handlers.NewListInterfacesTool(p.repo),
 		handlers.NewLGetSingleInterfaceTool(p.repo, p.searchIndex),

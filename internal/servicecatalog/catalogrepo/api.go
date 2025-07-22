@@ -12,6 +12,7 @@ type Cataloger interface {
 	ListDatabases(ctx context.Context) ([]string, error)
 	ListTeams(ctx context.Context) ([]string, error)
 	ListModules(ctx context.Context, keyword string) ([]Module, error)
+	ListModulesByCompexity(ctx context.Context, limit int) ([]Module, error)
 	ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error)
 	GetModuleOnID(ctx context.Context, id string) (Module, bool, error)
 	ListInterfaces(ctx context.Context, keyword string) ([]Interface, error)
@@ -29,6 +30,7 @@ type Module struct {
 	Spec               string   `db:"specification"`
 	FileCount          int      `db:"file_count"`
 	LineCount          int      `db:"line_count"`
+	ComplexityScore    float32  `json:",omitempty" yaml:",omitempty"`
 	KindCount          *int     `db:"kind_count" json:",omitempty" yaml:",omitempty"`
 	TeamCount          *int     `db:"team_count" json:",omitempty" yaml:",omitempty"`
 	ExposedApiCount    *int     `db:"exposed_api_count" json:",omitempty" yaml:",omitempty"`
@@ -43,6 +45,27 @@ type Module struct {
 	ConsumedInterfaces []string `db:"-" json:",omitempty" yaml:",omitempty"`
 	Jobs               []string `db:"-" json:",omitempty" yaml:",omitempty"`
 	Databases          []string `db:"-" json:",omitempty" yaml:",omitempty"`
+}
+
+func (m Module) CalculateComplexityScore() float32 {
+	complexityScore := ((float32(m.LineCount) * 0.25) +
+		(valueOrZero(m.DatabaseCount) * 0.20) +
+		(valueOrZero(m.TeamCount) * 0.15) +
+		(valueOrZero(m.ExposedApiCount) * 0.15) +
+		(valueOrZero(m.ConsumedApiCount) * 0.15) +
+		(valueOrZero(m.JobCount) * 0.10) +
+		(float32(m.FileCount) * 0.10) +
+		(valueOrZero(m.FlowCount) * 0.05) +
+		(valueOrZero(m.KindCount) * 0.05)) * 100
+
+	return complexityScore
+}
+
+func valueOrZero(value *int) float32 {
+	if value == nil {
+		return 0
+	}
+	return float32(*value)
 }
 
 func (m Module) String() string {

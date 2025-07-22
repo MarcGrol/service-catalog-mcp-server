@@ -69,7 +69,8 @@ func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Mod
 			}
 			return nil, fmt.Errorf("select error: %s", err)
 		}
-		return modules, nil
+
+		return enrichWithComplexityScore(modules), nil
 	}
 
 	modules := []Module{}
@@ -80,7 +81,41 @@ func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Mod
 		}
 	}
 
-	return modules, nil
+	return enrichWithComplexityScore(modules), nil
+}
+
+func (repo *CatalogRepo) ListModulesByCompexity(ctx context.Context, limit int) ([]Module, error) {
+	if repo.db == nil {
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
+	modules := []Module{}
+	// This must use module and fails with enriched_module. Don't know why.
+	// Currently returns about 2500 entries. Acceptable for now.
+	err := repo.db.Select(&modules, "SELECT * FROM enriched_module")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return modules, nil
+		}
+		return nil, fmt.Errorf("select error: %s", err)
+	}
+
+	for i, module := range modules {
+		modules[i].ComplexityScore = module.CalculateComplexityScore()
+	}
+
+	sort.Slice(modules, func(i, j int) bool {
+		return modules[i].ComplexityScore > modules[j].ComplexityScore
+	})
+
+	return modules[0:min(limit, len(modules))], nil
+}
+
+func enrichWithComplexityScore(modules []Module) []Module {
+	for _, module := range modules {
+		module.ComplexityScore = module.CalculateComplexityScore()
+	}
+	return modules
 }
 
 func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error) {
@@ -99,13 +134,13 @@ func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]st
 	}
 
 	// Who consume this interface
-	interfaces := []string{}
-	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_team WHERE team_id = $1 ORDER BY module_id", id)
+	modules := []string{}
+	err = repo.db.Select(&modules, "SELECT module_id FROM mod_team WHERE team_id = $1 ORDER BY module_id", id)
 	if err != nil {
 		return []string{}, false, fmt.Errorf("select consumers error: %s", err)
 	}
 
-	return interfaces, true, nil
+	return modules, true, nil
 }
 
 func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, bool, error) {
@@ -165,6 +200,8 @@ func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, 
 		return Module{}, false, fmt.Errorf("select jobs error: %s", err)
 	}
 
+	module.ComplexityScore = module.CalculateComplexityScore()
+
 	return module, true, nil
 }
 
@@ -217,7 +254,7 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 		if err == sql.ErrNoRows {
 			return interfaces, nil
 		}
-		return interfaces, fmt.Errorf("lit interface error: %s", err)
+		return interfaces, fmt.Errorf("list interface error: %s", err)
 	}
 	return interfaces, nil
 

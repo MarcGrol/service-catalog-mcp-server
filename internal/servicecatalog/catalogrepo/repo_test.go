@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/MarcGrol/learnmcp/internal/constants"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,6 +26,25 @@ func TestListModules(t *testing.T) {
 			t.Logf("%+v", m)
 		}
 	}
+}
+
+func TestListModulesByComplexity(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	modules, err := repo.ListModulesByCompexity(ctx, 5)
+	assert.NoError(t, err)
+	assert.Len(t, modules, 5)
+	top5 := lo.Map(modules, func(m Module, _ int) string {
+		return m.ModuleID
+	})
+	for _, m := range modules {
+		fmt.Printf("%+v\n", m)
+	}
+	assert.Equal(t, []string{"psp",
+		"onboarding-and-compliance/kyc/webapp/kyc",
+		"paymentengine/acm/webapp/acm",
+		"bcm-container/protocol/step2/sct", "vias"}, top5)
 }
 
 func TestListModulesFilered(t *testing.T) {
