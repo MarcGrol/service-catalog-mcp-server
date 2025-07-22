@@ -11,7 +11,7 @@ const (
 	statusSuccess       mcpStatus = "success"
 	statusInternalError mcpStatus = "error"
 	statusNotFound      mcpStatus = "not_found"
-	statusInvalidInput  mcpStatus = "invalid_innput"
+	statusInvalidInput  mcpStatus = "invalid_input"
 )
 
 type mcpSuccessResponse struct {
