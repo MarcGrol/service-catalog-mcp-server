@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
+	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestListFlowParticipantsTool_Success(t *testing.T) {
@@ -85,7 +85,7 @@ func TestListFlowParticipantsTool_Error(t *testing.T) {
 	assert.NoError(t, err)
 	expectError(t, result, `"status": "error"`)
 	textResult := result.Content[0].(mcp.TextContent)
-	assert.Contains(t, textResult.Text, "error listing consumers of interface flow_with_error: failed to list participants")
+	assert.Contains(t, textResult.Text, "error listing participants of flow flow_with_error: failed to list participants")
 }
 
 func TestListFlowParticipantsTool_MissingFlowID(t *testing.T) {

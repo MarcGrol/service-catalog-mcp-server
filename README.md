@@ -54,14 +54,14 @@ To integrate the `mcp-server` with Claude-desktop using `stdio` transport, follo
     {
       "mcpServers": {
         "service-catalog": {
-          "command": "${HOME}/go/bin/learnmcp",
+          "command": "/path/to/your/mcp-server",
           "args": [],
           "env": {}
         }
       }
     }
     ```
-    **Important**: Replace `${HOME}/go/bin/learnmcp` with the actual absolute path to your `mcp-server` executable.
+    **Important**: Replace `/path/to/your/mcp-server` with the actual absolute path to your `mcp-server` executable.
 
 3.  **Restart Claude-desktop**:
     After saving the `claude_desktop_config.json` file, restart Claude-desktop for the changes to take effect. The `service-catalog` MCP server should now be available for use.

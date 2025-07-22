@@ -100,7 +100,6 @@ func loggingHooks() *server.Hooks {
 				log.Info().
 					Str("method", "resource").
 					Any("request_id", id).
-					Str("method", req.Request.Method).
 					Any("args", req.Params.Arguments).
 					Send()
 			},

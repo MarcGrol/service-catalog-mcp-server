@@ -12,8 +12,8 @@ import (
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
 )
 
-// NewListInterfaceConsumersTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+// NewListFlowParticipantsTool returns the MCP tool definition and its handler for listing flow participants.
+func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool { // Renamed from NewListInterfaceConsumersTool
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_flow_participants",
@@ -33,14 +33,14 @@ func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) s
 			moduleNames, exists, err := repo.ListParticpantsOfFlow(ctx, flowID)
 			if err != nil {
 				return mcp.NewToolResultError(
-					resp.InternalError(ctx,
-						fmt.Sprintf("error listing consumers of interface %s: %s", flowID, err))), nil
+					resp.InternalError(ctx, // Corrected error message
+						fmt.Sprintf("error listing participants of flow %s: %s", flowID, err))), nil
 			}
 			if !exists {
 				return mcp.NewToolResultError(
 					resp.NotFound(ctx,
 						fmt.Sprintf("Flow with ID %s not found", flowID),
-						"interface_id",
+						"flow_id", // Corrected parameter name
 						idx.Search(ctx, flowID, 10).Flows,
 					)), nil
 			}

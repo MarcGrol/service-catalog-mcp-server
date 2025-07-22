@@ -12,7 +12,7 @@ import (
 )
 
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
-	ctx := context.TODO()
+	ctx := context.Background()
 
 	repo := catalogrepo.New(constants.DatabaseFilename)
 	err := repo.Open(ctx)
