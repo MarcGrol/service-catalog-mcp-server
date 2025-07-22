@@ -56,15 +56,3 @@ type interfaceDescriptor struct {
 	Kind            string `json:"kind"`
 	ComplexityScore int    `json:"complexityScore"`
 }
-
-/*
-complexity_score = (
-  (line_count / max_line_count) * 0.25 +
-  (database_count / max_database_count) * 0.20 +
-  (team_count / max_team_count) * 0.15 +
-  (interface_count / max_interface_count) * 0.15 +
-  (job_count / max_job_count) * 0.10 +
-  (file_count / max_file_count) * 0.10 +
-  (flow_count / max_flow_count) * 0.05
-) * 100
-*/
