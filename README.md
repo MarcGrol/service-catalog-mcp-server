@@ -27,7 +27,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 2.  **Build the project**:
     ```bash
     go mod tidy
-    go build -o learnmcp .
+    go build -o service-catalog-mcp-server .
     ```
 
 ## Usage
@@ -35,7 +35,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 Once built, you can run the server:
 
 ```bash
-./learnmcp
+./service-catalog-mcp-server
 ```
 
 
@@ -50,10 +50,10 @@ The server will print the JSON-RPC response to standard output. For more example
 
 ## Integration with Claude-desktop
 
-To integrate the `mcp-server` with Claude-desktop using `stdio` transport, follow these steps:
+To integrate the `service-catalog-mcp-server` with Claude-desktop using `stdio` transport, follow these steps:
 
 1.  **Build the project**:
-    Ensure you have built the `mcp-server` executable as described in the "Installation" section.
+    Ensure you have built the `service-catalog-mcp-server` executable as described in the "Installation" section.
 
 2.  **Configure `claude_desktop_config.json`**:
     Locate your `claude_desktop_config.json` file (its location varies by operating system, but it's typically in your user's configuration directory for Claude-desktop). Add the following entry:
@@ -69,7 +69,7 @@ To integrate the `mcp-server` with Claude-desktop using `stdio` transport, follo
       }
     }
     ```
-    **Important**: Replace `/path/to/your/mcp-server` with the actual absolute path to your `mcp-server` executable.
+    **Important**: Replace `/path/to/your/service-catalog-mcp-server` with the actual absolute path to your `service-catalog-mcp-server` executable.
 
 3.  **Restart Claude-desktop**:
     After saving the `claude_desktop_config.json` file, restart Claude-desktop for the changes to take effect. The `service-catalog` MCP server should now be available for use.
