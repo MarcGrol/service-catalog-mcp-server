@@ -17,11 +17,17 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 		Tool: mcp.NewTool(
 			"list_modules",
 			mcp.WithDescription("Lists all modules in the catalog."),
-			mcp.WithString("filter_keyword", mcp.Description("The keyword to filter modules by.")),
+			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter modules by.")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
-			keyword := request.GetString("module_id", "")
+			keyword, err := request.RequireString("filter_keyword")
+			if err != nil {
+				return mcp.NewToolResultError(
+					resp.InvalidInput(ctx, "Missing filter_keyword",
+						"filter_keyword",
+						"Use a non-empty string as keyword")), nil
+			}
 
 			// call business logic
 			modules, err := repo.ListModules(ctx, keyword)

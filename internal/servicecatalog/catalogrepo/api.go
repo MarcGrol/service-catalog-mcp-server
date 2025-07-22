@@ -14,7 +14,8 @@ type Cataloger interface {
 	ListModules(ctx context.Context, keyword string) ([]Module, error)
 	ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error)
 	GetModuleOnID(ctx context.Context, id string) (Module, bool, error)
-	ListInterfaces(ctx context.Context) ([]Interface, error)
+	ListInterfaces(ctx context.Context, keyword string) ([]Interface, error)
+	GroupInterfaces(ctx context.Context) (map[string][]Interface, error)
 	GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error)
 	ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error)
 	ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error)
@@ -50,10 +51,11 @@ func (m Module) String() string {
 }
 
 type Interface struct {
-	InterfaceID string   `db:"interface_id" yaml:",omitempty"`
-	Description string   `db:"description" yaml:",omitempty"`
-	Kind        string   `db:"kind" yaml:",omitempty"`
-	Spec        string   `db:"specification" yaml:",omitempty"`
-	MethodCount int      `db:"method_count" yaml:",omitempty"`
-	Methods     []string `db:"-" yaml:",omitempty"`
+	InterfaceID   string   `db:"interface_id" yaml:",omitempty"`
+	Description   string   `db:"description" yaml:",omitempty"`
+	Kind          string   `db:"kind" yaml:",omitempty"`
+	Spec          string   `db:"specification" yaml:",omitempty"`
+	MethodCount   int      `db:"method_count" yaml:",omitempty"`
+	Methods       []string `db:"-" yaml:",omitempty"`
+	MethodBasedID string   `db:"method_based_interface_id" yaml:",omitempty"`
 }

@@ -17,10 +17,20 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 		Tool: mcp.NewTool(
 			"list_interfaces",
 			mcp.WithDescription("Lists all interfaces (=web-api's) in the catalog"),
+			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter interfaces by.")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			// extract params
+			keyword, err := request.RequireString("filter_keyword")
+			if err != nil {
+				return mcp.NewToolResultError(
+					resp.InvalidInput(ctx, "Missing filter_keyword",
+						"filter_keyword",
+						"Use a non-empty string as keyword")), nil
+			}
+
 			// call business logic
-			interfaces, err := repo.ListInterfaces(ctx)
+			interfaces, err := repo.ListInterfaces(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

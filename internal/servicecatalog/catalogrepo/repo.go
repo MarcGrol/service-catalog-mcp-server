@@ -4,9 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"sort"
+	"strings"
 
 	_ "github.com/glebarez/go-sqlite"
 	"github.com/jmoiron/sqlx"
+	"github.com/samber/lo"
 )
 
 func New(filename string) Cataloger {
@@ -55,26 +58,28 @@ func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Mod
 		return nil, fmt.Errorf("database not yet opened")
 	}
 
-	var err error
-	modules := []Module{}
 	if keyword == "" {
+		modules := []Module{}
 		// This must use module and fails with enriched_module. Don't know why.
 		// Currently returns about 2500 entries. Acceptable for now.
-		err = repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC")
+		err := repo.db.Select(&modules, "SELECT * FROM module ORDER BY line_count DESC")
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return modules, nil
 			}
 			return nil, fmt.Errorf("select error: %s", err)
 		}
-	} else {
-		err = repo.db.Select(&modules, "SELECT * FROM module WHERE module_id LIKE $1 ORDER BY line_count DESC", "%"+keyword+"%")
-		if err != nil {
-			if err == sql.ErrNoRows {
-				return modules, nil
-			}
+		return modules, nil
+	}
+
+	modules := []Module{}
+	err := repo.db.Select(&modules, "SELECT * FROM module WHERE module_id LIKE $1 ORDER BY line_count DESC", "%"+keyword+"%")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return modules, nil
 		}
 	}
+
 	return modules, nil
 }
 
@@ -187,22 +192,65 @@ func (repo *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Inter
 	return api, true, nil
 }
 
-func (repo *CatalogRepo) ListInterfaces(ctx context.Context) ([]Interface, error) {
+func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]Interface, error) {
 	if repo.db == nil {
 		// already opened
 		return nil, fmt.Errorf("database not yet opened")
 	}
 
+	if keyword == "" {
+
+		interfaces := []Interface{}
+		err := repo.db.Select(&interfaces, "SELECT * FROM interface ORDER BY interface_id")
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return interfaces, nil
+			}
+			return interfaces, fmt.Errorf("lit interface error: %s", err)
+		}
+		return interfaces, nil
+	}
+
 	interfaces := []Interface{}
-	err := repo.db.Select(&interfaces, "SELECT * FROM interface ORDER BY interface_id")
+	err := repo.db.Select(&interfaces, "SELECT * FROM interface WHERE interface_id LIKE $1 ORDER BY interface_id", "%"+keyword+"%")
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return interfaces, nil
 		}
 		return interfaces, fmt.Errorf("lit interface error: %s", err)
 	}
-
 	return interfaces, nil
+
+}
+
+// GroupInterfaces is experimentaal and very slow
+func (repo *CatalogRepo) GroupInterfaces(ctx context.Context) (map[string][]Interface, error) {
+	interfaces, err := repo.ListInterfaces(ctx, "")
+	if err != nil {
+		return nil, err
+	}
+
+	enrichedInterfaces := lo.Map(interfaces, func(item Interface, _ int) *Interface {
+		enrichedItem, exists, err := repo.GetInterfaceOnID(ctx, item.InterfaceID)
+		if err != nil || !exists {
+			return nil
+		}
+		sort.Strings(enrichedItem.Methods)
+		enrichedItem.MethodBasedID = strings.ToLower(strings.Join(enrichedItem.Methods, "-"))
+		return &enrichedItem
+	})
+	enrichedInterfaces = lo.Filter(enrichedInterfaces, func(item *Interface, _ int) bool {
+		return item != nil
+	})
+	interfaces = lo.Map(enrichedInterfaces, func(item *Interface, _ int) Interface {
+		return *item
+	})
+
+	groupedInterfaces := lo.GroupBy(interfaces, func(item Interface) string {
+		return item.MethodBasedID
+	})
+
+	return groupedInterfaces, nil
 }
 
 func (repo *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error) {

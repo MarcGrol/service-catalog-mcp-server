@@ -22,7 +22,7 @@ type searchIndex struct {
 
 func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
 	modules, _ := cataloger.ListModules(ctx, "")
-	interfaces, _ := cataloger.ListInterfaces(ctx)
+	interfaces, _ := cataloger.ListInterfaces(ctx, "")
 	databases, _ := cataloger.ListDatabases(ctx)
 	teams, _ := cataloger.ListTeams(ctx)
 

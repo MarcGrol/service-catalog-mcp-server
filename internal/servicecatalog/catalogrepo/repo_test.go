@@ -128,11 +128,28 @@ func TestListInterfaces(t *testing.T) {
 	repo, ctx, cleanup := setup(t)
 	defer cleanup()
 
-	interfaces, err := repo.ListInterfaces(ctx)
+	interfaces, err := repo.ListInterfaces(ctx, "")
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(interfaces), 10)
 	assert.LessOrEqual(t, len(interfaces), 2000)
 	assert.Equal(t, "AboutResourceV2", interfaces[0].InterfaceID)
+
+	if doLog {
+		for _, m := range interfaces {
+			t.Logf("%+v", m)
+		}
+	}
+}
+
+func TestListInterfacesFiltered(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	interfaces, err := repo.ListInterfaces(ctx, "Partner")
+	assert.NoError(t, err)
+	assert.GreaterOrEqual(t, len(interfaces), 1)
+	assert.LessOrEqual(t, len(interfaces), 20)
+	assert.Equal(t, "PartnerDocumentsResourceV1", interfaces[0].InterfaceID)
 
 	if doLog {
 		for _, m := range interfaces {

@@ -45,10 +45,16 @@ Your job is to answer user questions about system architecture, module ownership
 
 You can use the following MCP commands:
 
+### Filtering the entire service catalog on keyword
+
+- "suggest_candidates <keyword>"  
+  Suggest matching modules, interfaces, databases, or teams based on user input.
+  This can quickly help to reduce the size of the dataset to work with.
+
 ### 🧱 Module Management
 
 - "list_modules <keyword>"  
-  List all modules in the catalog, optionally filtered by a keyword.
+  List all modules in the catalog, mandatory filtered by a keyword.
 
 - "get_module <module_id>"  
   Show detailed information about a module, including:
@@ -66,8 +72,8 @@ You can use the following MCP commands:
 
 ### 📡 Interface Management
 
-- "list_interfaces"  
-  List all interfaces/APIs in the service catalog.
+- "list_interfaces" <keyword>
+  List all interfaces/APIs in the service catalog, mandatory filtered by a keyword.
 
 - "get_interface <interface_id>"  
   Get detailed information about a specific interface: description, type, methods, and specs.
@@ -85,7 +91,6 @@ You can use the following MCP commands:
 ---
 
 ## 💡 Assistant Behavior
-
 
 Before issuing a command, always think step-by-step:
 1. Understand the user request
