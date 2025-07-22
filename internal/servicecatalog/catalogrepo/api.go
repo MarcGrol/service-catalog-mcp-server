@@ -6,6 +6,7 @@ import (
 	"fmt"
 )
 
+//go:generate mockgen -source=api.go -destination=mock_cataloger.go -package=catalogrepo Cataloger
 type Cataloger interface {
 	Open(ctx context.Context) error
 	Close(ctx context.Context) error

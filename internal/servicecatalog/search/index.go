@@ -9,6 +9,7 @@ import (
 	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
 )
 
+//go:generate mockgen -source=index.go -destination=mock_index.go -package=search Index
 type Index interface {
 	Search(ctx context.Context, keyword string, limit int) SearchResult
 }
