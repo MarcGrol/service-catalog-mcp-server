@@ -260,6 +260,23 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 
 }
 
+func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit int) ([]Interface, error) {
+	interfaces := []Interface{}
+	err := repo.db.Select(&interfaces, "SELECT * FROM interface")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return interfaces, nil
+		}
+		return interfaces, fmt.Errorf("list interface error: %s", err)
+	}
+
+	sort.Slice(interfaces, func(i, j int) bool {
+		return interfaces[i].MethodCount > interfaces[j].MethodCount
+	})
+
+	return interfaces[0:min(limit, len(interfaces))], nil
+}
+
 // GroupInterfaces is experimentaal and very slow
 func (repo *CatalogRepo) GroupInterfaces(ctx context.Context) (map[string][]Interface, error) {
 	interfaces, err := repo.ListInterfaces(ctx, "")

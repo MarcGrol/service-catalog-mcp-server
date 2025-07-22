@@ -32,6 +32,7 @@ func (p *ServiceCatalog) RegisterHandlers(ctx context.Context) {
 		handlers.NewListModulesByComplexityTool(p.repo),
 		handlers.NewGetSingleModuleTool(p.repo, p.searchIndex),
 		handlers.NewListInterfacesTool(p.repo),
+		handlers.NewListInterfacesByComplexityTool(p.repo),
 		handlers.NewLGetSingleInterfaceTool(p.repo, p.searchIndex),
 		handlers.NewListModulesOfTeamsTool(p.repo, p.searchIndex),
 		handlers.NewListMDatabaseConsumersTool(p.repo, p.searchIndex),

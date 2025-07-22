@@ -178,6 +178,22 @@ func TestListInterfacesFiltered(t *testing.T) {
 	}
 }
 
+func TestListInterfacesByComplexity(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	interfaces, err := repo.ListInterfacesByComplexity(ctx, 5)
+	assert.NoError(t, err)
+	assert.Len(t, interfaces, 5)
+	names := lo.Map(interfaces, func(i Interface, _ int) string { return i.InterfaceID })
+	assert.Equal(t, []string{
+		"ManagementServiceV3",
+		"ManagementServiceV1",
+		"com.adyen.services.postfm.PosTFMService",
+		"com.adyen.services.acm.AcmService",
+		"com.adyen.services.configurationapi.MerchantConfigurationService"}, names)
+}
+
 func TestGetInterfaceOnID(t *testing.T) {
 	repo, ctx, cleanup := setup(t)
 	defer cleanup()
