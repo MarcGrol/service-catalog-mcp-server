@@ -38,7 +38,7 @@ func (repo *CatalogRepo) Open(ctx context.Context) error {
 
 	repo.db, err = sqlx.Connect("sqlite", repo.filename)
 	if err != nil {
-		return fmt.Errorf("connect error: %s", err)
+				return fmt.Errorf("connect error: %w", err)
 	}
 
 	return nil
@@ -67,7 +67,7 @@ func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Mod
 			if err == sql.ErrNoRows {
 				return modules, nil
 			}
-			return nil, fmt.Errorf("select error: %s", err)
+			return nil, fmt.Errorf("select error: %w", err)
 		}
 
 		return enrichWithComplexityScore(modules), nil
@@ -97,7 +97,7 @@ func (repo *CatalogRepo) ListModulesByCompexity(ctx context.Context, limit int) 
 		if err == sql.ErrNoRows {
 			return modules, nil
 		}
-		return nil, fmt.Errorf("select error: %s", err)
+		return nil, fmt.Errorf("select error: %w", err)
 	}
 
 	for i, module := range modules {
@@ -130,14 +130,14 @@ func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]st
 		if err == sql.ErrNoRows {
 			return []string{}, false, nil
 		}
-		return []string{}, false, fmt.Errorf("select team error: %s", err)
+		return []string{}, false, fmt.Errorf("select team error: %w", err)
 	}
 
 	// Who consume this interface
 	modules := []string{}
 	err = repo.db.Select(&modules, "SELECT module_id FROM mod_team WHERE team_id = $1 ORDER BY module_id", id)
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select consumers error: %s", err)
+		return []string{}, false, fmt.Errorf("select consumers error: %w", err)
 	}
 
 	return modules, true, nil
@@ -155,49 +155,49 @@ func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, 
 		if err == sql.ErrNoRows {
 			return module, false, nil
 		}
-		return Module{}, false, fmt.Errorf("select module error: %s", err)
+		return Module{}, false, fmt.Errorf("select module error: %w", err)
 	}
 
 	// What kinds?
 	err = repo.db.Select(&module.ApplicationKinds, "SELECT kind_id FROM mod_kind WHERE module_id = $1 ORDER BY kind_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select kind error: %s", err)
+		return Module{}, false, fmt.Errorf("select kind error: %w", err)
 	}
 
 	//What flows?
 	err = repo.db.Select(&module.Flows, "SELECT flow_id FROM mod_flow WHERE module_id = $1 ORDER BY flow_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select flow error: %s", err)
+		return Module{}, false, fmt.Errorf("select flow error: %w", err)
 	}
 
 	//What teams?
 	err = repo.db.Select(&module.Teams, "SELECT team_id FROM mod_team WHERE module_id = $1 ORDER BY team_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select team error: %s", err)
+		return Module{}, false, fmt.Errorf("select team error: %w", err)
 	}
 
 	// What exposed interfaces?
 	err = repo.db.Select(&module.ExposedInterfaces, "SELECT interface_id FROM mod_exposed_interface WHERE module_id = $1 ORDER BY interface_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select exposed-interfaces error: %s", err)
+		return Module{}, false, fmt.Errorf("select exposed-interfaces error: %w", err)
 	}
 
 	// What consumed interfaces?
 	err = repo.db.Select(&module.ConsumedInterfaces, "SELECT interface_id FROM mod_consumed_interface WHERE module_id = $1 ORDER BY interface_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select consumed-interfaces error: %s", err)
+		return Module{}, false, fmt.Errorf("select consumed-interfaces error: %w", err)
 	}
 
 	// What databases?
 	err = repo.db.Select(&module.Databases, "SELECT database_id FROM mod_database WHERE module_id = $1 ORDER BY database_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select database error: %s", err)
+		return Module{}, false, fmt.Errorf("select database error: %w", err)
 	}
 
 	// What jobs?
 	err = repo.db.Select(&module.Jobs, "SELECT job_id FROM mod_job WHERE module_id = $1 ORDER BY job_id", id)
 	if err != nil {
-		return Module{}, false, fmt.Errorf("select jobs error: %s", err)
+		return Module{}, false, fmt.Errorf("select jobs error: %w", err)
 	}
 
 	module.ComplexityScore = module.CalculateComplexityScore()
@@ -217,13 +217,13 @@ func (repo *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Inter
 		if err == sql.ErrNoRows {
 			return api, false, nil
 		}
-		return Interface{}, false, fmt.Errorf("select interface error: %s", err)
+		return Interface{}, false, fmt.Errorf("select interface error: %w", err)
 	}
 
 	// What methods?
 	err = repo.db.Select(&api.Methods, "SELECT method_id FROM interface_method WHERE interface_id = $1 ORDER BY method_id", id)
 	if err != nil {
-		return Interface{}, false, fmt.Errorf("select meth error: %s", err)
+		return Interface{}, false, fmt.Errorf("select meth error: %w", err)
 	}
 
 	return api, true, nil
@@ -243,7 +243,7 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 			if err == sql.ErrNoRows {
 				return interfaces, nil
 			}
-			return interfaces, fmt.Errorf("lit interface error: %s", err)
+			return interfaces, fmt.Errorf("lit interface error: %w", err)
 		}
 		return interfaces, nil
 	}
@@ -254,7 +254,7 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 		if err == sql.ErrNoRows {
 			return interfaces, nil
 		}
-		return interfaces, fmt.Errorf("list interface error: %s", err)
+		return interfaces, fmt.Errorf("list interface error: %w", err)
 	}
 	return interfaces, nil
 
@@ -267,7 +267,7 @@ func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit i
 		if err == sql.ErrNoRows {
 			return interfaces, nil
 		}
-		return interfaces, fmt.Errorf("list interface error: %s", err)
+		return interfaces, fmt.Errorf("list interface error: %w", err)
 	}
 
 	sort.Slice(interfaces, func(i, j int) bool {
@@ -281,7 +281,7 @@ func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit i
 func (repo *CatalogRepo) GroupInterfaces(ctx context.Context) (map[string][]Interface, error) {
 	interfaces, err := repo.ListInterfaces(ctx, "")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error getting interface on ID: %w", err)
 	}
 
 	enrichedInterfaces := lo.Map(interfaces, func(item Interface, _ int) *Interface {
@@ -319,14 +319,14 @@ func (repo *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) 
 		if err == sql.ErrNoRows {
 			return []string{}, false, nil
 		}
-		return []string{}, false, fmt.Errorf("select interface error: %s", err)
+		return []string{}, false, fmt.Errorf("select interface error: %w", err)
 	}
 
 	// Who consume this interface
 	interfaces := []string{}
 	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_consumed_interface WHERE interface_id = $1 ORDER BY module_id", id)
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select consumers error: %s", err)
+		return []string{}, false, fmt.Errorf("select consumers error: %w", err)
 	}
 
 	return interfaces, true, nil
@@ -345,14 +345,14 @@ func (repo *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) (
 			// not found, do return others with similar names
 			return []string{}, false, nil
 		}
-		return []string{}, false, fmt.Errorf("select database error: %s", err)
+		return []string{}, false, fmt.Errorf("select database error: %w", err)
 	}
 
 	// Who consume this database
 	interfaces := []string{}
 	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_database WHERE database_id = $1 ORDER BY module_id", id)
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select databases error: %s", err)
+		return []string{}, false, fmt.Errorf("select databases error: %w", err)
 	}
 
 	return interfaces, true, nil
@@ -365,7 +365,7 @@ func (repo *CatalogRepo) ListDatabases(ctx context.Context) ([]string, error) {
 		if err == sql.ErrNoRows {
 			return databases, nil
 		}
-		return []string{}, fmt.Errorf("select database error: %s", err)
+		return []string{}, fmt.Errorf("select database error: %w", err)
 	}
 	return databases, nil
 }
@@ -378,7 +378,7 @@ func (repo *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
 			// not found, do return others with similar names
 			return teams, nil
 		}
-		return []string{}, fmt.Errorf("select team error: %s", err)
+		return []string{}, fmt.Errorf("select team error: %w", err)
 	}
 	return teams, nil
 }
@@ -390,7 +390,7 @@ func (repo *CatalogRepo) ListFlows(ctx context.Context) ([]string, error) {
 		if err == sql.ErrNoRows {
 			return flows, nil
 		}
-		return []string{}, fmt.Errorf("select flow error: %s", err)
+		return []string{}, fmt.Errorf("select flow error: %w", err)
 	}
 	return flows, nil
 }
@@ -408,14 +408,14 @@ func (repo *CatalogRepo) ListParticpantsOfFlow(ctx context.Context, id string) (
 			// not found, do return others with similar names
 			return []string{}, false, nil
 		}
-		return []string{}, false, fmt.Errorf("select flow error: %s", err)
+		return []string{}, false, fmt.Errorf("select flow error: %w", err)
 	}
 
 	// Who is part of this flow?
 	interfaces := []string{}
 	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_flow WHERE flow_id = $1 ORDER BY module_id", id)
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select flows error: %s", err)
+		return []string{}, false, fmt.Errorf("select flows error: %w", err)
 	}
 
 	return interfaces, true, nil
