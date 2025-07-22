@@ -38,21 +38,8 @@ Once built, you can run the server:
 ./mcp-server
 ```
 
-The server will expose various endpoints for querying the service catalog. Refer to the `internal/servicecatalog/handlers` directory for available API endpoints and their functionalities.
 
 ### Quick Verification
-
-You can run the server in two primary modes: HTTP or Stdio.
-
-**HTTP Mode**
-
-If you run the server with an HTTP port enabled (e.g., `./mcp-server -port 8080`), you can verify it's running with `curl`:
-
-```bash
-curl -i http://localhost:8080/
-```
-
-**Stdio Mode**
 
 By default, the server runs in `stdio` mode. You can test it by pasting JSON-RPC 2.0 requests directly into the terminal. For example, to search for candidates related to "partner", paste the following JSON and press Enter:
 
@@ -92,9 +79,9 @@ To integrate the `mcp-server` with Claude-desktop using `stdio` transport, follo
 - `main.go`: Entry point of the application.
 - `internal/app`: Application initialization and setup.
 - `internal/config`: Configuration management.
-- `internal/mystore`: Data storage and persistence layer.
 - `internal/servicecatalog`: Core service catalog logic, including handlers, repository, and search.
 - `internal/transport`: Handles communication protocols (e.g., HTTP, SSE).
+- `internal/servicecatalog/handlers`: Various endpoints for querying the service catalog. 
 
 ## Contributing
 
