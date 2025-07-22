@@ -7,8 +7,8 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/learnmcp/internal/resp"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
 
 // NewListModulesTool returns the MCP tool definition and its handler for listing modules.

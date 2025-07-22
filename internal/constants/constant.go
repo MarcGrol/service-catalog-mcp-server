@@ -1,5 +1,5 @@
 package constants
 
 const (
-	DatabaseFilename = "/Users/marcgrol/src/learnmcp/internal/servicecatalog/service-catalog.sqlite"
+	DatabaseFilename = "/Users/marcgrol/src/service-catalog-mcp-server/internal/servicecatalog/service-catalog.sqlite"
 )

@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 
-	"github.com/MarcGrol/learnmcp/internal/constants"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
 )
 
 type Config struct {

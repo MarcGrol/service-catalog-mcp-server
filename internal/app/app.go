@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/learnmcp/internal/config"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
-	"github.com/MarcGrol/learnmcp/internal/transport"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/transport"
 )
 
 type Application struct {

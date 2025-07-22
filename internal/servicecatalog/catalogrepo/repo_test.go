@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/MarcGrol/learnmcp/internal/constants"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )

@@ -8,9 +8,9 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/learnmcp/internal/resp"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 )
 
 // NewListModulesOfTeamsTool returns the MCP tool definition and its handler for listing interfaces.

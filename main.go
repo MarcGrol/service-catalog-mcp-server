@@ -7,8 +7,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/learnmcp/internal/app"
-	"github.com/MarcGrol/learnmcp/internal/config"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/app"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
 )
 
 func main() {

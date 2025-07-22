@@ -9,7 +9,7 @@ import (
 	"go.uber.org/mock/gomock"
 
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
 
 func TestListModulesTool_SuccessWithKeyword(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"github.com/samber/lo"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
 
 //go:generate mockgen -source=index.go -destination=mock_index.go -package=search Index

@@ -2,7 +2,7 @@
 
 Start the in stdio mode
 
-    learnmcp
+    service-catalog-mcp-server
 
 And type json rpc in the command-line
 

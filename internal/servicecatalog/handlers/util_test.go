@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/learnmcp/internal/constants"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/learnmcp/internal/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 )

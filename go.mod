@@ -1,4 +1,4 @@
-module github.com/MarcGrol/learnmcp
+module github.com/MarcGrol/service-catalog-mcp-server
 
 go 1.24
 
