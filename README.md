@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project implements a Service Catalog for the MCP (Multi-Cloud Platform) server. It provides a centralized repository for managing and discovering services, modules, interfaces, and their relationships within a complex microservices architecture. The goal is to improve visibility, facilitate understanding of dependencies, and streamline development and operations.
+This project implements a Service Catalog for the MCP (Model Context Protocol) server. It provides a centralized repository for managing and discovering services, modules, interfaces, and their relationships within a complex microservices architecture. The goal is to improve visibility, facilitate understanding of dependencies, and streamline development and operations.
 
 ## Features
 
