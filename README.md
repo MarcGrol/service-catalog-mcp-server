@@ -40,6 +40,32 @@ Once built, you can run the server:
 
 The server will expose various endpoints for querying the service catalog. Refer to the `internal/servicecatalog/handlers` directory for available API endpoints and their functionalities.
 
+## Integration with Claude-desktop
+
+To integrate the `mcp-server` with Claude-desktop using `stdio` transport, follow these steps:
+
+1.  **Build the project**:
+    Ensure you have built the `mcp-server` executable as described in the "Installation" section.
+
+2.  **Configure `claude_desktop_config.json`**:
+    Locate your `claude_desktop_config.json` file (its location varies by operating system, but it's typically in your user's configuration directory for Claude-desktop). Add the following entry:
+
+    ```json
+    {
+      "mcpServers": {
+        "service-catalog": {
+          "command": "${HOME}/go/bin/learnmcp",
+          "args": [],
+          "env": {}
+        }
+      }
+    }
+    ```
+    **Important**: Replace `${HOME}/go/bin/learnmcp` with the actual absolute path to your `mcp-server` executable.
+
+3.  **Restart Claude-desktop**:
+    After saving the `claude_desktop_config.json` file, restart Claude-desktop for the changes to take effect. The `service-catalog` MCP server should now be available for use.
+
 ## Project Structure
 
 - `main.go`: Entry point of the application.
