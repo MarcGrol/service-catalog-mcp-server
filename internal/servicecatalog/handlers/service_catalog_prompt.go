@@ -62,9 +62,10 @@ Your job is to answer user questions about system architecture, module ownership
 	<exploration_commands>
 		<command>
 			<name>suggest_candidates</name>
-			<syntax>suggest_candidates &lt;keyword&gt;</syntax>
+			<syntax>suggest_candidates &lt;keyword&gt; &lt;limit_to&gt; </syntax>
 			<description>Suggest matching modules, interfaces, databases, or teams based on user input. This quickly helps reduce the dataset size to work with.</description>
 			<usage>Primary exploration tool - use before other commands</usage>
+			<extra>Increase the value of the limit_to parameter if you suspect more useful results exist</extra>
 		</command>
 	</exploration_commands>
 

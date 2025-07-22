@@ -42,7 +42,7 @@ func NewListModulesOfTeamsTool(repo catalogrepo.Cataloger, idx search.Index) ser
 					resp.NotFound(ctx,
 						fmt.Sprintf("Team with ID %s not found", teamID),
 						"team_id",
-						idx.Search(ctx, teamID).Teams)), nil
+						idx.Search(ctx, teamID, 10).Teams)), nil
 
 			}
 

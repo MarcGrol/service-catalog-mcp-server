@@ -17,7 +17,7 @@ func TestSearchIndex_Search(t *testing.T) {
 
 	idx := NewSearchIndex(ctx, repo)
 
-	result := idx.Search(ctx, "partner")
+	result := idx.Search(ctx, "partner", 5)
 
 	jsonResult, err := json.MarshalIndent(result, "", "  ")
 	assert.NoError(t, err)

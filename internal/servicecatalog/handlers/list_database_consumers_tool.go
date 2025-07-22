@@ -41,7 +41,7 @@ func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 					resp.NotFound(ctx,
 						fmt.Sprintf("Module with ID %s not found", databaseID),
 						"database_id",
-						idx.Search(ctx, databaseID).Databases,
+						idx.Search(ctx, databaseID, 10).Databases,
 					)), nil
 			}
 

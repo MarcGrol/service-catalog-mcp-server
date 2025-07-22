@@ -42,7 +42,7 @@ func NewGetSingleModuleTool(repo catalogrepo.Cataloger, idx search.Index) server
 					resp.NotFound(ctx,
 						fmt.Sprintf("Module with ID %s not found", moduleID),
 						"interface_id",
-						idx.Search(ctx, moduleID).Modules,
+						idx.Search(ctx, moduleID, 10).Modules,
 					)), nil
 			}
 

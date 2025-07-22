@@ -10,7 +10,7 @@ import (
 )
 
 type Index interface {
-	Search(ctx context.Context, keyword string) SearchResult
+	Search(ctx context.Context, keyword string, limit int) SearchResult
 }
 
 type searchIndex struct {
@@ -45,21 +45,21 @@ type SearchResult struct {
 	Databases  []string
 }
 
-func (idx *searchIndex) Search(ctx context.Context, keyword string) SearchResult {
+func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) SearchResult {
 	return SearchResult{
-		Modules:    matchesToSlice(fuzzy.Find(keyword, idx.Modules)),
-		Teams:      matchesToSlice(fuzzy.Find(keyword, idx.Teams)),
-		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces)),
-		Databases:  matchesToSlice(fuzzy.Find(keyword, idx.Databases)),
+		Modules:    matchesToSlice(fuzzy.Find(keyword, idx.Modules), limit),
+		Teams:      matchesToSlice(fuzzy.Find(keyword, idx.Teams), limit),
+		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces), limit),
+		Databases:  matchesToSlice(fuzzy.Find(keyword, idx.Databases), limit),
 	}
 }
 
-func matchesToSlice(matches fuzzy.Matches) []string {
+func matchesToSlice(matches fuzzy.Matches, limit int) []string {
 	slice := lo.Map(matches, func(item fuzzy.Match, index int) string {
 		return item.Str
 	})
 	// Limit to top 5 per category
-	return slice[0:min(len(slice), 5)]
+	return slice[0:min(len(slice), limit)]
 }
 
 func min(a, b int) int {

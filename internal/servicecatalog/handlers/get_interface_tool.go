@@ -42,7 +42,7 @@ func NewLGetSingleInterfaceTool(repo catalogrepo.Cataloger, idx search.Index) se
 					resp.NotFound(ctx,
 						fmt.Sprintf("Interface with ID %s not found", interfaceID),
 						"interface_id",
-						idx.Search(ctx, interfaceID).Interfaces,
+						idx.Search(ctx, interfaceID, 10).Interfaces,
 					)), nil
 			}
 
