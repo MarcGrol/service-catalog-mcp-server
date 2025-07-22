@@ -68,9 +68,4 @@ func matchesToSlice(matches fuzzy.Matches, limit int) []string {
 	return slice[0:min(len(slice), limit)]
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
+
