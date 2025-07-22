@@ -52,7 +52,7 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		a.serviceCatalog.RegisterHandlers(ctx)
 	}
 
-	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL)
+	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL, a.config.APIKey)
 
 	return func() {}, nil
 }

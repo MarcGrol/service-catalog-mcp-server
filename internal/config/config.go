@@ -12,6 +12,7 @@ type Config struct {
 	Port          string
 	BaseURL       string
 	DatabaseFile  string
+	APIKey        string
 }
 
 func LoadConfig() Config {
@@ -20,6 +21,7 @@ func LoadConfig() Config {
 	port := flag.String("port", "8080", "Port for SSE server")
 	baseURL := flag.String("baseurl", "http://localhost", "Base URL for SSE server")
 	databaseFile := flag.String("databasefile", constants.DatabaseFilename, "Full path to the SQLite database file")
+	apiKey := flag.String("api-key", "", "API key for authentication")
 	flag.Parse()
 
 	return Config{
@@ -28,5 +30,6 @@ func LoadConfig() Config {
 		Port:          *port,
 		BaseURL:       *baseURL,
 		DatabaseFile:  *databaseFile,
+		APIKey:        *apiKey,
 	}
 }
