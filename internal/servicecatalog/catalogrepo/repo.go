@@ -352,7 +352,7 @@ func (repo *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) (
 	interfaces := []string{}
 	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_database WHERE database_id = $1 ORDER BY module_id", id)
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select consumers error: %s", err)
+		return []string{}, false, fmt.Errorf("select databases error: %s", err)
 	}
 
 	return interfaces, true, nil
@@ -381,4 +381,42 @@ func (repo *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
 		return []string{}, fmt.Errorf("select team error: %s", err)
 	}
 	return teams, nil
+}
+
+func (repo *CatalogRepo) ListFlows(ctx context.Context) ([]string, error) {
+	flows := []string{}
+	err := repo.db.Select(&flows, "SELECT DISTINCT flow_id FROM flow ORDER BY flow_id ASC")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return flows, nil
+		}
+		return []string{}, fmt.Errorf("select flow error: %s", err)
+	}
+	return flows, nil
+}
+
+func (repo *CatalogRepo) ListParticpantsOfFlow(ctx context.Context, id string) ([]string, bool, error) {
+	if repo.db == nil {
+		// already opened
+		return nil, false, fmt.Errorf("database not yet opened")
+	}
+
+	flow := ""
+	err := repo.db.Get(&flow, "SELECT flow_id FROM flow WHERE flow_id = $1", id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// not found, do return others with similar names
+			return []string{}, false, nil
+		}
+		return []string{}, false, fmt.Errorf("select flow error: %s", err)
+	}
+
+	// Who is part of this flow?
+	interfaces := []string{}
+	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_flow WHERE flow_id = $1 ORDER BY module_id", id)
+	if err != nil {
+		return []string{}, false, fmt.Errorf("select flows error: %s", err)
+	}
+
+	return interfaces, true, nil
 }

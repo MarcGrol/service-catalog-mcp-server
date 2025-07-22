@@ -21,6 +21,8 @@ type Cataloger interface {
 	GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error)
 	ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error)
 	ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error)
+	ListFlows(ctx context.Context) ([]string, error)
+	ListParticpantsOfFlow(ctx context.Context, id string) ([]string, bool, error)
 }
 
 type Module struct {

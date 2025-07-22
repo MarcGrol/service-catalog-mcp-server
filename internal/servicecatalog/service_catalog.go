@@ -37,6 +37,8 @@ func (p *ServiceCatalog) RegisterHandlers(ctx context.Context) {
 		handlers.NewListModulesOfTeamsTool(p.repo, p.searchIndex),
 		handlers.NewListMDatabaseConsumersTool(p.repo, p.searchIndex),
 		handlers.NewListInterfaceConsumersTool(p.repo, p.searchIndex),
+		handlers.NewListFlowsTool(p.repo),
+		handlers.NewListFlowParticipantsTool(p.repo, p.searchIndex),
 	)
 
 	p.server.AddResources(

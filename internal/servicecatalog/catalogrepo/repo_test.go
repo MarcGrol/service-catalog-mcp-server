@@ -327,6 +327,38 @@ func TestListTeams(t *testing.T) {
 	assert.Equal(t, "AMLTech", teams[0])
 }
 
+func TestListFlows(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	flows, err := repo.ListFlows(ctx)
+	assert.NoError(t, err)
+	assert.Equal(t, []string{
+		"CustomerPortals-TransactionSearch",
+		"IPP_Payments-Authorization",
+		"IPP_Payments-ModificationAndSettlement",
+		"Onboarding-CreateAccountHolder",
+		"Onboarding-CreateLegalEntity",
+		"Onboarding-ModifyLegalEntity",
+		"Onboarding-RequestAccountHolderCapabilities",
+		"Online_Payments-Authorization",
+		"Online_Payments-ModificationAndSettlement",
+		"Payments-ModificationAndSettlement",
+		"Payout-OnDemandPayout",
+		"Payout-Sweep",
+	}, flows)
+}
+
+func TestListFlowParticpants(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	modules, exists, err := repo.ListParticpantsOfFlow(ctx, "CustomerPortals-TransactionSearch")
+	assert.NoError(t, err)
+	assert.True(t, exists)
+	assert.Equal(t, []string{"ca", "ca-core", "consumers", "pspdw"}, modules)
+}
+
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 

@@ -18,6 +18,7 @@ type searchIndex struct {
 	Teams      []string
 	Interfaces []string
 	Databases  []string
+	Flows      []string
 }
 
 func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
@@ -25,6 +26,7 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 	interfaces, _ := cataloger.ListInterfaces(ctx, "")
 	databases, _ := cataloger.ListDatabases(ctx)
 	teams, _ := cataloger.ListTeams(ctx)
+	flows, _ := cataloger.ListFlows(ctx)
 
 	return &searchIndex{
 		Modules: lo.Map(modules, func(m catalogrepo.Module, index int) string {
@@ -35,6 +37,7 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 		}),
 		Teams:     teams,
 		Databases: databases,
+		Flows:     flows,
 	}
 }
 
@@ -43,6 +46,7 @@ type SearchResult struct {
 	Teams      []string
 	Interfaces []string
 	Databases  []string
+	Flows      []string
 }
 
 func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) SearchResult {
@@ -51,6 +55,7 @@ func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) S
 		Teams:      matchesToSlice(fuzzy.Find(keyword, idx.Teams), limit),
 		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces), limit),
 		Databases:  matchesToSlice(fuzzy.Find(keyword, idx.Databases), limit),
+		Flows:      matchesToSlice(fuzzy.Find(keyword, idx.Flows), limit*2),
 	}
 }
 
