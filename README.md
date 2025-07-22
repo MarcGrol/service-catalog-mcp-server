@@ -40,6 +40,27 @@ Once built, you can run the server:
 
 The server will expose various endpoints for querying the service catalog. Refer to the `internal/servicecatalog/handlers` directory for available API endpoints and their functionalities.
 
+### Quick Verification
+
+You can run the server in two primary modes: HTTP or Stdio.
+
+**HTTP Mode**
+
+If you run the server with an HTTP port enabled (e.g., `./mcp-server -port 8080`), you can verify it's running with `curl`:
+
+```bash
+curl -i http://localhost:8080/
+```
+
+**Stdio Mode**
+
+By default, the server runs in `stdio` mode. You can test it by pasting JSON-RPC 2.0 requests directly into the terminal. For example, to search for candidates related to "partner", paste the following JSON and press Enter:
+
+```json
+{"method":"tools/call","params":{"name":"suggest_candidates","arguments":{"keyword":"partner"}},"jsonrpc":"2.0","id":9}
+```
+The server will print the JSON-RPC response to standard output. For more examples, see `examples.md`.
+
 ## Integration with Claude-desktop
 
 To integrate the `mcp-server` with Claude-desktop using `stdio` transport, follow these steps:

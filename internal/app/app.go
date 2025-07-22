@@ -90,7 +90,7 @@ func loggingHooks() *server.Hooks {
 			func(ctx context.Context, id any, req *mcp.ReadResourceRequest) {
 				log.Info().Str("method", "resource").
 					Any("request_id", id).
-					Str("method", req.Request.Method).
+					Str("resource_method", req.Request.Method).
 					Any("args", req.Params.Arguments).
 					Send()
 			},
@@ -100,6 +100,7 @@ func loggingHooks() *server.Hooks {
 				log.Info().
 					Str("method", "resource").
 					Any("request_id", id).
+					Str("resource_method", req.Request.Method).
 					Any("args", req.Params.Arguments).
 					Send()
 			},

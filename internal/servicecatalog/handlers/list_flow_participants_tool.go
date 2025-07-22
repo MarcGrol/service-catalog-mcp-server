@@ -13,7 +13,7 @@ import (
 )
 
 // NewListFlowParticipantsTool returns the MCP tool definition and its handler for listing flow participants.
-func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool { // Renamed from NewListInterfaceConsumersTool
+func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_flow_participants",
