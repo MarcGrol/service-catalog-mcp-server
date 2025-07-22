@@ -51,16 +51,29 @@ type Module struct {
 	Databases          []string `db:"-" json:",omitempty" yaml:",omitempty"`
 }
 
+const (
+	lineCountWeight        float32 = 0.25
+	databaseCountWeight    float32 = 0.20
+	teamCountWeight        float32 = 0.15
+	exposedApiCountWeight  float32 = 0.15
+	consumedApiCountWeight float32 = 0.15
+	jobCountWeight         float32 = 0.10
+	fileCountWeight        float32 = 0.10
+	flowCountWeight        float32 = 0.05
+	kindCountWeight        float32 = 0.05
+	complexityScoreMultiplier float32 = 100
+)
+
 func (m Module) CalculateComplexityScore() float32 {
-	complexityScore := ((float32(m.LineCount) * 0.25) +
-		(valueOrZero(m.DatabaseCount) * 0.20) +
-		(valueOrZero(m.TeamCount) * 0.15) +
-		(valueOrZero(m.ExposedApiCount) * 0.15) +
-		(valueOrZero(m.ConsumedApiCount) * 0.15) +
-		(valueOrZero(m.JobCount) * 0.10) +
-		(float32(m.FileCount) * 0.10) +
-		(valueOrZero(m.FlowCount) * 0.05) +
-		(valueOrZero(m.KindCount) * 0.05)) * 100
+	complexityScore := ((float32(m.LineCount) * lineCountWeight) +
+		(valueOrZero(m.DatabaseCount) * databaseCountWeight) +
+		(valueOrZero(m.TeamCount) * teamCountWeight) +
+		(valueOrZero(m.ExposedApiCount) * exposedApiCountWeight) +
+		(valueOrZero(m.ConsumedApiCount) * consumedApiCountWeight) +
+		(valueOrZero(m.JobCount) * jobCountWeight) +
+		(float32(m.FileCount) * fileCountWeight) +
+		(valueOrZero(m.FlowCount) * flowCountWeight) +
+		(valueOrZero(m.KindCount) * kindCountWeight)) * complexityScoreMultiplier
 
 	return complexityScore
 }

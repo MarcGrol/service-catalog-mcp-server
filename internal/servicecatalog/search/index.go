@@ -66,13 +66,15 @@ type SearchResult struct {
 	Flows      []string
 }
 
+const flowSearchLimitMultiplier = 2
+
 func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) SearchResult {
 	return SearchResult{
 		Modules:    matchesToSlice(fuzzy.Find(keyword, idx.Modules), limit),
 		Teams:      matchesToSlice(fuzzy.Find(keyword, idx.Teams), limit),
 		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces), limit),
 		Databases:  matchesToSlice(fuzzy.Find(keyword, idx.Databases), limit),
-		Flows:      matchesToSlice(fuzzy.Find(keyword, idx.Flows), limit*2),
+		Flows:      matchesToSlice(fuzzy.Find(keyword, idx.Flows), limit*flowSearchLimitMultiplier),
 	}
 }
 
