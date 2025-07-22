@@ -18,7 +18,6 @@ type Cataloger interface {
 	GetModuleOnID(ctx context.Context, id string) (Module, bool, error)
 	ListInterfaces(ctx context.Context, keyword string) ([]Interface, error)
 	ListInterfacesByComplexity(ctx context.Context, limit int) ([]Interface, error)
-	GroupInterfaces(ctx context.Context) (map[string][]Interface, error)
 	GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error)
 	ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error)
 	ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error)

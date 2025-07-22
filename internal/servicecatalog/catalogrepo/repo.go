@@ -5,11 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"sort"
-	"strings"
-
 	_ "github.com/glebarez/go-sqlite"
 	"github.com/jmoiron/sqlx"
-	"github.com/samber/lo"
 )
 
 func New(filename string) Cataloger {
@@ -277,35 +274,7 @@ func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit i
 	return interfaces[0:min(limit, len(interfaces))], nil
 }
 
-// GroupInterfaces is experimentaal and very slow
-func (repo *CatalogRepo) GroupInterfaces(ctx context.Context) (map[string][]Interface, error) {
-	interfaces, err := repo.ListInterfaces(ctx, "")
-	if err != nil {
-		return nil, fmt.Errorf("error getting interface on ID: %w", err)
-	}
 
-	enrichedInterfaces := lo.Map(interfaces, func(item Interface, _ int) *Interface {
-		enrichedItem, exists, err := repo.GetInterfaceOnID(ctx, item.InterfaceID)
-		if err != nil || !exists {
-			return nil
-		}
-		sort.Strings(enrichedItem.Methods)
-		enrichedItem.MethodBasedID = strings.ToLower(strings.Join(enrichedItem.Methods, "-"))
-		return &enrichedItem
-	})
-	enrichedInterfaces = lo.Filter(enrichedInterfaces, func(item *Interface, _ int) bool {
-		return item != nil
-	})
-	interfaces = lo.Map(enrichedInterfaces, func(item *Interface, _ int) Interface {
-		return *item
-	})
-
-	groupedInterfaces := lo.GroupBy(interfaces, func(item Interface) string {
-		return item.MethodBasedID
-	})
-
-	return groupedInterfaces, nil
-}
 
 func (repo *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {
