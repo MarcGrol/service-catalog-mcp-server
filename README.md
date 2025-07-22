@@ -1,80 +1,58 @@
-# Service-catalog mcp-server
+# Service Catalog MCP Server
 
-## Context
-This experimental "mcp-server" that makes the Adyen "service-catalog"accessible via normal text.
-The service-catalog itself is harvested from the adyen-main codebase and describes all our software modules, with their owners, databases, exposed interfaces, consumed interfaces and jobs.
+## Introduction
 
-## What it exposes?
+This project implements a Service Catalog for the MCP (Multi-Cloud Platform) server. It provides a centralized repository for managing and discovering services, modules, interfaces, and their relationships within a complex microservices architecture. The goal is to improve visibility, facilitate understanding of dependencies, and streamline development and operations.
 
-### Module Management Tools
+## Features
 
-#### 1. ```list_modules```
+- **Service Discovery**: Easily find and understand available services.
+- **Module Management**: Organize and track software modules.
+- **Interface Cataloging**: Document and manage API interfaces.
+- **Dependency Mapping**: Visualize relationships between services, modules, and interfaces.
+- **Complexity Analysis**: Identify and analyze the complexity of interfaces and modules.
+- **Team-based Views**: Filter services and modules by owning teams.
+- **Search Functionality**: Efficiently search the catalog for specific entities.
 
-Lists all modules in your service catalog (optionally filtered onkeyword) 
-Shows module names and short descriptions
+## Installation
 
-Usage: ```list_module <keyword>``` (e.g. "kyc")
+To get started with the Service Catalog MCP Server, follow these steps:
 
-#### 2. ```get_module```
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/your-org/service-catalog-mcp-server.git
+    cd service-catalog-mcp-server
+    ```
 
-Get detailed information about a specific module
-Shows: lines of code, file count, teams, exposed/consumed interfaces, databases, jobs
+2.  **Build the project**:
+    ```bash
+    go mod tidy
+    go build -o mcp-server .
+    ```
 
-Usage: ```get_module <module_id>``` (e.g., "psp", "partner", "adyen")
+## Usage
 
-#### 3. ```list_modules_of_teams```
+Once built, you can run the server:
 
-Find all modules owned by a specific team
+```bash
+./mcp-server
+```
 
-Usage: ```list_modules_of_teams <team_id>``` (e.g., "PartnerExperience")
+The server will expose various endpoints for querying the service catalog. Refer to the `internal/servicecatalog/handlers` directory for available API endpoints and their functionalities.
 
-### Interface Management Tools
+## Project Structure
 
-#### 4. ```list_interfaces```
+- `main.go`: Entry point of the application.
+- `internal/app`: Application initialization and setup.
+- `internal/config`: Configuration management.
+- `internal/mystore`: Data storage and persistence layer.
+- `internal/servicecatalog`: Core service catalog logic, including handlers, repository, and search.
+- `internal/transport`: Handles communication protocols (e.g., HTTP, SSE).
 
-Lists all interfaces/APIs in your catalog (1,649 interfaces)
-Shows interface IDs and descriptions
+## Contributing
 
-Usage: ```list_interfaces```
+Contributions are welcome! Please see the `CONTRIBUTING.md` for details on how to contribute to this project.
 
-#### 5. ```get_interface```
+## License
 
-Get detailed information about a specific interface
-Shows: description, type, methods, specifications
-
-Usage: ```get_interface <interface_id>``` (e.g., "com.adyen.services.acm.AcmService")
-
-#### 6. ```list_interface_consumers```
-
-Find all modules that consume/depend on a specific interface
-
-Usage: ```list_interface_consumers``` <interface_id>
-
-### Database Dependency Tools
-
-#### 7. ```list_database_consumers```
-
-Find all modules that use a specific database
-
-Usage: ```list_database_consumers <database_id>``` (e.g., "partner", "config")
-
-## Analysis Capabilities
-
-### What You Can Discover:
-
-- Architecture Overview: Complete module and interface catalog
-- Code Metrics: Lines of code, file counts per module
-- Team Ownership: Which teams own which modules
-- Dependencies: Module-to-interface and module-to-database relationships
-- API Catalog: Complete list of 1,649 available APIs/services
-- Service Details: Method signatures, specifications for any interface
-
-### Example Analysis Workflows:
-
-- Find largest modules by code size
-- Map team responsibilities across modules
-- Trace interface dependencies across the system
-- Identify database usage patterns
-- Explore API capabilities and versions
-- These tools give you comprehensive visibility into your Adyen service catalog architecture, dependencies, and ownership patterns. You can use them to understand system 
-complexity, plan refactoring, analyze team boundaries, or explore available APIs for integration work.
+This project is licensed under the MIT License - see the `LICENSE` file for details.
