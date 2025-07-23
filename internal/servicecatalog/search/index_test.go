@@ -49,6 +49,7 @@ func TestSearchIndex_Search(t *testing.T) {
 		Flows: []string{
 			"CustomerPortals-TransactionSearch",
 		},
+		Kinds: []string{},
 	}, result)
 
 }

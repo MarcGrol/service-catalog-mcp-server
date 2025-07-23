@@ -3,9 +3,9 @@ package search
 import (
 	"context"
 
+	"github.com/rs/zerolog/log"
 	"github.com/sahilm/fuzzy"
 	"github.com/samber/lo"
-	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
@@ -21,6 +21,7 @@ type searchIndex struct {
 	Interfaces []string
 	Databases  []string
 	Flows      []string
+	Kinds      []string
 }
 
 func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
@@ -44,6 +45,10 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing flows for search index")
 	}
+	kinds, err := cataloger.ListKinds(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("Error listing kinds for search index")
+	}
 
 	return &searchIndex{
 		Modules: lo.Map(modules, func(m catalogrepo.Module, index int) string {
@@ -55,6 +60,7 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 		Teams:     teams,
 		Databases: databases,
 		Flows:     flows,
+		Kinds:     kinds,
 	}
 }
 
@@ -64,6 +70,7 @@ type SearchResult struct {
 	Interfaces []string
 	Databases  []string
 	Flows      []string
+	Kinds      []string
 }
 
 const flowSearchLimitMultiplier = 2
@@ -75,6 +82,7 @@ func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) S
 		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces), limit),
 		Databases:  matchesToSlice(fuzzy.Find(keyword, idx.Databases), limit),
 		Flows:      matchesToSlice(fuzzy.Find(keyword, idx.Flows), limit*flowSearchLimitMultiplier),
+		Kinds:      matchesToSlice(fuzzy.Find(keyword, idx.Kinds), limit*4),
 	}
 }
 
@@ -85,5 +93,3 @@ func matchesToSlice(matches fuzzy.Matches, limit int) []string {
 	// Limit to top 5 per category
 	return slice[0:min(len(slice), limit)]
 }
-
-

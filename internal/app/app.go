@@ -18,7 +18,7 @@ import (
 type Application struct {
 	config          config.Config
 	mcpServer       *server.MCPServer
-	serviceCatalog  *servicecatalog.ServiceCatalog
+	serviceCatalog  *servicecatalog.MCPServiceCatalog
 	serverTransport transport.ServerTransport
 }
 

@@ -178,6 +178,21 @@ func (mr *MockCatalogerMockRecorder) ListInterfacesByComplexity(ctx, limit any) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListInterfacesByComplexity", reflect.TypeOf((*MockCataloger)(nil).ListInterfacesByComplexity), ctx, limit)
 }
 
+// ListKinds mocks base method.
+func (m *MockCataloger) ListKinds(ctx context.Context) ([]string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListKinds", ctx)
+	ret0, _ := ret[0].([]string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListKinds indicates an expected call of ListKinds.
+func (mr *MockCatalogerMockRecorder) ListKinds(ctx any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListKinds", reflect.TypeOf((*MockCataloger)(nil).ListKinds), ctx)
+}
+
 // ListModules mocks base method.
 func (m *MockCataloger) ListModules(ctx context.Context, keyword string) ([]Module, error) {
 	m.ctrl.T.Helper()
@@ -222,6 +237,22 @@ func (m *MockCataloger) ListModulesOfTeam(ctx context.Context, id string) ([]str
 func (mr *MockCatalogerMockRecorder) ListModulesOfTeam(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListModulesOfTeam", reflect.TypeOf((*MockCataloger)(nil).ListModulesOfTeam), ctx, id)
+}
+
+// ListModulesWithKind mocks base method.
+func (m *MockCataloger) ListModulesWithKind(ctx context.Context, id string) ([]string, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListModulesWithKind", ctx, id)
+	ret0, _ := ret[0].([]string)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListModulesWithKind indicates an expected call of ListModulesWithKind.
+func (mr *MockCatalogerMockRecorder) ListModulesWithKind(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListModulesWithKind", reflect.TypeOf((*MockCataloger)(nil).ListModulesWithKind), ctx, id)
 }
 
 // ListParticpantsOfFlow mocks base method.

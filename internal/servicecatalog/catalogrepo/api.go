@@ -23,6 +23,8 @@ type Cataloger interface {
 	ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error)
 	ListFlows(ctx context.Context) ([]string, error)
 	ListParticpantsOfFlow(ctx context.Context, id string) ([]string, bool, error)
+	ListKinds(ctx context.Context) ([]string, error)
+	ListModulesWithKind(ctx context.Context, id string) ([]string, bool, error)
 }
 
 type Module struct {

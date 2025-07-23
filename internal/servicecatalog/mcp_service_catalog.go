@@ -10,21 +10,21 @@ import (
 	search "github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 )
 
-type ServiceCatalog struct {
+type MCPServiceCatalog struct {
 	server      *server.MCPServer
 	repo        catalogrepo.Cataloger
 	searchIndex search.Index
 }
 
-func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Index) *ServiceCatalog {
-	return &ServiceCatalog{
+func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Index) *MCPServiceCatalog {
+	return &MCPServiceCatalog{
 		server:      s,
 		repo:        repo,
 		searchIndex: searchIndex,
 	}
 }
 
-func (p *ServiceCatalog) RegisterHandlers(ctx context.Context) {
+func (p *MCPServiceCatalog) RegisterHandlers(ctx context.Context) {
 
 	p.server.AddTools(
 		handlers.NewSuggestCandidatesTool(p.searchIndex),

@@ -379,6 +379,32 @@ func TestListFlowParticpants(t *testing.T) {
 	assert.Equal(t, []string{"ca", "ca-core", "consumers", "pspdw"}, modules)
 }
 
+func TestListKinds(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	kinds, err := repo.ListKinds(ctx)
+	assert.NoError(t, err)
+	assert.Equal(t, []string{
+		"?", "api", "cache-api", "cache-db", "common",
+		"communicator", "constants", "consumer", "database", "domain", "entities",
+		"flink-job", "framework", "frontend", "integration-test", "ipp-terminal",
+		"job", "repositories", "services", "services_common", "terminal-component",
+		"ui-beans-common", "ui-resources", "ui-resources-common", "unknown", "util",
+		"webapp", "webapp_external", "webapp_internal"}, kinds)
+}
+
+func TestListAppsWithKind(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	kinds, exists, err := repo.ListModulesWithKind(ctx, "webapp_external")
+	assert.NoError(t, err)
+	assert.True(t, exists)
+	assert.Equal(t, []string{
+		"acs/webapps/acs", "apipix/apipix", "attestpos"}, kinds[0:3])
+}
+
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 

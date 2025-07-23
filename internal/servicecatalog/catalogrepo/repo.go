@@ -408,7 +408,45 @@ func (repo *CatalogRepo) ListParticpantsOfFlow(ctx context.Context, id string) (
 	interfaces := []string{}
 	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_flow WHERE flow_id = $1 ORDER BY module_id", id)
 	if err != nil {
-		return []string{}, false, fmt.Errorf("select flows error: %w", err)
+		return []string{}, false, fmt.Errorf("select modules of flow error: %w", err)
+	}
+
+	return interfaces, true, nil
+}
+
+func (repo *CatalogRepo) ListKinds(ctx context.Context) ([]string, error) {
+	flows := []string{}
+	err := repo.db.Select(&flows, "SELECT DISTINCT kind_id FROM kind ORDER BY kind_id ASC")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return flows, nil
+		}
+		return []string{}, fmt.Errorf("select kind error: %w", err)
+	}
+	return flows, nil
+}
+
+func (repo *CatalogRepo) ListModulesWithKind(ctx context.Context, id string) ([]string, bool, error) {
+	if repo.db == nil {
+		// already opened
+		return nil, false, fmt.Errorf("database not yet opened")
+	}
+
+	kind := ""
+	err := repo.db.Get(&kind, "SELECT kind_id FROM kind WHERE kind_id = $1", id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// not found, do return others with similar names
+			return []string{}, false, nil
+		}
+		return []string{}, false, fmt.Errorf("select kind error: %w", err)
+	}
+
+	// Which application are of this kind
+	interfaces := []string{}
+	err = repo.db.Select(&interfaces, "SELECT module_id FROM mod_kind WHERE kind_id = $1 ORDER BY module_id", id)
+	if err != nil {
+		return []string{}, false, fmt.Errorf("select modules with kind error: %w", err)
 	}
 
 	return interfaces, true, nil
