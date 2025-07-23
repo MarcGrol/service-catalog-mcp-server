@@ -21,11 +21,7 @@ func TestListModules(t *testing.T) {
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(modules), 1000)
 	assert.LessOrEqual(t, len(modules), 5000)
-	if doLog {
-		for _, m := range modules {
-			t.Logf("%+v", m)
-		}
-	}
+	assert.Equal(t, "psp", modules[0].ModuleID)
 }
 
 func TestListModulesByComplexity(t *testing.T) {

@@ -39,6 +39,8 @@ func (p *MCPServiceCatalog) RegisterHandlers(ctx context.Context) {
 		handlers.NewListInterfaceConsumersTool(p.repo, p.searchIndex),
 		handlers.NewListFlowsTool(p.repo),
 		handlers.NewListFlowParticipantsTool(p.repo, p.searchIndex),
+		handlers.NewListKindsTool(p.repo),
+		handlers.NewListModulesWithKindTool(p.repo, p.searchIndex),
 	)
 
 	p.server.AddResources(

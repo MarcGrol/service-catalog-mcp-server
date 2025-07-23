@@ -51,8 +51,8 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 }
 
 type moduleDescriptor struct {
-	ModuleID        string  `json:"module_id"`
-	Name            string  `json:"name"`
-	Description     string  `json:"description"`
-	ComplexityScore float32 `json:"complexityScore"`
+	ModuleID        string
+	Name            string
+	Description     string
+	ComplexityScore float32 `json:",omitempty"`
 }

@@ -51,8 +51,8 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 }
 
 type interfaceDescriptor struct {
-	InterfaceID     string `json:"interface_id"`
-	Description     string `json:"description"`
-	Kind            string `json:"kind"`
-	ComplexityScore int    `json:"complexityScore"`
+	InterfaceID     string
+	Description     string
+	Kind            string
+	ComplexityScore int `yaml:",omitempty"`
 }
