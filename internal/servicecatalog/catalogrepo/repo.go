@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"sort"
+
 	_ "github.com/glebarez/go-sqlite"
 	"github.com/jmoiron/sqlx"
 )
@@ -35,7 +36,7 @@ func (repo *CatalogRepo) Open(ctx context.Context) error {
 
 	repo.db, err = sqlx.Connect("sqlite", repo.filename)
 	if err != nil {
-				return fmt.Errorf("connect error: %w", err)
+		return fmt.Errorf("connect error: %w", err)
 	}
 
 	return nil
@@ -209,7 +210,13 @@ func (repo *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Inter
 	}
 
 	api := Interface{}
-	err := repo.db.Get(&api, "SELECT * FROM interface WHERE interface_id = $1", id)
+	err := repo.db.Get(&api, `
+		SELECT
+			m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count
+		FROM
+			interface i
+			LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id
+		WHERE i.interface_id = $1`, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return api, false, nil
@@ -235,7 +242,14 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 	if keyword == "" {
 
 		interfaces := []Interface{}
-		err := repo.db.Select(&interfaces, "SELECT * FROM interface ORDER BY interface_id")
+		err := repo.db.Select(&interfaces, `
+	SELECT 
+		m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count 
+	FROM 
+		interface i
+		LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id 
+	ORDER BY 
+		i.interface_id`)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return interfaces, nil
@@ -246,7 +260,16 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 	}
 
 	interfaces := []Interface{}
-	err := repo.db.Select(&interfaces, "SELECT * FROM interface WHERE interface_id LIKE $1 ORDER BY interface_id", "%"+keyword+"%")
+	err := repo.db.Select(&interfaces, `
+	SELECT 
+		m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count 
+	FROM 
+		interface i
+		LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id 
+	WHERE 
+		i.interface_id LIKE $1
+	ORDER BY 
+		i.interface_id`, "%"+keyword+"%")
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return interfaces, nil
@@ -259,7 +282,14 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 
 func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit int) ([]Interface, error) {
 	interfaces := []Interface{}
-	err := repo.db.Select(&interfaces, "SELECT * FROM interface")
+	err := repo.db.Select(&interfaces, `
+	SELECT 
+		m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count 
+	FROM 
+		interface i
+		LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id 
+	ORDER BY 
+		i.method_count DESC LIMIT $1`, limit)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return interfaces, nil
@@ -267,14 +297,8 @@ func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit i
 		return interfaces, fmt.Errorf("list interface error: %w", err)
 	}
 
-	sort.Slice(interfaces, func(i, j int) bool {
-		return interfaces[i].MethodCount > interfaces[j].MethodCount
-	})
-
 	return interfaces[0:min(limit, len(interfaces))], nil
 }
-
-
 
 func (repo *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {

@@ -152,6 +152,7 @@ func TestListInterfaces(t *testing.T) {
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(interfaces), 10)
 	assert.LessOrEqual(t, len(interfaces), 2000)
+	assert.Equal(t, "threesixty/compass/webapp/compass", interfaces[0].ModuleID)
 	assert.Equal(t, "AboutResourceV2", interfaces[0].InterfaceID)
 
 	if doLog {
@@ -169,6 +170,7 @@ func TestListInterfacesFiltered(t *testing.T) {
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(interfaces), 1)
 	assert.LessOrEqual(t, len(interfaces), 20)
+	assert.Equal(t, "partner", interfaces[0].ModuleID)
 	assert.Equal(t, "PartnerDocumentsResourceV1", interfaces[0].InterfaceID)
 
 	if doLog {
@@ -207,6 +209,7 @@ func TestGetInterfaceOnID(t *testing.T) {
 	module, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
 	assert.NoError(t, err)
 	assert.True(t, exists)
+	assert.Equal(t, "paymentengine/acm/webapp/acm", module.ModuleID)
 	assert.Equal(t, "com.adyen.services.acm.AcmService", module.InterfaceID)
 	assert.Equal(t, "ACM", module.Description)
 	assert.Equal(t, "RPL", module.Kind)

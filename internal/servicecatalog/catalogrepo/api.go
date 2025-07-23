@@ -51,15 +51,15 @@ type Module struct {
 }
 
 const (
-	lineCountWeight        float32 = 0.25
-	databaseCountWeight    float32 = 0.20
-	teamCountWeight        float32 = 0.15
-	exposedApiCountWeight  float32 = 0.15
-	consumedApiCountWeight float32 = 0.15
-	jobCountWeight         float32 = 0.10
-	fileCountWeight        float32 = 0.10
-	flowCountWeight        float32 = 0.05
-	kindCountWeight        float32 = 0.05
+	lineCountWeight           float32 = 0.25
+	databaseCountWeight       float32 = 0.20
+	teamCountWeight           float32 = 0.15
+	exposedApiCountWeight     float32 = 0.15
+	consumedApiCountWeight    float32 = 0.15
+	jobCountWeight            float32 = 0.10
+	fileCountWeight           float32 = 0.10
+	flowCountWeight           float32 = 0.05
+	kindCountWeight           float32 = 0.05
 	complexityScoreMultiplier float32 = 100
 )
 
@@ -90,6 +90,7 @@ func (m Module) String() string {
 }
 
 type Interface struct {
+	ModuleID      string   `db:"module_id" yaml:",omitempty"`
 	InterfaceID   string   `db:"interface_id" yaml:",omitempty"`
 	Description   string   `db:"description" yaml:",omitempty"`
 	Kind          string   `db:"kind" yaml:",omitempty"`
