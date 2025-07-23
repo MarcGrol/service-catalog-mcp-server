@@ -20,7 +20,7 @@ And type json rpc in the command-line
 
 **request:**
 
-    {"method":"tools/call","params":{"name":"get_interface","arguments":{"interface_id":"com.adyen.services.partner.PartnerCommissionService"}},"jsonrpc":"2.0","id":32}
+    {"method":"tools/call","params":{"name":"get_interface","arguments":{"interface_id":"com.adyen.services.partner.PartnerCommissionService"}},"jsonrpc":"2.0","id":32}   
 
 **response:**
 

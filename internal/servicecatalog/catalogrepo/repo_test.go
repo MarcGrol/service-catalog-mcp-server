@@ -200,24 +200,41 @@ func TestGetInterfaceOnID(t *testing.T) {
 	repo, ctx, cleanup := setup(t)
 	defer cleanup()
 
-	interfaceID := "com.adyen.services.acm.AcmService"
-
-	if doLog {
-		fmt.Printf("Details of interface %s:\n", interfaceID)
+	{
+		interfaceID := "com.adyen.services.acm.AcmService"
+		module, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
+		assert.NoError(t, err)
+		assert.True(t, exists)
+		assert.Equal(t, "paymentengine/acm/webapp/acm", module.ModuleID)
+		assert.Equal(t, interfaceID, module.InterfaceID)
+		assert.Equal(t, "ACM", module.Description)
+		assert.Equal(t, "RPL", module.Kind)
+		assert.Nil(t, module.OpenAPISpecs)
+		assert.Equal(t, "paymentengine/acm/webapp/acm/src/main/resources/rpl-acm.xml", *module.RPLSpecs)
 	}
-
-	module, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
-	assert.NoError(t, err)
-	assert.True(t, exists)
-	assert.Equal(t, "paymentengine/acm/webapp/acm", module.ModuleID)
-	assert.Equal(t, "com.adyen.services.acm.AcmService", module.InterfaceID)
-	assert.Equal(t, "ACM", module.Description)
-	assert.Equal(t, "RPL", module.Kind)
-	assert.Equal(t, "paymentengine/acm/webapp/acm/src/main/resources/rpl-acm.xml", module.Spec)
-
-	if doLog {
-		asJson, _ := json.MarshalIndent(module, "", "  ")
-		t.Logf("%s", asJson)
+	{
+		interfaceID := "com.adyen.services.checkout.shopper.BinLookupService"
+		iface, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
+		assert.NoError(t, err)
+		assert.True(t, exists)
+		assert.Equal(t, "checkoutshopper", iface.ModuleID)
+		assert.Equal(t, interfaceID, iface.InterfaceID)
+		assert.Equal(t, "BinLookupService", iface.Description)
+		assert.Equal(t, "RPL", iface.Kind)
+		assert.Nil(t, iface.OpenAPISpecs)
+		assert.Equal(t, "checkoutshopper/src/main/resources/rpl-checkoutBinLookup.xml", *iface.RPLSpecs)
+	}
+	{
+		interfaceID := "ManagementServiceV3"
+		iface, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
+		assert.NoError(t, err)
+		assert.True(t, exists)
+		assert.Equal(t, "configurationapi", iface.ModuleID)
+		assert.Equal(t, interfaceID, iface.InterfaceID)
+		assert.Equal(t, "ManagementService", iface.Description)
+		assert.Equal(t, "OpenAPI", iface.Kind)
+		assert.Equal(t, "configurationapi/open-api-specs/prod/rpl/ManagementService-v3.json", *iface.OpenAPISpecs)
+		assert.Nil(t, iface.RPLSpecs)
 	}
 }
 

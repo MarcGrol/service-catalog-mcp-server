@@ -94,7 +94,8 @@ type Interface struct {
 	InterfaceID   string   `db:"interface_id" yaml:",omitempty"`
 	Description   string   `db:"description" yaml:",omitempty"`
 	Kind          string   `db:"kind" yaml:",omitempty"`
-	Spec          string   `db:"specification" yaml:",omitempty"`
+	OpenAPISpecs  *string  `db:"openapi_specification" yaml:",omitempty"`
+	RPLSpecs      *string  `db:"rpl_specification" yaml:",omitempty"`
 	MethodCount   int      `db:"method_count" yaml:",omitempty"`
 	Methods       []string `db:"-" yaml:",omitempty"`
 	MethodBasedID string   `db:"method_based_interface_id" yaml:",omitempty"`

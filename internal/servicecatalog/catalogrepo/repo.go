@@ -212,9 +212,9 @@ func (repo *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Inter
 	api := Interface{}
 	err := repo.db.Get(&api, `
 		SELECT
-			m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count
+			m.module_id, i.interface_id, i.description, i.kind, i.openapi_specification, i.rpl_specification, i.method_count
 		FROM
-			interface i
+			enriched_interface i
 			LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id
 		WHERE i.interface_id = $1`, id)
 	if err != nil {
@@ -244,9 +244,9 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 		interfaces := []Interface{}
 		err := repo.db.Select(&interfaces, `
 	SELECT 
-		m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count 
+		m.module_id, i.interface_id, i.description, i.kind, i.openapi_specification, i.rpl_specification, i.method_count
 	FROM 
-		interface i
+		enriched_interface i
 		LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id 
 	ORDER BY 
 		i.interface_id`)
@@ -254,7 +254,7 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 			if err == sql.ErrNoRows {
 				return interfaces, nil
 			}
-			return interfaces, fmt.Errorf("lit interface error: %w", err)
+			return interfaces, fmt.Errorf("list interface error: %w", err)
 		}
 		return interfaces, nil
 	}
@@ -262,9 +262,9 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 	interfaces := []Interface{}
 	err := repo.db.Select(&interfaces, `
 	SELECT 
-		m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count 
+		m.module_id, i.interface_id, i.description, i.kind, i.openapi_specification, i.rpl_specification, i.method_count
 	FROM 
-		interface i
+		enriched_interface i
 		LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id 
 	WHERE 
 		i.interface_id LIKE $1
@@ -284,9 +284,9 @@ func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit i
 	interfaces := []Interface{}
 	err := repo.db.Select(&interfaces, `
 	SELECT 
-		m.module_id, i.interface_id, i.description, i.kind, i.specification, i.method_count, kind, specification, method_count 
+		m.module_id, i.interface_id, i.description, i.kind, i.openapi_specification, i.rpl_specification, i.method_count
 	FROM 
-		interface i
+		enriched_interface i
 		LEFT JOIN mod_exposed_interface m ON i.interface_id = m.interface_id 
 	ORDER BY 
 		i.method_count DESC LIMIT $1`, limit)
