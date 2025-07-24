@@ -5,8 +5,8 @@ import (
 
 	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
 type mcpHandler struct {

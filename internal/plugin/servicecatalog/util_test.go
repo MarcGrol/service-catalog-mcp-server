@@ -4,11 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {

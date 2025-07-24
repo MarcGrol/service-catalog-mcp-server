@@ -7,11 +7,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/app"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
 func main() {
