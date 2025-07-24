@@ -1,6 +1,10 @@
 package handlers
 
 import (
+	"context"
+
+	"github.com/mark3labs/mcp-go/server"
+
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 )
@@ -21,4 +25,32 @@ func NewMCPHandler(repo catalogrepo.Cataloger, idx search.Index) *MCPHandler {
 		repo: repo,
 		idx:  idx,
 	}
+}
+
+// RegisterAllHandlers registers all tools, resources, and prompts with the MCP server.
+func (h *MCPHandler) RegisterAllHandlers(s *server.MCPServer, ctx context.Context) {
+	s.AddTools(
+		h.NewSuggestCandidatesTool(),
+		h.NewListModulesTool(),
+		h.NewListModulesByComplexityTool(),
+		h.NewGetSingleModuleTool(),
+		h.NewListInterfacesTool(),
+		h.NewListInterfacesByComplexityTool(),
+		h.NewLGetSingleInterfaceTool(),
+		h.NewListModulesOfTeamsTool(),
+		h.NewListMDatabaseConsumersTool(),
+		h.NewListInterfaceConsumersTool(),
+		h.NewListFlowsTool(),
+		h.NewListFlowParticipantsTool(),
+		h.NewListKindsTool(),
+		h.NewListModulesWithKindTool(),
+	)
+
+	s.AddResources(
+		h.NewModulesResource(),
+	)
+
+	s.AddPrompts(
+		h.NewServiceCatalogPrompt(),
+	)
 }
