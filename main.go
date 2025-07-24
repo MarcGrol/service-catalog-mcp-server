@@ -7,8 +7,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/config"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"

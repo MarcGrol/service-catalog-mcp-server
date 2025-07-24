@@ -7,8 +7,8 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/rs/zerolog/log"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/transport"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/config"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/transport"
 )
 
 // MCPService represents the interface for the MCP service.

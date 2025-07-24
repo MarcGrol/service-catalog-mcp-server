@@ -2,11 +2,12 @@ package catalogrepo
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
-	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 )
 
 func TestListModules(t *testing.T) {

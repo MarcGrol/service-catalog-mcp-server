@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 )
 
 // Config holds the application's configuration.

@@ -7,8 +7,7 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
 )
 
 // NewModulesResource returns the MCP resource contract and handler for modules configuration.

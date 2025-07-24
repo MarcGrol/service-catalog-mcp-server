@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 )
 
