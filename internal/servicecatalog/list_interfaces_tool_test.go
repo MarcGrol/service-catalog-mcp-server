@@ -23,7 +23,7 @@ func TestListInterfacesTool_SuccessWithKeyword(t *testing.T) {
 		{InterfaceID: "interface2", Description: "desc2", Kind: "kind2"},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListInterfacesTool()
+	tool := NewMCPHandler(repo, nil).listInterfacesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces", map[string]interface{}{
@@ -50,7 +50,7 @@ func TestListInterfacesTool_Error(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListInterfaces(gomock.Any(), "error").Return(nil, errors.New("failed to list interfaces"))
 
-	tool := NewMCPHandler(repo, nil).NewListInterfacesTool()
+	tool := NewMCPHandler(repo, nil).listInterfacesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces", map[string]interface{}{
@@ -71,7 +71,7 @@ func TestListInterfacesTool_MissingKeyword(t *testing.T) {
 
 	repo := catalogrepo.NewMockCataloger(ctrl)
 
-	tool := NewMCPHandler(repo, nil).NewListInterfacesTool()
+	tool := NewMCPHandler(repo, nil).listInterfacesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces", nil))

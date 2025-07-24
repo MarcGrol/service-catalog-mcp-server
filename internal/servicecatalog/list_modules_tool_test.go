@@ -23,7 +23,7 @@ func TestListModulesTool_SuccessWithKeyword(t *testing.T) {
 		{ModuleID: "module2", Name: "Module Two", Description: "Desc Two"},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListModulesTool()
+	tool := NewMCPHandler(repo, nil).listModulesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules", map[string]interface{}{
@@ -48,7 +48,7 @@ func TestListModulesTool_Error(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModules(gomock.Any(), "error").Return(nil, errors.New("failed to list modules"))
 
-	tool := NewMCPHandler(repo, nil).NewListModulesTool()
+	tool := NewMCPHandler(repo, nil).listModulesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules", map[string]interface{}{
@@ -69,7 +69,7 @@ func TestListModulesTool_MissingKeyword(t *testing.T) {
 
 	repo := catalogrepo.NewMockCataloger(ctrl)
 
-	tool := NewMCPHandler(repo, nil).NewListModulesTool()
+	tool := NewMCPHandler(repo, nil).listModulesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules", nil))

@@ -23,7 +23,7 @@ func TestListModulesOfTeamsTool_Success(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListModulesOfTeamsTool()
+	tool := NewMCPHandler(repo, idx).listModulesOfTeamsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_of_teams", map[string]interface{}{
@@ -49,7 +49,7 @@ func TestListModulesOfTeamsTool_NotFound(t *testing.T) {
 	idx := search.NewMockIndex(ctrl)
 	idx.EXPECT().Search(gomock.Any(), "nonexistent_team", 10).Return(search.Result{Teams: []string{"suggested_team"}})
 
-	tool := NewMCPHandler(repo, idx).NewListModulesOfTeamsTool()
+	tool := NewMCPHandler(repo, idx).listModulesOfTeamsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_of_teams", map[string]interface{}{
@@ -74,7 +74,7 @@ func TestListModulesOfTeamsTool_Error(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListModulesOfTeamsTool()
+	tool := NewMCPHandler(repo, idx).listModulesOfTeamsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_of_teams", map[string]interface{}{
@@ -96,7 +96,7 @@ func TestListModulesOfTeamsTool_MissingTeamID(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListModulesOfTeamsTool()
+	tool := NewMCPHandler(repo, idx).listModulesOfTeamsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_of_teams", nil))

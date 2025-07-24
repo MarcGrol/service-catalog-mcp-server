@@ -12,7 +12,7 @@ import (
 )
 
 // NewListModulesByComplexityTool returns the MCP tool definition and its handler for listing modules.
-func (h *mcpHandler) NewListModulesByComplexityTool() server.ServerTool {
+func (h *mcpHandler) listModulesByComplexityTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_by_complexity",

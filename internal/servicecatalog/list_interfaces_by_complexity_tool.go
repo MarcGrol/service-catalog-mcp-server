@@ -12,7 +12,7 @@ import (
 )
 
 // NewListInterfacesByComplexityTool returns the MCP tool definition and its handler for listing interfaces by complexity.
-func (h *mcpHandler) NewListInterfacesByComplexityTool() server.ServerTool {
+func (h *mcpHandler) listInterfacesByComplexityTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_interfaces_by_complexity",

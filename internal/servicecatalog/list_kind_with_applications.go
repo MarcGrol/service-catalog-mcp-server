@@ -12,7 +12,7 @@ import (
 )
 
 // NewListModulesWithKindTool returns the MCP tool definition and its handler for listing modules with kind.
-func (h *mcpHandler) NewListModulesWithKindTool() server.ServerTool {
+func (h *mcpHandler) listModulesWithKindTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_with_kind",

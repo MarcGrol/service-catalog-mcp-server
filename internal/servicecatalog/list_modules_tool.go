@@ -12,7 +12,7 @@ import (
 )
 
 // NewListModulesTool returns the MCP tool definition and its handler for listing modules.
-func (h *mcpHandler) NewListModulesTool() server.ServerTool {
+func (h *mcpHandler) listModulesTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules",

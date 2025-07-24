@@ -13,7 +13,7 @@ import (
 )
 
 // NewListModulesOfTeamsTool returns the MCP tool definition and its handler for listing interfaces.
-func (h *mcpHandler) NewListModulesOfTeamsTool() server.ServerTool {
+func (h *mcpHandler) listModulesOfTeamsTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_of_teams",

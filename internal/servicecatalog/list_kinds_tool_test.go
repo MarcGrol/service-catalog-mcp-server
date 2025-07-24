@@ -20,7 +20,7 @@ func TestListKindsTool_Success(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListKinds(gomock.Any()).Return([]string{"kind1", "kind2"}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListKindsTool()
+	tool := NewMCPHandler(repo, nil).listKindsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_kinds", nil))
@@ -42,7 +42,7 @@ func TestListKindsTool_Error(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListKinds(gomock.Any()).Return(nil, errors.New("failed to list types"))
 
-	tool := NewMCPHandler(repo, nil).NewListKindsTool()
+	tool := NewMCPHandler(repo, nil).listKindsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_kinds", nil))

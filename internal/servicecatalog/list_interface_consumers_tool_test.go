@@ -23,7 +23,7 @@ func TestListInterfaceConsumersTool_Success(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListInterfaceConsumersTool()
+	tool := NewMCPHandler(repo, idx).listInterfaceConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interface_consumers", map[string]interface{}{
@@ -49,7 +49,7 @@ func TestListInterfaceConsumersTool_NotFound(t *testing.T) {
 	idx := search.NewMockIndex(ctrl)
 	idx.EXPECT().Search(gomock.Any(), "nonexistent_interface", 10).Return(search.Result{Interfaces: []string{"suggested_interface"}})
 
-	tool := NewMCPHandler(repo, idx).NewListInterfaceConsumersTool()
+	tool := NewMCPHandler(repo, idx).listInterfaceConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interface_consumers", map[string]interface{}{
@@ -74,7 +74,7 @@ func TestListInterfaceConsumersTool_Error(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListInterfaceConsumersTool()
+	tool := NewMCPHandler(repo, idx).listInterfaceConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interface_consumers", map[string]interface{}{
@@ -96,7 +96,7 @@ func TestListInterfaceConsumersTool_MissingInterfaceID(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListInterfaceConsumersTool()
+	tool := NewMCPHandler(repo, idx).listInterfaceConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interface_consumers", nil))

@@ -12,7 +12,7 @@ import (
 )
 
 // NewSuggestCandidatesTool returns the MCP tool definition and its handler for listing interfaces.
-func (h *mcpHandler) NewSuggestCandidatesTool() server.ServerTool {
+func (h *mcpHandler) suggestCandidatesTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"suggest_candidates",

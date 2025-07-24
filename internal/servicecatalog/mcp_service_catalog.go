@@ -7,7 +7,7 @@ import (
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 
-	search "github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 )
 
 // MCPServiceCatalog represents the service catalog for MCP.

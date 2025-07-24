@@ -12,7 +12,7 @@ import (
 )
 
 // NewGetSingleModuleTool returns the MCP tool definition and its handler for listing interfaces.
-func (h *mcpHandler) NewGetSingleModuleTool() server.ServerTool {
+func (h *mcpHandler) getSingleModuleTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"get_module",

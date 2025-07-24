@@ -23,7 +23,7 @@ func TestListKindWithApplicationsTool_Success(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListModulesWithKindTool()
+	tool := NewMCPHandler(repo, idx).listModulesWithKindTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_kind_participants", map[string]interface{}{
@@ -49,7 +49,7 @@ func TestListKindWithApplicationsTool_NotFound(t *testing.T) {
 	idx := search.NewMockIndex(ctrl)
 	idx.EXPECT().Search(gomock.Any(), "nonexistent_kind", 10).Return(search.Result{Kinds: []string{"suggested_kind"}})
 
-	tool := NewMCPHandler(repo, idx).NewListModulesWithKindTool()
+	tool := NewMCPHandler(repo, idx).listModulesWithKindTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_kind_participants", map[string]interface{}{
@@ -74,7 +74,7 @@ func TestListKindParticipantsTool_Error(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListModulesWithKindTool()
+	tool := NewMCPHandler(repo, idx).listModulesWithKindTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_with_kind", map[string]interface{}{
@@ -96,7 +96,7 @@ func TestListKindParticipantsTool_MissingKindID(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewMCPHandler(repo, idx).NewListModulesWithKindTool()
+	tool := NewMCPHandler(repo, idx).listModulesWithKindTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_kind_participants", nil))

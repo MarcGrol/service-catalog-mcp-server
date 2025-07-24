@@ -25,27 +25,27 @@ func NewMCPHandler(repo catalogrepo.Cataloger, idx search.Index) *mcpHandler {
 // RegisterAllHandlers registers all tools, resources, and prompts with the MCP server.
 func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServer) {
 	s.AddTools(
-		h.NewSuggestCandidatesTool(),
-		h.NewListModulesTool(),
-		h.NewListModulesByComplexityTool(),
-		h.NewGetSingleModuleTool(),
-		h.NewListInterfacesTool(),
-		h.NewListInterfacesByComplexityTool(),
-		h.NewGetSingleInterfaceTool(),
-		h.NewListModulesOfTeamsTool(),
-		h.NewListMDatabaseConsumersTool(),
-		h.NewListInterfaceConsumersTool(),
-		h.NewListFlowsTool(),
-		h.NewListFlowParticipantsTool(),
-		h.NewListKindsTool(),
-		h.NewListModulesWithKindTool(),
+		h.suggestCandidatesTool(),
+		h.listModulesTool(),
+		h.listModulesByComplexityTool(),
+		h.getSingleModuleTool(),
+		h.listInterfacesTool(),
+		h.listInterfacesByComplexityTool(),
+		h.getSingleInterfaceTool(),
+		h.listModulesOfTeamsTool(),
+		h.listMDatabaseConsumersTool(),
+		h.listInterfaceConsumersTool(),
+		h.listFlowsTool(),
+		h.listFlowParticipantsTool(),
+		h.listKindsTool(),
+		h.listModulesWithKindTool(),
 	)
 
 	s.AddResources(
-		h.NewModulesResource(),
+		h.modulesResource(),
 	)
 
 	s.AddPrompts(
-		h.NewServiceCatalogPrompt(),
+		h.serviceCatalogPrompt(),
 	)
 }

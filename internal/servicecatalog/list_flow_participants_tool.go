@@ -12,7 +12,7 @@ import (
 )
 
 // NewListFlowParticipantsTool returns the MCP tool definition and its handler for listing flow participants.
-func (h *mcpHandler) NewListFlowParticipantsTool() server.ServerTool {
+func (h *mcpHandler) listFlowParticipantsTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_flow_participants",

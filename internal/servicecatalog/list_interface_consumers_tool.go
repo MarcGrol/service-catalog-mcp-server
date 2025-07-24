@@ -12,7 +12,7 @@ import (
 )
 
 // NewListInterfaceConsumersTool returns the MCP tool definition and its handler for listing interfaces.
-func (h *mcpHandler) NewListInterfaceConsumersTool() server.ServerTool {
+func (h *mcpHandler) listInterfaceConsumersTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_interface_consumers",

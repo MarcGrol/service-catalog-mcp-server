@@ -23,7 +23,7 @@ func TestListModulesByComplexityTool_SuccessWithLimit(t *testing.T) {
 		{ModuleID: "module2", Name: "Module Two", Description: "Desc Two", ComplexityScore: 8.2},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListModulesByComplexityTool()
+	tool := NewMCPHandler(repo, nil).listModulesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_by_complexity", map[string]interface{}{
@@ -53,7 +53,7 @@ func TestListModulesByComplexityTool_SuccessWithoutLimit(t *testing.T) {
 		{ModuleID: "moduleB", Name: "Module B", Description: "Desc B", ComplexityScore: 30.9},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListModulesByComplexityTool()
+	tool := NewMCPHandler(repo, nil).listModulesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_by_complexity", nil))
@@ -78,7 +78,7 @@ func TestListModulesByComplexityTool_Error(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesByCompexity(gomock.Any(), gomock.Any()).Return(nil, errors.New("failed to list modules"))
 
-	tool := NewMCPHandler(repo, nil).NewListModulesByComplexityTool()
+	tool := NewMCPHandler(repo, nil).listModulesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_by_complexity", nil))

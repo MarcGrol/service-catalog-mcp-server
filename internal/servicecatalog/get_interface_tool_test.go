@@ -11,7 +11,7 @@ func TestGetInterfaceTool_Success(t *testing.T) {
 	defer cleanup()
 
 	// when
-	result, err := NewMCPHandler(store, idx).NewGetSingleInterfaceTool().Handler(ctx, createRequest("interface_id", map[string]interface{}{
+	result, err := NewMCPHandler(store, idx).getSingleInterfaceTool().Handler(ctx, createRequest("interface_id", map[string]interface{}{
 		"interface_id": "com.adyen.services.acm.AcmService",
 	}))
 
@@ -26,7 +26,7 @@ func TestGetInterfaceTool_NotFound(t *testing.T) {
 	defer cleanup()
 
 	// when
-	result, err := NewMCPHandler(store, idx).NewGetSingleInterfaceTool().Handler(ctx, createRequest("interface_id", map[string]interface{}{
+	result, err := NewMCPHandler(store, idx).getSingleInterfaceTool().Handler(ctx, createRequest("interface_id", map[string]interface{}{
 		"interface_id": "lalala",
 	}))
 

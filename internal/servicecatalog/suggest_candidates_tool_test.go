@@ -11,7 +11,7 @@ func TestSuggestCandidatesSuccess(t *testing.T) {
 	defer cleanup()
 
 	// when
-	result, err := NewMCPHandler(nil, idx).NewSuggestCandidatesTool().Handler(ctx,
+	result, err := NewMCPHandler(nil, idx).suggestCandidatesTool().Handler(ctx,
 		createRequest("suggest_candidates", map[string]interface{}{
 			"keyword": "partner",
 		}))

@@ -20,7 +20,7 @@ func TestListFlowsTool_Success(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListFlows(gomock.Any()).Return([]string{"flow1", "flow2"}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListFlowsTool()
+	tool := NewMCPHandler(repo, nil).listFlowsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_flows", nil))
@@ -42,7 +42,7 @@ func TestListFlowsTool_Error(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListFlows(gomock.Any()).Return(nil, errors.New("failed to list flows"))
 
-	tool := NewMCPHandler(repo, nil).NewListFlowsTool()
+	tool := NewMCPHandler(repo, nil).listFlowsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_flows", nil))

@@ -23,7 +23,7 @@ func TestListInterfacesByComplexityTool_SuccessWithLimit(t *testing.T) {
 		{InterfaceID: "interface2", MethodCount: 5},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListInterfacesByComplexityTool()
+	tool := NewMCPHandler(repo, nil).listInterfacesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces_by_complexity", map[string]interface{}{
@@ -51,7 +51,7 @@ func TestListInterfacesByComplexityTool_SuccessWithoutLimit(t *testing.T) {
 		{InterfaceID: "interfaceB", MethodCount: 50},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).NewListInterfacesByComplexityTool()
+	tool := NewMCPHandler(repo, nil).listInterfacesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces_by_complexity", nil))
@@ -74,7 +74,7 @@ func TestListInterfacesByComplexityTool_Error(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListInterfacesByComplexity(gomock.Any(), gomock.Any()).Return(nil, errors.New("failed to list interfaces"))
 
-	tool := NewMCPHandler(repo, nil).NewListInterfacesByComplexityTool()
+	tool := NewMCPHandler(repo, nil).listInterfacesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces_by_complexity", nil))

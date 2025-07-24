@@ -12,7 +12,7 @@ import (
 )
 
 // NewModulesResource returns the MCP resource contract and handler for modules configuration.
-func (h *mcpHandler) NewModulesResource() server.ServerResource {
+func (h *mcpHandler) modulesResource() server.ServerResource {
 	return server.ServerResource{
 		Resource: mcp.NewResource(
 			"catalog://modules",

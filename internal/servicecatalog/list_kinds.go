@@ -12,7 +12,7 @@ import (
 )
 
 // NewListKindsTool returns the MCP tool definition and its handler for listing kinds.
-func (h *mcpHandler) NewListKindsTool() server.ServerTool {
+func (h *mcpHandler) listKindsTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_kinds",
