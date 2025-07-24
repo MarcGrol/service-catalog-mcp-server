@@ -80,11 +80,8 @@ To integrate the `service-catalog-mcp-server` with Claude-desktop using `stdio` 
 ## Project Structure
 
 - `main.go`: Entry point of the application.
-- `internal/app`: Application initialization and setup.
-- `internal/config`: Configuration management.
-- `internal/servicecatalog`: Core service catalog logic, including handlers, repository, and search.
-- `internal/transport`: Handles communication protocols (e.g., HTTP, SSE).
-- `internal/servicecatalog/handlers`: Various endpoints for querying the service catalog. 
+- `internal/core/`: Framework to configure and start mcp-services using differnt transports
+- `internal/plugin/servicecatalog`: Core service catalog logic, including handlers, repository, and search.
 
 ## Contributing
 
