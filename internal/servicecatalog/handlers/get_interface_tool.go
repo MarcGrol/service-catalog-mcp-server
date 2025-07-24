@@ -8,12 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewLGetSingleInterfaceTool returns the MCP tool definition and its handler for listing interfaces.
-func NewLGetSingleInterfaceTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+func (h *MCPHandler) NewLGetSingleInterfaceTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"get_interface",
@@ -31,7 +30,7 @@ func NewLGetSingleInterfaceTool(repo catalogrepo.Cataloger, idx search.Index) se
 			}
 
 			// call business logic
-			iface, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
+			iface, exists, err := h.repo.GetInterfaceOnID(ctx, interfaceID)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,
@@ -42,7 +41,7 @@ func NewLGetSingleInterfaceTool(repo catalogrepo.Cataloger, idx search.Index) se
 					resp.NotFound(ctx,
 						fmt.Sprintf("Interface with ID %s not found", interfaceID),
 						"interface_id",
-						idx.Search(ctx, interfaceID, 10).Interfaces,
+						h.idx.Search(ctx, interfaceID, 10).Interfaces,
 					)), nil
 			}
 

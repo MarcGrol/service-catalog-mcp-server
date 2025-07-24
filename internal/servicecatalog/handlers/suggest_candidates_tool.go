@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewSuggestCandidatesTool returns the MCP tool definition and its handler for listing interfaces.
-func NewSuggestCandidatesTool(index search.Index) server.ServerTool {
+func (h *MCPHandler) NewSuggestCandidatesTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"suggest_candidates",
@@ -30,7 +30,7 @@ func NewSuggestCandidatesTool(index search.Index) server.ServerTool {
 			limit := request.GetInt("limit_to", 10)
 
 			// call business logic
-			searchResult := index.Search(ctx, keyword, limit)
+			searchResult := h.idx.Search(ctx, keyword, limit)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

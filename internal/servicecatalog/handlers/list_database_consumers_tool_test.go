@@ -23,7 +23,7 @@ func TestListDatabaseConsumersTool_Success(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewListMDatabaseConsumersTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListMDatabaseConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_database_consumers", map[string]interface{}{
@@ -49,7 +49,7 @@ func TestListDatabaseConsumersTool_NotFound(t *testing.T) {
 	idx := search.NewMockIndex(ctrl)
 	idx.EXPECT().Search(gomock.Any(), "nonexistent_db", 10).Return(search.Result{Databases: []string{"suggested_db"}})
 
-	tool := NewListMDatabaseConsumersTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListMDatabaseConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_database_consumers", map[string]interface{}{
@@ -74,7 +74,7 @@ func TestListDatabaseConsumersTool_Error(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewListMDatabaseConsumersTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListMDatabaseConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_database_consumers", map[string]interface{}{
@@ -96,7 +96,7 @@ func TestListDatabaseConsumersTool_MissingDatabaseID(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewListMDatabaseConsumersTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListMDatabaseConsumersTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_database_consumers", nil))

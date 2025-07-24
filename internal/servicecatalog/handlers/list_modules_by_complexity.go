@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	
 )
 
 // NewListModulesByComplexityTool returns the MCP tool definition and its handler for listing modules.
-func NewListModulesByComplexityTool(repo catalogrepo.Cataloger) server.ServerTool {
+func (h *MCPHandler) NewListModulesByComplexityTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_by_complexity",
@@ -24,7 +24,7 @@ func NewListModulesByComplexityTool(repo catalogrepo.Cataloger) server.ServerToo
 			limit := request.GetInt("limit_to", 20)
 
 			// call business logic
-			modules, err := repo.ListModulesByCompexity(ctx, limit)
+			modules, err := h.repo.ListModulesByCompexity(ctx, limit)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

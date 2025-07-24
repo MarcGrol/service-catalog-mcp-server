@@ -9,12 +9,11 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewListModulesOfTeamsTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListModulesOfTeamsTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+func (h *MCPHandler) NewListModulesOfTeamsTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_of_teams",
@@ -32,7 +31,7 @@ func NewListModulesOfTeamsTool(repo catalogrepo.Cataloger, idx search.Index) ser
 			}
 
 			// call business logic
-			moduleNames, exists, err := repo.ListModulesOfTeam(ctx, teamID)
+			moduleNames, exists, err := h.repo.ListModulesOfTeam(ctx, teamID)
 			if err != nil {
 				return mcp.NewToolResultError(resp.InternalError(ctx,
 					fmt.Sprintf("error listing modules of team %s: %s", teamID, err))), nil
@@ -42,7 +41,7 @@ func NewListModulesOfTeamsTool(repo catalogrepo.Cataloger, idx search.Index) ser
 					resp.NotFound(ctx,
 						fmt.Sprintf("Team with ID %s not found", teamID),
 						"team_id",
-						idx.Search(ctx, teamID, 10).Teams)), nil
+						h.idx.Search(ctx, teamID, 10).Teams)), nil
 
 			}
 

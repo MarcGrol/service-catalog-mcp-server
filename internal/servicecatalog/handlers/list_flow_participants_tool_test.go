@@ -23,7 +23,7 @@ func TestListFlowParticipantsTool_Success(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewListFlowParticipantsTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListFlowParticipantsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_flow_participants", map[string]interface{}{
@@ -49,7 +49,7 @@ func TestListFlowParticipantsTool_NotFound(t *testing.T) {
 	idx := search.NewMockIndex(ctrl)
 	idx.EXPECT().Search(gomock.Any(), "nonexistent_flow", 10).Return(search.Result{Flows: []string{"suggested_flow"}})
 
-	tool := NewListFlowParticipantsTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListFlowParticipantsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_flow_participants", map[string]interface{}{
@@ -74,7 +74,7 @@ func TestListFlowParticipantsTool_Error(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewListFlowParticipantsTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListFlowParticipantsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_flow_participants", map[string]interface{}{
@@ -96,7 +96,7 @@ func TestListFlowParticipantsTool_MissingFlowID(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewListFlowParticipantsTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewListFlowParticipantsTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_flow_participants", nil))

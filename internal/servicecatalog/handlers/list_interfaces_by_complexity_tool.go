@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	
 )
 
 // NewListInterfacesByComplexityTool returns the MCP tool definition and its handler for listing interfaces by complexity.
-func NewListInterfacesByComplexityTool(repo catalogrepo.Cataloger) server.ServerTool {
+func (h *MCPHandler) NewListInterfacesByComplexityTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_interfaces_by_complexity",
@@ -24,7 +24,7 @@ func NewListInterfacesByComplexityTool(repo catalogrepo.Cataloger) server.Server
 			limit := request.GetInt("limit_to", 20)
 
 			// call business logic
-			interfaces, err := repo.ListInterfacesByComplexity(ctx, limit)
+			interfaces, err := h.repo.ListInterfacesByComplexity(ctx, limit)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

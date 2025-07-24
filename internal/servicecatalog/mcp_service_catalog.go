@@ -15,6 +15,7 @@ type MCPServiceCatalog struct {
 	server      *server.MCPServer
 	repo        catalogrepo.Cataloger
 	searchIndex search.Index
+	mcpHandler  *handlers.MCPHandler
 }
 
 // New creates a new MCPServiceCatalog instance.
@@ -23,6 +24,7 @@ func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Ind
 		server:      s,
 		repo:        repo,
 		searchIndex: searchIndex,
+		mcpHandler:  handlers.NewMCPHandler(repo, searchIndex),
 	}
 }
 
@@ -30,27 +32,27 @@ func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Ind
 func (p *MCPServiceCatalog) RegisterHandlers(ctx context.Context) {
 
 	p.server.AddTools(
-		handlers.NewSuggestCandidatesTool(p.searchIndex),
-		handlers.NewListModulesTool(p.repo),
-		handlers.NewListModulesByComplexityTool(p.repo),
-		handlers.NewGetSingleModuleTool(p.repo, p.searchIndex),
-		handlers.NewListInterfacesTool(p.repo),
-		handlers.NewListInterfacesByComplexityTool(p.repo),
-		handlers.NewLGetSingleInterfaceTool(p.repo, p.searchIndex),
-		handlers.NewListModulesOfTeamsTool(p.repo, p.searchIndex),
-		handlers.NewListMDatabaseConsumersTool(p.repo, p.searchIndex),
-		handlers.NewListInterfaceConsumersTool(p.repo, p.searchIndex),
-		handlers.NewListFlowsTool(p.repo),
-		handlers.NewListFlowParticipantsTool(p.repo, p.searchIndex),
-		handlers.NewListKindsTool(p.repo),
-		handlers.NewListModulesWithKindTool(p.repo, p.searchIndex),
+		p.mcpHandler.NewSuggestCandidatesTool(),
+		p.mcpHandler.NewListModulesTool(),
+		p.mcpHandler.NewListModulesByComplexityTool(),
+		p.mcpHandler.NewGetSingleModuleTool(),
+		p.mcpHandler.NewListInterfacesTool(),
+		p.mcpHandler.NewListInterfacesByComplexityTool(),
+		p.mcpHandler.NewLGetSingleInterfaceTool(),
+		p.mcpHandler.NewListModulesOfTeamsTool(),
+		p.mcpHandler.NewListMDatabaseConsumersTool(),
+		p.mcpHandler.NewListInterfaceConsumersTool(),
+		p.mcpHandler.NewListFlowsTool(),
+		p.mcpHandler.NewListFlowParticipantsTool(),
+		p.mcpHandler.NewListKindsTool(),
+		p.mcpHandler.NewListModulesWithKindTool(),
 	)
 
 	p.server.AddResources(
-		handlers.NewModulesResource(p.repo),
+		p.mcpHandler.NewModulesResource(),
 	)
 
 	p.server.AddPrompts(
-		handlers.NewServiceCatalogPrompt(),
+		p.mcpHandler.NewServiceCatalogPrompt(),
 	)
 }

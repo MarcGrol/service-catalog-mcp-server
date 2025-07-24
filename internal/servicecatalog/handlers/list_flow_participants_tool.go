@@ -8,12 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewListFlowParticipantsTool returns the MCP tool definition and its handler for listing flow participants.
-func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+func (h *MCPHandler) NewListFlowParticipantsTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_flow_participants",
@@ -30,7 +29,7 @@ func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) s
 			}
 
 			// call business logic
-			moduleNames, exists, err := repo.ListParticpantsOfFlow(ctx, flowID)
+			moduleNames, exists, err := h.repo.ListParticpantsOfFlow(ctx, flowID)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx, // Corrected error message
@@ -41,7 +40,7 @@ func NewListFlowParticipantsTool(repo catalogrepo.Cataloger, idx search.Index) s
 					resp.NotFound(ctx,
 						fmt.Sprintf("Flow with ID %s not found", flowID),
 						"flow_id", // Corrected parameter name
-						idx.Search(ctx, flowID, 10).Flows,
+						h.idx.Search(ctx, flowID, 10).Flows,
 					)), nil
 			}
 

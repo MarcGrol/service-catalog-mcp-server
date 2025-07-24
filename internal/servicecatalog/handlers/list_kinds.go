@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	
 )
 
 // NewListKindsTool returns the MCP tool definition and its handler for listing kinds.
-func NewListKindsTool(repo catalogrepo.Cataloger) server.ServerTool {
+func (h *MCPHandler) NewListKindsTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_kinds",
@@ -21,7 +21,7 @@ func NewListKindsTool(repo catalogrepo.Cataloger) server.ServerTool {
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 
 			// call business logic
-			flows, err := repo.ListKinds(ctx)
+			flows, err := h.repo.ListKinds(ctx)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

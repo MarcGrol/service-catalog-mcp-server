@@ -8,7 +8,7 @@ import (
 )
 
 // NewServiceCatalogPrompt returns the MCP prompt contract and handler for project planning.
-func NewServiceCatalogPrompt() server.ServerPrompt {
+func (h *MCPHandler) NewServiceCatalogPrompt() server.ServerPrompt {
 	return server.ServerPrompt{
 		Prompt: mcp.NewPrompt(
 			"service_catalog",

@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	
 )
 
 // NewListInterfacesTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
+func (h *MCPHandler) NewListInterfacesTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_interfaces",
@@ -30,7 +30,7 @@ func NewListInterfacesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			}
 
 			// call business logic
-			interfaces, err := repo.ListInterfaces(ctx, keyword)
+			interfaces, err := h.repo.ListInterfaces(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

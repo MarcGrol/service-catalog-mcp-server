@@ -23,7 +23,7 @@ func TestGetModuleTool_Success(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewGetSingleModuleTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewGetSingleModuleTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("get_module", map[string]interface{}{
@@ -49,7 +49,7 @@ func TestGetModuleTool_NotFound(t *testing.T) {
 	idx := search.NewMockIndex(ctrl)
 	idx.EXPECT().Search(gomock.Any(), "nonexistent_module", 10).Return(search.Result{Modules: []string{"suggested_module"}})
 
-	tool := NewGetSingleModuleTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewGetSingleModuleTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("get_module", map[string]interface{}{
@@ -74,7 +74,7 @@ func TestGetModuleTool_Error(t *testing.T) {
 
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewGetSingleModuleTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewGetSingleModuleTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("get_module", map[string]interface{}{
@@ -96,7 +96,7 @@ func TestGetModuleTool_MissingModuleID(t *testing.T) {
 	repo := catalogrepo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
-	tool := NewGetSingleModuleTool(repo, idx)
+	tool := NewMCPHandler(repo, idx).NewGetSingleModuleTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("get_module", nil))

@@ -8,12 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewListMDatabaseConsumersTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+func (h *MCPHandler) NewListMDatabaseConsumersTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_database_consumers",
@@ -31,7 +30,7 @@ func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 			}
 
 			// call business logic
-			moduleNames, exists, err := repo.ListDatabaseConsumers(ctx, databaseID)
+			moduleNames, exists, err := h.repo.ListDatabaseConsumers(ctx, databaseID)
 			if err != nil {
 				return mcp.NewToolResultError(resp.InternalError(ctx,
 					fmt.Sprintf("error getting database %s: %s", databaseID, err))), nil
@@ -41,7 +40,7 @@ func NewListMDatabaseConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 					resp.NotFound(ctx,
 						fmt.Sprintf("Module with ID %s not found", databaseID),
 						"database_id",
-						idx.Search(ctx, databaseID, 10).Databases,
+						h.idx.Search(ctx, databaseID, 10).Databases,
 					)), nil
 			}
 

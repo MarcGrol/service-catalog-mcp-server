@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	
 )
 
 // NewListModulesTool returns the MCP tool definition and its handler for listing modules.
-func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
+func (h *MCPHandler) NewListModulesTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules",
@@ -30,7 +30,7 @@ func NewListModulesTool(repo catalogrepo.Cataloger) server.ServerTool {
 			}
 
 			// call business logic
-			modules, err := repo.ListModules(ctx, keyword)
+			modules, err := h.repo.ListModules(ctx, keyword)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,

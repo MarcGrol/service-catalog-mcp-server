@@ -8,12 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewListModulesWithKindTool returns the MCP tool definition and its handler for listing modules with kind.
-func NewListModulesWithKindTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+func (h *MCPHandler) NewListModulesWithKindTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_modules_with_kind",
@@ -30,7 +29,7 @@ func NewListModulesWithKindTool(repo catalogrepo.Cataloger, idx search.Index) se
 			}
 
 			// call business logic
-			moduleNames, exists, err := repo.ListModulesWithKind(ctx, kindID)
+			moduleNames, exists, err := h.repo.ListModulesWithKind(ctx, kindID)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx, // Corrected error message
@@ -41,7 +40,7 @@ func NewListModulesWithKindTool(repo catalogrepo.Cataloger, idx search.Index) se
 					resp.NotFound(ctx,
 						fmt.Sprintf("No modules found for kind with ID %s not found", kindID),
 						"kind_id", // Corrected parameter name
-						idx.Search(ctx, kindID, 10).Kinds,
+						h.idx.Search(ctx, kindID, 10).Kinds,
 					)), nil
 			}
 

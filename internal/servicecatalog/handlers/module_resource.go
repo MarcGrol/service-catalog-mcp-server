@@ -8,11 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	
 )
 
 // NewModulesResource returns the MCP resource contract and handler for modules configuration.
-func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
+func (h *MCPHandler) NewModulesResource() server.ServerResource {
 	return server.ServerResource{
 		Resource: mcp.NewResource(
 			"catalog://modules",
@@ -21,7 +21,7 @@ func NewModulesResource(repo catalogrepo.Cataloger) server.ServerResource {
 		),
 		Handler: func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
 			// call business logic
-			modules, err := repo.ListModules(ctx, "")
+			modules, err := h.repo.ListModules(ctx, "")
 			if err != nil {
 				return nil, fmt.Errorf("error listing modules: %s", err)
 			}

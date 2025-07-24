@@ -8,12 +8,11 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	
 )
 
 // NewListInterfaceConsumersTool returns the MCP tool definition and its handler for listing interfaces.
-func NewListInterfaceConsumersTool(repo catalogrepo.Cataloger, idx search.Index) server.ServerTool {
+func (h *MCPHandler) NewListInterfaceConsumersTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_interface_consumers",
@@ -30,7 +29,7 @@ func NewListInterfaceConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 			}
 
 			// call business logic
-			moduleNames, exists, err := repo.ListInterfaceConsumers(ctx, interfaceID)
+			moduleNames, exists, err := h.repo.ListInterfaceConsumers(ctx, interfaceID)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,
@@ -41,7 +40,7 @@ func NewListInterfaceConsumersTool(repo catalogrepo.Cataloger, idx search.Index)
 					resp.NotFound(ctx,
 						fmt.Sprintf("Interface with ID %s not found", interfaceID),
 						"interface_id",
-						idx.Search(ctx, interfaceID, 10).Interfaces,
+						h.idx.Search(ctx, interfaceID, 10).Interfaces,
 					)), nil
 			}
 
