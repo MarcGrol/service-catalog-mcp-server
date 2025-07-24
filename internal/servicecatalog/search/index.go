@@ -10,9 +10,11 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
 
+// Index defines the interface for a search index.
+//
 //go:generate mockgen -source=index.go -destination=mock_index.go -package=search Index
 type Index interface {
-	Search(ctx context.Context, keyword string, limit int) SearchResult
+	Search(ctx context.Context, keyword string, limit int) Result
 }
 
 type searchIndex struct {
@@ -24,6 +26,7 @@ type searchIndex struct {
 	Kinds      []string
 }
 
+// NewSearchIndex creates a new search index.
 func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
 	modules, err := cataloger.ListModules(ctx, "")
 	if err != nil {
@@ -64,7 +67,8 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 	}
 }
 
-type SearchResult struct {
+// Result represents the search results.
+type Result struct {
 	Modules    []string
 	Teams      []string
 	Interfaces []string
@@ -75,8 +79,8 @@ type SearchResult struct {
 
 const flowSearchLimitMultiplier = 2
 
-func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) SearchResult {
-	return SearchResult{
+func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) Result {
+	return Result{
 		Modules:    matchesToSlice(fuzzy.Find(keyword, idx.Modules), limit),
 		Teams:      matchesToSlice(fuzzy.Find(keyword, idx.Teams), limit),
 		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces), limit),

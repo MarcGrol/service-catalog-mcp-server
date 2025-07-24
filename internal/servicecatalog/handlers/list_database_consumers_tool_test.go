@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestListDatabaseConsumersTool_Success(t *testing.T) {
@@ -47,7 +47,7 @@ func TestListDatabaseConsumersTool_NotFound(t *testing.T) {
 	repo.EXPECT().ListDatabaseConsumers(gomock.Any(), "nonexistent_db").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(gomock.Any(), "nonexistent_db", 10).Return(search.SearchResult{Databases: []string{"suggested_db"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_db", 10).Return(search.Result{Databases: []string{"suggested_db"}})
 
 	tool := NewListMDatabaseConsumersTool(repo, idx)
 

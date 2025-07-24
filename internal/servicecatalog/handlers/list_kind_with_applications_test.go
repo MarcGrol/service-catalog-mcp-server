@@ -47,7 +47,7 @@ func TestListKindWithApplicationsTool_NotFound(t *testing.T) {
 	repo.EXPECT().ListModulesWithKind(gomock.Any(), "nonexistent_kind").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(gomock.Any(), "nonexistent_kind", 10).Return(search.SearchResult{Kinds: []string{"suggested_kind"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_kind", 10).Return(search.Result{Kinds: []string{"suggested_kind"}})
 
 	tool := NewListModulesWithKindTool(repo, idx)
 

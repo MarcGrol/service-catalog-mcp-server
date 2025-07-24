@@ -11,7 +11,7 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
 
-// NewListModulesTool returns the MCP tool definition and its handler for listing modules.
+// NewListKindsTool returns the MCP tool definition and its handler for listing kinds.
 func NewListKindsTool(repo catalogrepo.Cataloger) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(

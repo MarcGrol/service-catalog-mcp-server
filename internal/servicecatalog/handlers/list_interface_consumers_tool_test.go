@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestListInterfaceConsumersTool_Success(t *testing.T) {
@@ -47,7 +47,7 @@ func TestListInterfaceConsumersTool_NotFound(t *testing.T) {
 	repo.EXPECT().ListInterfaceConsumers(gomock.Any(), "nonexistent_interface").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(gomock.Any(), "nonexistent_interface", 10).Return(search.SearchResult{Interfaces: []string{"suggested_interface"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_interface", 10).Return(search.Result{Interfaces: []string{"suggested_interface"}})
 
 	tool := NewListInterfaceConsumersTool(repo, idx)
 

@@ -6,6 +6,8 @@ import (
 	"fmt"
 )
 
+// Cataloger defines the interface for interacting with the service catalog repository.
+//
 //go:generate mockgen -source=api.go -destination=mock_cataloger.go -package=catalogrepo Cataloger
 type Cataloger interface {
 	Open(ctx context.Context) error
@@ -27,6 +29,7 @@ type Cataloger interface {
 	ListModulesWithKind(ctx context.Context, id string) ([]string, bool, error)
 }
 
+// Module represents a software module in the catalog.
 type Module struct {
 	Version            string   `db:"version"  json:",omitempty" yaml:",omitempty"`
 	ModuleID           string   `db:"module_id"`
@@ -38,8 +41,8 @@ type Module struct {
 	ComplexityScore    float32  `json:",omitempty" yaml:",omitempty"`
 	KindCount          *int     `db:"kind_count" json:",omitempty" yaml:",omitempty"`
 	TeamCount          *int     `db:"team_count" json:",omitempty" yaml:",omitempty"`
-	ExposedApiCount    *int     `db:"exposed_api_count" json:",omitempty" yaml:",omitempty"`
-	ConsumedApiCount   *int     `db:"consumed_api_count" json:",omitempty" yaml:",omitempty"`
+	ExposedAPICount    *int     `db:"exposed_api_count" json:",omitempty" yaml:",omitempty"`
+	ConsumedAPICount   *int     `db:"consumed_api_count" json:",omitempty" yaml:",omitempty"`
 	DatabaseCount      *int     `db:"database_count" json:",omitempty" yaml:",omitempty"`
 	JobCount           *int     `db:"job_count" json:",omitempty" yaml:",omitempty"`
 	FlowCount          *int     `db:"flow_count" json:",omitempty" yaml:",omitempty"`
@@ -56,8 +59,8 @@ const (
 	lineCountWeight           float32 = 0.25
 	databaseCountWeight       float32 = 0.20
 	teamCountWeight           float32 = 0.15
-	exposedApiCountWeight     float32 = 0.15
-	consumedApiCountWeight    float32 = 0.15
+	exposedAPICountWeight     float32 = 0.15
+	consumedAPICountWeight    float32 = 0.15
 	jobCountWeight            float32 = 0.10
 	fileCountWeight           float32 = 0.10
 	flowCountWeight           float32 = 0.05
@@ -65,12 +68,13 @@ const (
 	complexityScoreMultiplier float32 = 100
 )
 
+// CalculateComplexityScore calculates the complexity score for a module.
 func (m Module) CalculateComplexityScore() float32 {
 	complexityScore := ((float32(m.LineCount) * lineCountWeight) +
 		(valueOrZero(m.DatabaseCount) * databaseCountWeight) +
 		(valueOrZero(m.TeamCount) * teamCountWeight) +
-		(valueOrZero(m.ExposedApiCount) * exposedApiCountWeight) +
-		(valueOrZero(m.ConsumedApiCount) * consumedApiCountWeight) +
+		(valueOrZero(m.ExposedAPICount) * exposedAPICountWeight) +
+		(valueOrZero(m.ConsumedAPICount) * consumedAPICountWeight) +
 		(valueOrZero(m.JobCount) * jobCountWeight) +
 		(float32(m.FileCount) * fileCountWeight) +
 		(valueOrZero(m.FlowCount) * flowCountWeight) +
@@ -87,10 +91,11 @@ func valueOrZero(value *int) float32 {
 }
 
 func (m Module) String() string {
-	asJson, _ := json.Marshal(m)
-	return fmt.Sprintf("%s\n", asJson)
+	asJSON, _ := json.Marshal(m)
+	return fmt.Sprintf("%s\n", asJSON)
 }
 
+// Interface represents a web API in the catalog.
 type Interface struct {
 	ModuleID      string   `db:"module_id" yaml:",omitempty"`
 	InterfaceID   string   `db:"interface_id" yaml:",omitempty"`

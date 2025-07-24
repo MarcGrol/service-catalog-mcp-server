@@ -6,14 +6,16 @@ import (
 	"fmt"
 	"sort"
 
-	_ "github.com/glebarez/go-sqlite"
+		_ "github.com/glebarez/go-sqlite" // sqlite driver
 	"github.com/jmoiron/sqlx"
 )
 
+// New creates a new Cataloger instance.
 func New(filename string) Cataloger {
 	return newCatalogRepo(filename)
 }
 
+// CatalogRepo is an implementation of Cataloger using a SQLite database.
 type CatalogRepo struct {
 	filename string
 	db       *sqlx.DB
@@ -25,6 +27,7 @@ func newCatalogRepo(filename string) *CatalogRepo {
 	}
 }
 
+// Open opens the database connection.
 func (repo *CatalogRepo) Open(ctx context.Context) error {
 	//log.Printf("Opening database: %s", repo.filename)
 
@@ -42,6 +45,7 @@ func (repo *CatalogRepo) Open(ctx context.Context) error {
 	return nil
 }
 
+// Close closes the database connection.
 func (repo *CatalogRepo) Close(ctx context.Context) error {
 	//log.Printf("Closing database: %s", repo.filename)
 	if repo.db == nil {
@@ -51,6 +55,7 @@ func (repo *CatalogRepo) Close(ctx context.Context) error {
 	return repo.db.Close()
 }
 
+// ListModules lists modules based on a keyword.
 func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Module, error) {
 	if repo.db == nil {
 		return nil, fmt.Errorf("database not yet opened")
@@ -82,6 +87,7 @@ func (repo *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Mod
 	return enrichWithComplexityScore(modules), nil
 }
 
+// ListModulesByCompexity lists modules ordered by complexity.
 func (repo *CatalogRepo) ListModulesByCompexity(ctx context.Context, limit int) ([]Module, error) {
 	if repo.db == nil {
 		return nil, fmt.Errorf("database not yet opened")
@@ -116,6 +122,7 @@ func enrichWithComplexityScore(modules []Module) []Module {
 	return modules
 }
 
+// ListModulesOfTeam lists modules belonging to a specific team.
 func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {
 		// already opened
@@ -141,6 +148,7 @@ func (repo *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]st
 	return modules, true, nil
 }
 
+// GetModuleOnID retrieves a module by its ID.
 func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, bool, error) {
 	if repo.db == nil {
 		// already opened
@@ -203,6 +211,7 @@ func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, 
 	return module, true, nil
 }
 
+// GetInterfaceOnID retrieves an interface by its ID.
 func (repo *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error) {
 	if repo.db == nil {
 		// already opened
@@ -233,6 +242,7 @@ func (repo *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Inter
 	return api, true, nil
 }
 
+// ListInterfaces lists interfaces based on a keyword.
 func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]Interface, error) {
 	if repo.db == nil {
 		// already opened
@@ -280,6 +290,7 @@ func (repo *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]
 
 }
 
+// ListInterfacesByComplexity lists interfaces ordered by complexity.
 func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit int) ([]Interface, error) {
 	interfaces := []Interface{}
 	err := repo.db.Select(&interfaces, `
@@ -300,6 +311,7 @@ func (repo *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit i
 	return interfaces[0:min(limit, len(interfaces))], nil
 }
 
+// ListInterfaceConsumers lists modules that consume a given interface.
 func (repo *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {
 		// already opened
@@ -325,6 +337,7 @@ func (repo *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) 
 	return interfaces, true, nil
 }
 
+// ListDatabaseConsumers lists modules that consume a given database.
 func (repo *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {
 		// already opened
@@ -351,6 +364,7 @@ func (repo *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) (
 	return interfaces, true, nil
 }
 
+// ListDatabases lists all databases.
 func (repo *CatalogRepo) ListDatabases(ctx context.Context) ([]string, error) {
 	databases := []string{}
 	err := repo.db.Select(&databases, "SELECT DISTINCT database_id FROM database ORDER BY database_id ASC")
@@ -363,6 +377,7 @@ func (repo *CatalogRepo) ListDatabases(ctx context.Context) ([]string, error) {
 	return databases, nil
 }
 
+// ListTeams lists all teams.
 func (repo *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
 	teams := []string{}
 	err := repo.db.Select(&teams, "SELECT DISTINCT team_id FROM team ORDER BY team_id ASC")
@@ -376,6 +391,7 @@ func (repo *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
 	return teams, nil
 }
 
+// ListFlows lists all flows.
 func (repo *CatalogRepo) ListFlows(ctx context.Context) ([]string, error) {
 	flows := []string{}
 	err := repo.db.Select(&flows, "SELECT DISTINCT flow_id FROM flow ORDER BY flow_id ASC")
@@ -388,6 +404,7 @@ func (repo *CatalogRepo) ListFlows(ctx context.Context) ([]string, error) {
 	return flows, nil
 }
 
+// ListParticpantsOfFlow lists modules participating in a given flow.
 func (repo *CatalogRepo) ListParticpantsOfFlow(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {
 		// already opened
@@ -414,6 +431,7 @@ func (repo *CatalogRepo) ListParticpantsOfFlow(ctx context.Context, id string) (
 	return interfaces, true, nil
 }
 
+// ListKinds lists all module kinds.
 func (repo *CatalogRepo) ListKinds(ctx context.Context) ([]string, error) {
 	flows := []string{}
 	err := repo.db.Select(&flows, "SELECT DISTINCT kind_id FROM kind ORDER BY kind_id ASC")
@@ -426,6 +444,7 @@ func (repo *CatalogRepo) ListKinds(ctx context.Context) ([]string, error) {
 	return flows, nil
 }
 
+// ListModulesWithKind lists modules of a specific kind.
 func (repo *CatalogRepo) ListModulesWithKind(ctx context.Context, id string) ([]string, bool, error) {
 	if repo.db == nil {
 		// already opened

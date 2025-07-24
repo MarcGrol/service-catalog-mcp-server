@@ -7,12 +7,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// StreamableHTTPTransport implements the ServerTransport interface for streamable HTTP.
 type StreamableHTTPTransport struct {
 	mcpServer *server.MCPServer
 	port      string
 	apiKey    string
 }
 
+// NewStreamableHTTPTransport creates a new StreamableHTTPTransport instance.
 func NewStreamableHTTPTransport(s *server.MCPServer, port, apiKey string) *StreamableHTTPTransport {
 	return &StreamableHTTPTransport{
 		mcpServer: s,
@@ -21,6 +23,7 @@ func NewStreamableHTTPTransport(s *server.MCPServer, port, apiKey string) *Strea
 	}
 }
 
+// Start starts the streamable HTTP transport server.
 func (t *StreamableHTTPTransport) Start() error {
 	streamableServer := server.NewStreamableHTTPServer(t.mcpServer,
 		server.WithStateLess(true),
@@ -42,13 +45,12 @@ func (t *StreamableHTTPTransport) Start() error {
 						Msg("Unauthorized request")
 					http.Error(w, "Unauthorized", http.StatusUnauthorized)
 					return
-				} else {
-					log.Error().
-						Str("method", r.Method).
-						Str("path", r.URL.Path).
-						Interface("status", http.StatusOK).
-						Msg("Authorized request")
 				}
+				log.Info().
+					Str("method", r.Method).
+					Str("path", r.URL.Path).
+					Interface("status", http.StatusOK).
+					Msg("Authorized request")
 			}
 
 			// Serve the MCP requests

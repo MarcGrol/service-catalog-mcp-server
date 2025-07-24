@@ -6,6 +6,7 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/constants"
 )
 
+// Config holds the application's configuration.
 type Config struct {
 	UseSSE        bool
 	UseStreamable bool
@@ -15,6 +16,7 @@ type Config struct {
 	APIKey        string
 }
 
+// LoadConfig loads the application configuration from command-line flags.
 func LoadConfig() Config {
 	useSSE := flag.Bool("sse", false, "Use SSE transport instead of stdio")
 	useStreamable := flag.Bool("http", false, "Use Streamable HTTP transport (easier for testing)")

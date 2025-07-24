@@ -8,12 +8,14 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
+// SSETransport implements the ServerTransport interface for SSE.
 type SSETransport struct {
 	mcpServer *server.MCPServer
 	baseURL   string
 	port      string
 }
 
+// NewSSETransport creates a new SSETransport instance.
 func NewSSETransport(s *server.MCPServer, baseURL, port string) *SSETransport {
 	return &SSETransport{
 		mcpServer: s,
@@ -22,6 +24,7 @@ func NewSSETransport(s *server.MCPServer, baseURL, port string) *SSETransport {
 	}
 }
 
+// Start starts the SSE transport server.
 func (t *SSETransport) Start() error {
 	fullBaseURL := fmt.Sprintf("%s:%s", t.baseURL, t.port)
 

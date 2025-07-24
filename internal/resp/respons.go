@@ -32,6 +32,7 @@ type mcpErrorDetails struct {
 	Details               string `json:"details,omitempty"`
 }
 
+// Success creates a success response.
 func Success(ctx context.Context, data interface{}) string {
 	resp := mcpSuccessResponse{
 		Status: statusSuccess,
@@ -42,6 +43,7 @@ func Success(ctx context.Context, data interface{}) string {
 	return string(jsonResp)
 }
 
+// InvalidInput creates an invalid input error response.
 func InvalidInput(ctx context.Context, msg string, invalidOrMissimgField string, hint string) string {
 	resp := mcpErrorResponse{
 		Status: statusInvalidInput,
@@ -56,6 +58,7 @@ func InvalidInput(ctx context.Context, msg string, invalidOrMissimgField string,
 	return string(jsonResp)
 }
 
+// NotFound creates a not found error response.
 func NotFound(ctx context.Context, msg string, fieldName string, suggestions []string) string {
 	resp := mcpErrorResponse{
 		Status: statusNotFound,
@@ -71,6 +74,7 @@ func NotFound(ctx context.Context, msg string, fieldName string, suggestions []s
 	return string(jsonResp)
 }
 
+// InternalError creates an internal error response.
 func InternalError(ctx context.Context, msg string) string {
 	resp := mcpErrorResponse{
 		Status: statusInternalError,

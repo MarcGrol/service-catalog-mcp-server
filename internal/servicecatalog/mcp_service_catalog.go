@@ -10,12 +10,14 @@ import (
 	search "github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 )
 
+// MCPServiceCatalog represents the service catalog for MCP.
 type MCPServiceCatalog struct {
 	server      *server.MCPServer
 	repo        catalogrepo.Cataloger
 	searchIndex search.Index
 }
 
+// New creates a new MCPServiceCatalog instance.
 func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Index) *MCPServiceCatalog {
 	return &MCPServiceCatalog{
 		server:      s,
@@ -24,6 +26,7 @@ func New(s *server.MCPServer, repo catalogrepo.Cataloger, searchIndex search.Ind
 	}
 }
 
+// RegisterHandlers registers the service catalog handlers with the MCP server.
 func (p *MCPServiceCatalog) RegisterHandlers(ctx context.Context) {
 
 	p.server.AddTools(

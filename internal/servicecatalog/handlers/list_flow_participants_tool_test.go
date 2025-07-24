@@ -47,7 +47,7 @@ func TestListFlowParticipantsTool_NotFound(t *testing.T) {
 	repo.EXPECT().ListParticpantsOfFlow(gomock.Any(), "nonexistent_flow").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(gomock.Any(), "nonexistent_flow", 10).Return(search.SearchResult{Flows: []string{"suggested_flow"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_flow", 10).Return(search.Result{Flows: []string{"suggested_flow"}})
 
 	tool := NewListFlowParticipantsTool(repo, idx)
 

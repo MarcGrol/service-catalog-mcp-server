@@ -15,19 +15,22 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/transport"
 )
 
+// Application represents the main application structure.
 type Application struct {
 	config          config.Config
 	mcpServer       *server.MCPServer
 	serviceCatalog  *servicecatalog.MCPServiceCatalog
-	serverTransport transport.ServerTransport
+	serverTransport transport.Transport
 }
 
+// New creates a new Application instance.
 func New(cfg config.Config) *Application {
 	return &Application{
 		config: cfg,
 	}
 }
 
+// Initialize initializes the application.
 func (a *Application) Initialize(ctx context.Context) (func(), error) {
 	// Create a new MCP server
 	a.mcpServer = server.NewMCPServer(
@@ -52,11 +55,12 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		a.serviceCatalog.RegisterHandlers(ctx)
 	}
 
-	a.serverTransport = transport.NewServerTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL, a.config.APIKey)
+	a.serverTransport = transport.NewTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL, a.config.APIKey)
 
 	return func() {}, nil
 }
 
+// Run starts the application's server transport.
 func (a *Application) Run() error {
 	if err := a.serverTransport.Start(); err != nil {
 		return err

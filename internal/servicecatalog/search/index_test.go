@@ -23,7 +23,7 @@ func TestSearchIndex_Search(t *testing.T) {
 	assert.NoError(t, err)
 	t.Logf("Search result:\n %v", string(jsonResult))
 
-	assert.Equal(t, SearchResult{
+	assert.Equal(t, Result{
 		Modules: []string{
 			"partner",
 			"partner-jobs",

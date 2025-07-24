@@ -41,10 +41,10 @@ func (m *MockIndex) EXPECT() *MockIndexMockRecorder {
 }
 
 // Search mocks base method.
-func (m *MockIndex) Search(ctx context.Context, keyword string, limit int) SearchResult {
+func (m *MockIndex) Search(ctx context.Context, keyword string, limit int) Result {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Search", ctx, keyword, limit)
-	ret0, _ := ret[0].(SearchResult)
+	ret0, _ := ret[0].(Result)
 	return ret0
 }
 

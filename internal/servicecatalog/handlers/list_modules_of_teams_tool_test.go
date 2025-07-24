@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestListModulesOfTeamsTool_Success(t *testing.T) {
@@ -47,7 +47,7 @@ func TestListModulesOfTeamsTool_NotFound(t *testing.T) {
 	repo.EXPECT().ListModulesOfTeam(gomock.Any(), "nonexistent_team").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(gomock.Any(), "nonexistent_team", 10).Return(search.SearchResult{Teams: []string{"suggested_team"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_team", 10).Return(search.Result{Teams: []string{"suggested_team"}})
 
 	tool := NewListModulesOfTeamsTool(repo, idx)
 

@@ -4,11 +4,13 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-type ServerTransport interface {
+// Transport defines the interface for a server transport.
+type Transport interface {
 	Start() error
 }
 
-func NewServerTransport(s *server.MCPServer, useSSE, useStreamable bool, port, baseURL, apiKey string) ServerTransport {
+// NewTransport creates a new server transport based on the provided options.
+func NewTransport(s *server.MCPServer, useSSE, useStreamable bool, port, baseURL, apiKey string) Transport {
 	if useStreamable {
 		return NewStreamableHTTPTransport(s, port, apiKey)
 	} else if useSSE {

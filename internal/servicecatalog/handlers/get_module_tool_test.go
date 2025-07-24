@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
+	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestGetModuleTool_Success(t *testing.T) {
@@ -47,7 +47,7 @@ func TestGetModuleTool_NotFound(t *testing.T) {
 	repo.EXPECT().GetModuleOnID(gomock.Any(), "nonexistent_module").Return(catalogrepo.Module{}, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(gomock.Any(), "nonexistent_module", 10).Return(search.SearchResult{Modules: []string{"suggested_module"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_module", 10).Return(search.Result{Modules: []string{"suggested_module"}})
 
 	tool := NewGetSingleModuleTool(repo, idx)
 

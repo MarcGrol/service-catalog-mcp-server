@@ -11,7 +11,7 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
 )
 
-// NewListModulesByComplexityTool returns the MCP tool definition and its handler for listing modules.
+// NewListInterfacesByComplexityTool returns the MCP tool definition and its handler for listing interfaces by complexity.
 func NewListInterfacesByComplexityTool(repo catalogrepo.Cataloger) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
