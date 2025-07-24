@@ -20,15 +20,15 @@ type MCPService interface {
 type Application struct {
 	config          config.Config
 	mcpServer       *server.MCPServer
-	mcpHandler      MCPService
+	mcpServices     []MCPService
 	serverTransport transport.Transport
 }
 
 // New creates a new Application instance.
-func New(cfg config.Config, mcpHandler MCPService) *Application {
+func New(cfg config.Config, mcpServices []MCPService) *Application {
 	return &Application{
-		config:     cfg,
-		mcpHandler: mcpHandler,
+		config:      cfg,
+		mcpServices: mcpServices,
 	}
 }
 
@@ -44,7 +44,9 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		server.WithLogging(),
 		server.WithHooks(loggingHooks()))
 
-	a.mcpHandler.RegisterAllHandlers(ctx, a.mcpServer)
+	for _, service := range a.mcpServices {
+		service.RegisterAllHandlers(ctx, a.mcpServer)
+	}
 
 	a.serverTransport = transport.NewTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL, a.config.APIKey)
 
