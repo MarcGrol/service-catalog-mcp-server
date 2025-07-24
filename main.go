@@ -35,7 +35,7 @@ func main() {
 	// Initialize MCP handler
 	mcpHandler := servicecatalog.NewMCPHandler(catalogRepo, searchIndex)
 
-	application := app.New(cfg, []app.MCPService{mcpHandler})
+	application := app.New(cfg, mcpHandler)
 
 	cleanup, err := application.Initialize(ctx)
 	if err != nil {

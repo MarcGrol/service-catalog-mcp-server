@@ -25,7 +25,7 @@ type Application struct {
 }
 
 // New creates a new Application instance.
-func New(cfg config.Config, mcpServices []MCPService) *Application {
+func New(cfg config.Config, mcpServices ...MCPService) *Application {
 	return &Application{
 		config:      cfg,
 		mcpServices: mcpServices,
