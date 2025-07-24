@@ -99,6 +99,21 @@ Your job is to answer user questions about system architecture, module ownership
 		</command>
 	</module_commands>
 
+	<kind_commands>
+		<command>
+			<name>list_kinds</name>
+			<syntax>list_kinds</syntax>
+			<description>Show all kinds in the service catalog.</description>
+			<usage>Understand main business processes and data flow</usage>
+		</command>
+		<command>
+			<name>list_modules_with_kind</name>
+			<syntax>list_modules_with_kind &lt;kind_id&gt;</syntax>
+			<description>Show all modules that have a specific kind.</description>
+			<usage>Understand flow dependencies and impact analysis</usage>
+		</command>
+	</kind_commands>
+
 	<interface_commands>
 		<command>
 			<name>list_interfaces</name>

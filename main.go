@@ -9,6 +9,9 @@ import (
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/app"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 )
 
 func main() {
@@ -18,7 +21,21 @@ func main() {
 
 	cfg := config.LoadConfig()
 
-	application := app.New(cfg)
+	// Initialize catalog repository
+	catalogRepo := catalogrepo.New(cfg.DatabaseFile)
+	err := catalogRepo.Open(ctx)
+	if err != nil {
+		log.Fatal().Msgf("Error opening database: %v", err)
+	}
+	defer catalogRepo.Close(ctx)
+
+	// Initialize search index
+	searchIndex := search.NewSearchIndex(ctx, catalogRepo)
+
+	// Initialize MCP handler
+	mcpHandler := servicecatalog.NewMCPHandler(catalogRepo, searchIndex)
+
+	application := app.New(cfg, mcpHandler)
 
 	cleanup, err := application.Initialize(ctx)
 	if err != nil {

@@ -2,31 +2,33 @@ package app
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/search"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/transport"
 )
+
+// MCPService represents the interface for the MCP service.
+type MCPService interface {
+	RegisterAllHandlers(ctx context.Context, s *server.MCPServer)
+}
 
 // Application represents the main application structure.
 type Application struct {
 	config          config.Config
 	mcpServer       *server.MCPServer
-	serviceCatalog  *servicecatalog.MCPServiceCatalog
+	mcpHandler      MCPService
 	serverTransport transport.Transport
 }
 
 // New creates a new Application instance.
-func New(cfg config.Config) *Application {
+func New(cfg config.Config, mcpHandler MCPService) *Application {
 	return &Application{
-		config: cfg,
+		config:     cfg,
+		mcpHandler: mcpHandler,
 	}
 }
 
@@ -42,18 +44,7 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		server.WithLogging(),
 		server.WithHooks(loggingHooks()))
 
-	{
-		catalogRepo := catalogrepo.New(a.config.DatabaseFile)
-		err := catalogRepo.Open(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("error opening database: %s", err)
-		}
-
-		searchIndex := search.NewSearchIndex(ctx, catalogRepo)
-
-		a.serviceCatalog = servicecatalog.New(a.mcpServer, catalogRepo, searchIndex)
-		a.serviceCatalog.RegisterHandlers(ctx)
-	}
+	a.mcpHandler.RegisterAllHandlers(ctx, a.mcpServer)
 
 	a.serverTransport = transport.NewTransport(a.mcpServer, a.config.UseSSE, a.config.UseStreamable, a.config.Port, a.config.BaseURL, a.config.APIKey)
 

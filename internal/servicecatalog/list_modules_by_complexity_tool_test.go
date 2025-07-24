@@ -5,11 +5,11 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/servicecatalog/catalogrepo"
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestListModulesByComplexityTool_SuccessWithLimit(t *testing.T) {
