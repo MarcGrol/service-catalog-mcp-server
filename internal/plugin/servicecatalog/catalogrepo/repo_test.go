@@ -2,10 +2,10 @@ package catalogrepo
 
 import (
 	"context"
-	"database/sql"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/samber/lo"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 )

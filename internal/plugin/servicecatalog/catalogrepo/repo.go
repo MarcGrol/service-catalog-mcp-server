@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"sort"
 
-		_ "github.com/glebarez/go-sqlite" // sqlite driver
+	_ "github.com/glebarez/go-sqlite" // sqlite driver
 	"github.com/jmoiron/sqlx"
 )
 

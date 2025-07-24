@@ -18,6 +18,10 @@ func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, 
 	repo := catalogrepo.New(constants.DatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
+
+	err = repo.PopulateData(ctx)
+	assert.NoError(t, err)
+
 	cleanup := func() {
 		repo.Close(ctx)
 	}

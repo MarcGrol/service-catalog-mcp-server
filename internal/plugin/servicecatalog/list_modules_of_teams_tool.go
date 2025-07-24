@@ -6,6 +6,7 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
+	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
 )
