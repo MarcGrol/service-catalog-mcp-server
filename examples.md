@@ -4,7 +4,7 @@ Start the in stdio mode
 
     service-catalog-mcp-server
 
-And type json rpc in the command-line
+And type the json rpc (examples below) in the command-line
 
 **suggest_candidates**
 
