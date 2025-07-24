@@ -1,10 +1,13 @@
 
 .PHONY: all generate test lint install clean
 
-all: generate lint test install
+all: generate fmt lint test install
 
 generate:
 	go generate ./...
+
+fmt:
+	go fmt ./...
 
 test:
 	go test ./...

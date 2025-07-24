@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/samber/lo"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 )
