@@ -7,7 +7,7 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
+	"github.com/golang/mock/gomock"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
@@ -15,11 +15,11 @@ import (
 
 func TestGetModuleTool_Success(t *testing.T) {
 	// Given
-	ctrl := mock.NewController(t)
+	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().GetModuleOnID(mock.Any(), "module1").Return(catalogrepo.Module{ModuleID: "module1", Name: "Test Module"}, true, nil)
+	repo.EXPECT().GetModuleOnID(gomock.Any(), "module1").Return(catalogrepo.Module{ModuleID: "module1", Name: "Test Module"}, true, nil)
 
 	idx := search.NewMockIndex(ctrl)
 
@@ -40,14 +40,14 @@ func TestGetModuleTool_Success(t *testing.T) {
 
 func TestGetModuleTool_NotFound(t *testing.T) {
 	// Given
-	ctrl := mock.NewController(t)
+	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().GetModuleOnID(mock.Any(), "nonexistent_module").Return(catalogrepo.Module{}, false, nil)
+	repo.EXPECT().GetModuleOnID(gomock.Any(), "nonexistent_module").Return(catalogrepo.Module{}, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
-	idx.EXPECT().Search(mock.Any(), "nonexistent_module", 10).Return(search.Result{Modules: []string{"suggested_module"}})
+	idx.EXPECT().Search(gomock.Any(), "nonexistent_module", 10).Return(search.Result{Modules: []string{"suggested_module"}})
 
 	tool := NewMCPHandler(repo, idx).getSingleModuleTool()
 
@@ -66,11 +66,11 @@ func TestGetModuleTool_NotFound(t *testing.T) {
 
 func TestGetModuleTool_Error(t *testing.T) {
 	// Given
-	ctrl := mock.NewController(t)
+	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().GetModuleOnID(mock.Any(), "module_with_error").Return(catalogrepo.Module{}, false, errors.New("failed to get module"))
+	repo.EXPECT().GetModuleOnID(gomock.Any(), "module_with_error").Return(catalogrepo.Module{}, false, errors.New("failed to get module"))
 
 	idx := search.NewMockIndex(ctrl)
 
@@ -90,7 +90,7 @@ func TestGetModuleTool_Error(t *testing.T) {
 
 func TestGetModuleTool_MissingModuleID(t *testing.T) {
 	// Given
-	ctrl := mock.NewController(t)
+	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	repo := catalogrepo.NewMockCataloger(ctrl)
