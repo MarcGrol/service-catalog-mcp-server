@@ -2,9 +2,10 @@ package search
 
 import (
 	"context"
-	"strings"
 
-	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/rs/zerolog/log"
+	"github.com/sahilm/fuzzy"
+	"github.com/samber/lo"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 )
