@@ -2,11 +2,11 @@
 
 This document describes all available tools for managing SLOs, services, and system analysis.
 
-## Project Server Tools (SLO/Service Management)
+## Project Server Tools (Service-catalog and SLOs)
 ### Module Management Tools
 
 #### `suggest_candidates(keyword, limit_to)`
-General search across modules, interfaces, databases, and teams. Broader than `suggest_slos`.
+General search across modules, interfaces, databases, and teams (not SLOs).
 
 #### `list_modules(filter_keyword)`
 Lists modules (services/components) filtered by keyword.
