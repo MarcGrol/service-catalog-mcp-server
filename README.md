@@ -34,8 +34,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 
 2.  **Build the project**:
     ```bash
-    go mod tidy
-    go build -o service-catalog-mcp-server .
+    make
     ```
 
 ## Usage
@@ -43,7 +42,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 Once built, you can run the server:
 
 ```bash
-./service-catalog-mcp-server
+~/go/bin/service-catalog-mcp-server
 ```
 
 
