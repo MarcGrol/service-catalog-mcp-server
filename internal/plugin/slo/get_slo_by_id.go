@@ -12,9 +12,9 @@ import (
 func (h *mcpHandler) getSLOByIDTool() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
-			"get_slo_by_id",
+			"get_slo",
 			mcp.WithDescription("Gives details about a single slo"),
-			mcp.WithString("module_id", mcp.Required(), mcp.Description("The ID of the slo to get details for")),
+			mcp.WithString("slo_id", mcp.Required(), mcp.Description("The ID of the slo to get details for")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

@@ -41,16 +41,17 @@ func getPrompt() string {
 
 ## System Prompt Addition for SLO Search Integration
 
-You now have access to SLO (Service Level Objective) search tools that complement the existing service catalog functionality. These tools allow you to query and analyze service reliability metrics, performance targets, and operational health indicators across the system architecture.
+You now have access to SLO (Service Level Objective) search tools that complement the existing service catalog functionality. 
+These tools allow you to query and analyze service reliability metrics, performance targets, and operational health indicators across the system architecture.
 
 ## Available SLO Tools
+- "suggest_slos(keyword, limit_to)": Searches for SLOs, teams, and applications matching a keyword. Returns structured results with SLOs, related teams, and applications.
+- "list_slos_by_team(team_id)": Lists all SLOs owned by a specific team.
+- "list_slos_by_application(application_id)" Lists all SLOs for a specific application.
 
-- "slo-search:get_slo" - Retrieve detailed SLO information for a specific service or component
-- "slo-search:list_slos" - List all SLOs, optionally filtered by service, team, or criticality level
-- "slo-search:search_slos_by_keyword" - Search SLOs using keywords (service names, metrics, error budgets)
-- "slo-search:get_slo_status" - Get current SLO compliance status and error budget burn rates
-- "slo-search:list_slos_by_team" - Find all SLOs owned or managed by a specific team
-- "slo-search:get_related_slos" - Find SLOs related to a specific service or dependency chain
+Note that each SLO has 2 attributes that are important:
+- "business_criticality": High value means that the SLO is critical for the business.
+- "operational_readiness": High value means that the SLO is ready for production.
 
 ## When to Use SLO Tools
 

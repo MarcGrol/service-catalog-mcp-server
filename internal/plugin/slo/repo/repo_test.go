@@ -20,7 +20,7 @@ func TestRepo(t *testing.T) {
 		assert.Equal(t, "accessportal_accessportal_main_availability", slo.UID)
 		assert.Equal(t, "Access Portal - Availability", slo.DisplayName)
 		assert.Equal(t, 1.05, slo.OperationalReadiness)
-		assert.Equal(t, 1.0, slo.BusinessCriticality)
+		assert.Equal(t, 0.0, slo.BusinessCriticality)
 
 		// Test not found
 		_, found, err = repo.GetSLOByID(ctx, "nonexistent")
@@ -50,12 +50,12 @@ func TestRepo(t *testing.T) {
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
-		assert.Equal(t, 1.0, slos[0].BusinessCriticality)
+		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
 		slos, exists, err = repo.ListSLOsByTeam(ctx, "nonexistent")
 		assert.NoError(t, err)
 		assert.False(t, exists)
-		assert.Len(t, slos, 0)
+		assert.Len(t, slos, 0.0)
 	})
 
 	// Test ListSLOsByApplication
@@ -66,7 +66,7 @@ func TestRepo(t *testing.T) {
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
-		assert.Equal(t, 1.0, slos[0].BusinessCriticality)
+		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
 		slos, exists, err = repo.ListSLOsByApplication(ctx, "nonexistent")
 		assert.NoError(t, err)

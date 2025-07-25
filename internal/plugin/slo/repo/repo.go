@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 
 	_ "github.com/glebarez/go-sqlite" // sqlite driver
 	"github.com/jmoiron/sqlx"
@@ -134,7 +135,7 @@ func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
 // ListSLOsByTeam retrieves all SLOs for a given team.
 func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team = ? ORDER BY uid`, teamID)
+	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team = ? ORDER BY uid ASC`, teamID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, false, nil // Not found
@@ -162,6 +163,11 @@ func addMetricsToSLOs(slos []SLO) []SLO {
 	for i, slo := range slos {
 		slos[i] = addMetricsToSLO(slo)
 	}
+
+	sort.Slice(slos, func(i, j int) bool {
+		return slos[i].BusinessCriticality > slos[j].BusinessCriticality
+	})
+
 	return slos
 }
 

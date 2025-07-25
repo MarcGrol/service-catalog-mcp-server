@@ -75,14 +75,11 @@ func (s SLO) calculateBusinessCriticalityMultiplier() float64 {
 	multiplier := 1.0
 
 	if s.IsCritical {
-		multiplier += 0.2
+		multiplier += 0.5
 	}
 	if s.IsFrontdoor {
-		multiplier += 0.1
-	}
-	if s.IsOnlinePaymentsFlow || s.IsIPPPaymentsFlow || s.IsPayoutFlow || s.IsReportingFlow || s.IsOnboardingFlow || s.IsCustomerPortalFlow {
-		multiplier += 0.15
+		multiplier += 0.5
 	}
 
-	return multiplier
+	return multiplier * s.RelativeThroughput
 }

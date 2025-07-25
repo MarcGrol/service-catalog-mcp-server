@@ -29,7 +29,7 @@ func TestGetLOByIDTool(t *testing.T) {
 		expectedSLO := repo.SLO{UID: "slo1", Application: sloID}
 		repoMock.EXPECT().GetSLOByID(ctx, sloID).Return(expectedSLO, true, nil).Times(1)
 
-		req := createRequest("get_slo_by_id", map[string]interface{}{"slo_id": sloID})
+		req := createRequest("get_slo", map[string]interface{}{"slo_id": sloID})
 		result, err := tool.Handler(ctx, req)
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
@@ -44,7 +44,7 @@ func TestGetLOByIDTool(t *testing.T) {
 		repoMock.EXPECT().GetSLOByID(ctx, sloID).Return(repo.SLO{}, false, nil).Times(1)
 		idxMock.EXPECT().Search(ctx, sloID, gomock.Any()).Return(slosearch.Result{SLOs: []string{"suggested-slo"}}).Times(1)
 
-		req := createRequest("get_slo_by_id", map[string]interface{}{"slo_id": sloID})
+		req := createRequest("get_slo", map[string]interface{}{"slo_id": sloID})
 		result, err := tool.Handler(ctx, req)
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
@@ -59,7 +59,7 @@ func TestGetLOByIDTool(t *testing.T) {
 		expectedErr := errors.New("database error")
 		repoMock.EXPECT().GetSLOByID(ctx, sloID).Return(repo.SLO{}, false, expectedErr).Times(1)
 
-		req := createRequest("get_slo_by_id", map[string]interface{}{"slo_id": sloID})
+		req := createRequest("get_slo", map[string]interface{}{"slo_id": sloID})
 		result, err := tool.Handler(ctx, req)
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
@@ -69,7 +69,7 @@ func TestGetLOByIDTool(t *testing.T) {
 	})
 
 	t.Run("Missing application_id", func(t *testing.T) {
-		req := createRequest("get_slo_by_id", map[string]interface{}{})
+		req := createRequest("get_slo", map[string]interface{}{})
 		result, err := tool.Handler(ctx, req)
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
