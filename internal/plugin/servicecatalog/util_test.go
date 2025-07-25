@@ -15,7 +15,7 @@ import (
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
 	ctx := context.Background()
 
-	repo := catalogrepo.New(constants.DatabaseFilename)
+	repo := catalogrepo.New(constants.CatalogDatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 

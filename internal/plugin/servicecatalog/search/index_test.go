@@ -57,7 +57,7 @@ func TestSearchIndex_Search(t *testing.T) {
 func setup(t *testing.T) (catalogrepo.Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := catalogrepo.New(constants.DatabaseFilename)
+	repo := catalogrepo.New(constants.CatalogDatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {

@@ -333,7 +333,7 @@ func TestListAppsWithKind(t *testing.T) {
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := New(constants.DatabaseFilename)
+	repo := New(constants.CatalogDatabaseFilename)
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {
