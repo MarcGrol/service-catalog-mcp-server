@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
 
 	_ "github.com/glebarez/go-sqlite" // sqlite driver
 	"github.com/jmoiron/sqlx"
@@ -28,9 +30,17 @@ func newSLORepo(filename string) *sloRepo {
 
 // Open opens the database connection.
 func (r *sloRepo) Open(ctx context.Context) error {
-	//log.Printf("Opening database: %s", repo.filename)
+	log.Printf("Opening database: %s", r.filename)
 
-	var err error
+	// Check if the file exists
+	_, err := os.Stat(r.filename)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("%s must exist", r.filename)
+		}
+		return fmt.Errorf("Error opening file %s: %s", r.filename, err)
+	}
+
 	if r.db != nil {
 		// already opened
 		return nil

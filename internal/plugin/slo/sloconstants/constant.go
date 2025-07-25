@@ -3,6 +3,7 @@ package sloconstants
 import "os"
 
 const (
+	// SLODatabaseFilenameKey offers a typestrong key for the catalog database filename
 	SLODatabaseFilenameKey = "slo-databasefile"
 )
 
