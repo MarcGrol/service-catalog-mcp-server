@@ -3,25 +3,6 @@
 This document describes all available tools for managing SLOs, services, and system analysis.
 
 ## Project Server Tools (SLO/Service Management)
-
-### SLO Management Tools
-
-#### `suggest_slos(keyword, limit_to)`
-Searches for SLOs, teams, and applications matching a keyword. Returns structured results with SLOs, related teams, and applications.
-
-#### `list_slos_by_team(team_id)`
-Lists all SLOs owned by a specific team.
-
-#### `list_slos_by_application(application_id)`
-Lists all SLOs for a specific application.
-
-#### `get_slo_by_id(slo_id)`
-Gets detailed information about a specific SLO including:
-- Configuration details (target, duration, category)
-- Business impact flags (critical, frontdoor, payment flows)
-- Monitoring setup (alerts, dashboards, notifications)
-- PromQL queries and metrics
-
 ### Module Management Tools
 
 #### `suggest_candidates(keyword, limit_to)`
@@ -74,19 +55,37 @@ Lists all modules that participate in a specific business flow.
 #### `list_kinds()`
 Lists all available module types/categories in the system.
 
-## Common Usage Patterns
+### SLO Management Tools
 
-### SLO Analysis Workflow
-1. **Discovery:** Use `suggest_slos(keyword)` to find relevant SLOs
-2. **Scoping:** Use `list_slos_by_team()` or `list_slos_by_application()` for specific areas
-3. **Details:** Use `get_slo_by_id()` for comprehensive SLO information
-4. **Documentation:** Use `artifacts` to create reports or summaries
+#### `suggest_slos(keyword, limit_to)`
+Searches for SLOs, teams, and applications matching a keyword. Returns structured results with SLOs, related teams, and applications.
+
+#### `list_slos_by_team(team_id)`
+Lists all SLOs owned by a specific team.
+
+#### `list_slos_by_application(application_id)`
+Lists all SLOs for a specific application.
+
+#### `get_slo_by_id(slo_id)`
+Gets detailed information about a specific SLO including:
+- Configuration details (target, duration, category)
+- Business impact flags (critical, frontdoor, payment flows)
+- Monitoring setup (alerts, dashboards, notifications)
+- PromQL queries and metrics
+
+## Common Usage Patterns
 
 ### Service Architecture Analysis
 1. **Search:** Use `suggest_candidates(keyword)` for general exploration
 2. **Structure:** Use `list_modules()` and `get_module()` to understand services
 3. **Dependencies:** Use `list_interface_consumers()` and `list_database_consumers()`
 4. **Impact:** Use `list_flow_participants()` to understand business impact
+
+### SLO Analysis Workflow
+1. **Discovery:** Use `suggest_slos(keyword)` to find relevant SLOs
+2. **Scoping:** Use `list_slos_by_team()` or `list_slos_by_application()` for specific areas
+3. **Details:** Use `get_slo_by_id()` for comprehensive SLO information
+4. **Documentation:** Use `artifacts` to create reports or summaries
 
 ## Best Practices
 
@@ -96,7 +95,6 @@ Lists all available module types/categories in the system.
 - Get details with `get_` functions
 
 ### Performance Considerations
-- `list_slos()` without filters can be very large - use team/application filters
 - Use `limit_to` parameters to control result sizes
 - `suggest_` functions are optimized for discovery
 
