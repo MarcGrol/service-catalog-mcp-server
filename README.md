@@ -24,6 +24,9 @@ To get started with the Service Catalog MCP Server, follow these steps:
 
 1.  **Clone the repository**:
     ```bash
+    cd
+    mkdir -p src
+    cd src
     git clone https://github.com/your-org/service-catalog-mcp-server.git
     cd service-catalog-mcp-server
 
