@@ -1,6 +1,17 @@
 package repo
 
-import "context"
+import context "context"
+
+// SLORepo defines the interface for SLO repository operations.
+//
+//go:generate mockgen -source=api.go -destination=mock_repo.go -package=repo SLORepo
+type SLORepo interface {
+	Open(ctx context.Context) error
+	Close(ctx context.Context) error
+	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
+	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, error)
+	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, error)
+}
 
 // SLO represents the structure of the SLO data.
 type SLO struct {
@@ -34,15 +45,43 @@ type SLO struct {
 	IsOnboardingFlow     bool    `json:"is_onboarding_flow" db:"IsOnboardingFlow"`
 	IsCustomerPortalFlow bool    `json:"is_customer_portal_flow" db:"IsCustomerPortalFlow"`
 	CriticalFlows        string  `json:"critical_flows" db:"CriticalFlows"`
+	OperationalReadiness float64 `json:"operational_readiness" db:"-"`
+	BusinessCriticality  float64 `json:"business_criticality" db:"-"`
 }
 
-// SLORepo defines the interface for SLO repository operations.
-//
-//go:generate mockgen -source=api.go -destination=mock_repo.go -package=repo SLORepo
-type SLORepo interface {
-	Open(ctx context.Context) error
-	Close(ctx context.Context) error
-	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
-	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, error)
-	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, error)
+// CalculateOperationalReadinessMultiplier calculates a score based on operational support.
+func (s SLO) CalculateOperationalReadinessMultiplier() float64 {
+	multiplier := 1.0
+
+	if s.DashboardLinkCount > 0 {
+		multiplier += 0.1
+	}
+	if s.AlertLinkCount > 0 {
+		multiplier += 0.1
+	}
+	if s.EmailChannelCount > 0 || s.ChatChannelCount > 0 {
+		multiplier += 0.05
+	}
+	if s.IsEnriched {
+		multiplier += 0.1
+	}
+
+	return multiplier
+}
+
+// CalculateBusinessCriticalityMultiplier calculates a score based on business criticality.
+func (s SLO) CalculateBusinessCriticalityMultiplier() float64 {
+	multiplier := 1.0
+
+	if s.IsCritical {
+		multiplier += 0.2
+	}
+	if s.IsFrontdoor {
+		multiplier += 0.1
+	}
+	if s.IsOnlinePaymentsFlow || s.IsIPPPaymentsFlow || s.IsPayoutFlow || s.IsReportingFlow || s.IsOnboardingFlow || s.IsCustomerPortalFlow {
+		multiplier += 0.15
+	}
+
+	return multiplier
 }

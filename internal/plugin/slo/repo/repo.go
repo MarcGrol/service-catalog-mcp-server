@@ -103,21 +103,21 @@ func (r *sloRepo) GetSLOByID(ctx context.Context, id string) (SLO, bool, error) 
 		}
 		return SLO{}, false, fmt.Errorf("failed to get SLO by ID: %w", err)
 	}
-	return slo, true, nil
+
+	return addMetricsToSLO(slo), true, nil
 }
 
-// ListSLOsByTeam retrieves all SLOs for a given team.
-func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
-	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo ORDER BY uid`)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return []SLO{}, nil // Not found
-		}
-		return nil, fmt.Errorf("failed to select SLOs: %w", err)
+func addMetricsToSLOs(slos []SLO) []SLO {
+	for i, slo := range slos {
+		slos[i] = addMetricsToSLO(slo)
 	}
+	return slos
+}
 
-	return slos, nil
+func addMetricsToSLO(slo SLO) SLO {
+	slo.OperationalReadiness = slo.CalculateOperationalReadinessMultiplier()
+	slo.BusinessCriticality = slo.CalculateBusinessCriticalityMultiplier()
+	return slo
 }
 
 // ListSLOsByTeam retrieves all SLOs for a given team.
@@ -131,7 +131,7 @@ func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, err
 		return nil, fmt.Errorf("failed to select SLOs by team: %w", err)
 	}
 
-	return slos, nil
+	return addMetricsToSLOs(slos), nil
 }
 
 // ListSLOsByApplication retrieves all SLOs for a given application.
@@ -144,5 +144,5 @@ func (r *sloRepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, 
 		}
 		return nil, fmt.Errorf("failed to select SLOs by application: %w", err)
 	}
-	return slos, nil
+	return addMetricsToSLOs(slos), nil
 }
