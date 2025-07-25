@@ -42,7 +42,12 @@ To get started with the Service Catalog MCP Server, follow these steps:
 Once built, you can run the server:
 
 ```bash
+# show help
+~/go/bin/service-catalog-mcp-server -h
+
+# start with default settings: stdio
 ~/go/bin/service-catalog-mcp-server
+
 ```
 
 
