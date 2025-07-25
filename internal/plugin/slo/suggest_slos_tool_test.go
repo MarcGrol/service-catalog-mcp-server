@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
@@ -13,7 +13,7 @@ import (
 
 func TestSuggestCandidatesSuccess(t *testing.T) {
 	ctx := context.Background()
-	repo := repo.New(constants.SLODatabaseFilename)
+	repo := repo.New(sloconstants.SLODatabaseFilename())
 	repo.Open(ctx)
 	idx := slosearch.NewSearchIndex(ctx, repo)
 

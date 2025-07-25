@@ -4,10 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 )
 
 func TestListModules(t *testing.T) {
@@ -333,7 +332,7 @@ func TestListAppsWithKind(t *testing.T) {
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := New(constants.CatalogDatabaseFilename)
+	repo := New(catalogconstants.CatalogDatabaseFilename())
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {

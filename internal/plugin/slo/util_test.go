@@ -7,15 +7,15 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/constants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 )
 
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
 	ctx := context.Background()
 
-	repo := catalogrepo.New(constants.CatalogDatabaseFilename)
+	repo := catalogrepo.New(sloconstants.SLODatabaseFilename())
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 

@@ -8,12 +8,13 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/config"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
 )
 
@@ -22,28 +23,40 @@ func main() {
 
 	ctx := context.Background()
 
-	cfg := config.LoadConfig()
+	cfg := loadConfig()
 
-	// Initialize catalog repository
-	catalogRepo := catalogrepo.New(cfg.CatalogDatabaseFile)
-	err := catalogRepo.Open(ctx)
-	if err != nil {
-		log.Fatal().Msgf("Error opening catalogdatabase: %v", err)
-	}
-	defer catalogRepo.Close(ctx)
-	// Initialize search index
-	catalogSearchIndex := search.NewSearchIndex(ctx, catalogRepo)
-	// Initialize MCP handler
-	serviceCatalogHandler := servicecatalog.NewMCPHandler(catalogRepo, catalogSearchIndex)
+	var serviceCatalogHandler core.MCPService = nil
+	{
+		// Initialize catalog repository
+		catalogRepo := catalogrepo.New(cfg.PluginConfigs[catalogconstants.CatalogDatabaseFilenameKey])
+		err := catalogRepo.Open(ctx)
+		if err != nil {
+			log.Fatal().Msgf("Error opening catalog-database: %v", err)
+		}
+		defer catalogRepo.Close(ctx)
 
-	sloRepo := repo.New(cfg.SLODatabaseFile)
-	err = sloRepo.Open(ctx)
-	if err != nil {
-		log.Fatal().Msgf("Error opening SLO database: %v", err)
+		// Initialize catalog search index
+		catalogSearchIndex := search.NewSearchIndex(ctx, catalogRepo)
+
+		// Initialize MCP handler
+		serviceCatalogHandler = servicecatalog.NewMCPHandler(catalogRepo, catalogSearchIndex)
 	}
-	sloSearchIndex := slosearch.NewSearchIndex(ctx, sloRepo)
-	// Initialize MCP handler
-	sloHandler := slo.NewMCPHandler(sloRepo, sloSearchIndex)
+
+	var sloHandler core.MCPService = nil
+	{
+		// Initialize SLO repository
+		sloRepo := repo.New(cfg.PluginConfigs[sloconstants.SLODatabaseFilenameKey])
+		err := sloRepo.Open(ctx)
+		if err != nil {
+			log.Fatal().Msgf("Error opening SLO database: %v", err)
+		}
+
+		// Initialize slo search index
+		sloSearchIndex := slosearch.NewSearchIndex(ctx, sloRepo)
+
+		// Initialize MCP handler
+		sloHandler = slo.NewMCPHandler(sloRepo, sloSearchIndex)
+	}
 
 	application := core.New(cfg, serviceCatalogHandler, sloHandler)
 

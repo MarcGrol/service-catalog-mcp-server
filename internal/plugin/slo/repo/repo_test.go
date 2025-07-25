@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -76,7 +77,7 @@ func TestRepo(t *testing.T) {
 
 func createRealDatabase(t *testing.T) (SLORepo, context.Context, func()) {
 	ctx := context.Background()
-	repo := New("/Users/marcgrol/src/service-catalog-mcp-server/internal/plugin/slo/slos.sqlite")
+	repo := New(sloconstants.SLODatabaseFilename())
 	err := repo.Open(ctx)
 	assert.NoError(t, err)
 	return repo, ctx, func() {
