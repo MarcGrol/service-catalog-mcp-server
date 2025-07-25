@@ -43,29 +43,33 @@ func TestRepo(t *testing.T) {
 
 	// Test ListSLOsByTeam
 	t.Run("ListSLOsByTeam", func(t *testing.T) {
-		slos, err := repo.ListSLOsByTeam(ctx, "be-internal_services")
+		slos, exists, err := repo.ListSLOsByTeam(ctx, "be-internal_services")
 		assert.NoError(t, err)
+		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
 		assert.Equal(t, 1.0, slos[0].BusinessCriticality)
 
-		slos, err = repo.ListSLOsByTeam(ctx, "nonexistent")
+		slos, exists, err = repo.ListSLOsByTeam(ctx, "nonexistent")
 		assert.NoError(t, err)
+		assert.False(t, exists)
 		assert.Len(t, slos, 0)
 	})
 
 	// Test ListSLOsByApplication
 	t.Run("ListSLOsByApplication", func(t *testing.T) {
-		slos, err := repo.ListSLOsByApplication(ctx, "accessportal")
+		slos, exists, err := repo.ListSLOsByApplication(ctx, "accessportal")
 		assert.NoError(t, err)
+		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
 		assert.Equal(t, 1.0, slos[0].BusinessCriticality)
 
-		slos, err = repo.ListSLOsByApplication(ctx, "nonexistent")
+		slos, exists, err = repo.ListSLOsByApplication(ctx, "nonexistent")
 		assert.NoError(t, err)
+		assert.False(t, exists)
 		assert.Len(t, slos, 0)
 	})
 }

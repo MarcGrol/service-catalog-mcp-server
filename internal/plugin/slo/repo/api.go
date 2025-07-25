@@ -10,8 +10,8 @@ type SLORepo interface {
 	Close(ctx context.Context) error
 	ListSLOs(ctx context.Context) ([]SLO, error)
 	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
-	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, error)
-	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, error)
+	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, bool, error)
+	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, bool, error)
 }
 
 // SLO represents the structure of the SLO data.

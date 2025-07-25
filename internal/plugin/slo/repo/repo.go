@@ -122,34 +122,30 @@ func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
 }
 
 // ListSLOsByTeam retrieves all SLOs for a given team.
-func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, error) {
+func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT UID, CreatedAt, LastModified, ModificationCount, Filename, DisplayName, Team, Application, Service, Component, Category, RelativeThroughput, PromQLQuery, TargetSLO,
-  Duration, SLI, DashboardLinkCount, AlertLinkCount, EmailChannelCount, ChatChannelCount, IsEnriched, IsCritical, IsFrontdoor, IsOnlinePaymentsFlow, IsIPPPaymentsFlow,
-  IsPayoutFlow, IsReportingFlow, IsOnboardingFlow, IsCustomerPortalFlow, CriticalFlows	FROM slo WHERE team = ? ORDER BY uid`, teamID)
+	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team = ? ORDER BY uid`, teamID)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return []SLO{}, nil // Not found
+			return []SLO{}, false, nil // Not found
 		}
-		return nil, fmt.Errorf("failed to select SLOs by team: %w", err)
+		return nil, false, fmt.Errorf("failed to select SLOs by team: %w", err)
 	}
 
-	return addMetricsToSLOs(slos), nil
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
 // ListSLOsByApplication retrieves all SLOs for a given application.
-func (r *sloRepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, error) {
+func (r *sloRepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT UID, CreatedAt, LastModified, ModificationCount, Filename, DisplayName, Team, Application, Service, Component, Category, RelativeThroughput, PromQLQuery, TargetSLO,
-  Duration, SLI, DashboardLinkCount, AlertLinkCount, EmailChannelCount, ChatChannelCount, IsEnriched, IsCritical, IsFrontdoor, IsOnlinePaymentsFlow, IsIPPPaymentsFlow,
-  IsPayoutFlow, IsReportingFlow, IsOnboardingFlow, IsCustomerPortalFlow, CriticalFlows	FROM slo WHERE application = ? ORDER BY uid`, id)
+	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE application = ? ORDER BY uid`, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return []SLO{}, nil // Not found
+			return []SLO{}, false, nil // Not found
 		}
-		return nil, fmt.Errorf("failed to select SLOs by application: %w", err)
+		return nil, false, fmt.Errorf("failed to select SLOs by application: %w", err)
 	}
-	return addMetricsToSLOs(slos), nil
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
 func addMetricsToSLOs(slos []SLO) []SLO {

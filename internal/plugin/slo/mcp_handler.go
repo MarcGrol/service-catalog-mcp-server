@@ -24,15 +24,15 @@ func NewMCPHandler(repo repo.SLORepo, idx slosearch.Index) *mcpHandler {
 
 // RegisterAllHandlers registers all tools, resources, and prompts with the MCP server.
 func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServer) {
-	// s.AddTools(
-	// 	h.listSLOByTeamTool(),
+	s.AddTools(
+		h.listSLOByTeamTool(),
 	// 	h.listSLOByApplicationTool(),
 	// 	h.listSLOByTeamTool(),
 	// 	h.getSLOByID(),
 	// )
 	// s.AddResources(
 	// 	h.sloResource(),
-	// )
+	)
 
 	// s.AddPrompts(
 	// 	h.sloPrompt(),
