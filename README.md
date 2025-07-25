@@ -35,6 +35,7 @@ To get started with the Service Catalog MCP Server, follow these steps:
 2.  **Build the project**:
     ```bash
     # tests, builds and installs the "service-catalog-mcp-server"-executable in ~/go/bin/
+    
     make
     ```
 
