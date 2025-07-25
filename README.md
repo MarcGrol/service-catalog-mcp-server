@@ -26,6 +26,10 @@ To get started with the Service Catalog MCP Server, follow these steps:
     ```bash
     git clone https://github.com/your-org/service-catalog-mcp-server.git
     cd service-catalog-mcp-server
+
+    # Make sure the sqlite databases (distributed separately) are in place:
+    ./internal/plugin/servicecatalog/service-catalog.sqlite
+    ./internal/plugin/slo/slos.sqlite
     ```
 
 2.  **Build the project**:
