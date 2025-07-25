@@ -14,5 +14,5 @@ func SLODatabaseFilename() string {
 		homedir = "/Users/marcgrol"
 	}
 
-	return homedir + "/src/service-catalog-mcp-server/internal/plugin/slo/slos.sqlite"
+	return homedir + "/src/service-catalog-mcp-server/data/slos.sqlite"
 }

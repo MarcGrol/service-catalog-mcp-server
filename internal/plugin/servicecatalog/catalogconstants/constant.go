@@ -15,5 +15,5 @@ func CatalogDatabaseFilename() string {
 		homedir = "/Users/marcgrol"
 	}
 
-	return homedir + "/src/service-catalog-mcp-server/internal/plugin/servicecatalog/service-catalog.sqlite"
+	return homedir + "/src/service-catalog-mcp-server/data/service-catalog.sqlite"
 }

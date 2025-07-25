@@ -28,8 +28,8 @@ To get started with the Service Catalog MCP Server, follow these steps:
     cd service-catalog-mcp-server
 
     # Make sure the sqlite databases (distributed separately) are in place:
-    ./internal/plugin/servicecatalog/service-catalog.sqlite
-    ./internal/plugin/slo/slos.sqlite
+    ./data/service-catalog.sqlite
+    ./data/slos.sqlite
     ```
 
 2.  **Build the project**:
