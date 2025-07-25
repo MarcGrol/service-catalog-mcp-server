@@ -16,7 +16,7 @@ All information is harvested from the source code of our production platform —
 - **Complexity Analysis**: Identify and analyze the complexity of interfaces and modules.
 - **Team-based Views**: Filter services and modules by owning teams.
 - **Search Functionality**: Efficiently search the catalog for specific entities.
-- **SLO Discvery**: Efficiently search the SLOs for all applications.
+- **SLO Discovery**: Efficiently search the SLOs for all applications.
 
 ## Installation
 
