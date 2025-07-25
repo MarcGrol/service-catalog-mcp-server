@@ -26,15 +26,15 @@ func NewMCPHandler(repo repo.SLORepo, idx slosearch.Index) *mcpHandler {
 func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServer) {
 	s.AddTools(
 		h.listSLOByTeamTool(),
-	// 	h.listSLOByApplicationTool(),
-	// 	h.listSLOByTeamTool(),
-	// 	h.getSLOByID(),
-	// )
-	// s.AddResources(
-	// 	h.sloResource(),
+		h.listSLOByApplicationTool(),
+		h.listSLOByTeamTool(),
+		h.getSLOByIDTool(),
+	)
+	s.AddResources(
+		h.sloResource(),
 	)
 
-	// s.AddPrompts(
-	// 	h.sloPrompt(),
-	// )
+	s.AddPrompts(
+		h.sloPrompt(),
+	)
 }
