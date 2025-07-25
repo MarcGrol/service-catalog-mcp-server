@@ -2,10 +2,8 @@
 
 ## Introduction
 
-The mcp-server is an AI-integrated service catalog plugin that exposes deep structural insights into our large codebase. 
-It allows AI agents like Claude Desktop, Gemini CLI, or other LLM-powered tools to explore the system architecture in a programmatic, structured way.
-
-All information is harvested from the source code of our production platform — making it a powerful assistant for refactoring, impact analysis, ownership mapping, and integration discovery.
+The mcp-server exposes a "service-catalog". It allows AI agents (like Claude Desktop, Gemini CLI) to query the structure of very large software platform via natural text.
+I can answer questions about system architecture, module ownership, interface dependencies and database usage.
 
 ## Features
 
