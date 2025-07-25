@@ -161,7 +161,7 @@ func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, 
 		if err == sql.ErrNoRows {
 			return module, false, nil
 		}
-		return Module{}, false, fmt.Errorf("select module error: %w", err)
+		return Module{}, false, fmt.Errorf("get module error: %w", err)
 	}
 
 	// What kinds?
@@ -169,46 +169,57 @@ func (repo *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, 
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select kind error: %w", err)
 	}
+	module.KindCount = intPointer(len(module.ApplicationKinds))
 
 	//What flows?
 	err = repo.db.Select(&module.Flows, "SELECT flow_id FROM mod_flow WHERE module_id = $1 ORDER BY flow_id", id)
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select flow error: %w", err)
 	}
+	module.FlowCount = intPointer(len(module.Flows))
 
 	//What teams?
 	err = repo.db.Select(&module.Teams, "SELECT team_id FROM mod_team WHERE module_id = $1 ORDER BY team_id", id)
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select team error: %w", err)
 	}
+	module.TeamCount = intPointer(len(module.Teams))
 
 	// What exposed interfaces?
 	err = repo.db.Select(&module.ExposedInterfaces, "SELECT interface_id FROM mod_exposed_interface WHERE module_id = $1 ORDER BY interface_id", id)
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select exposed-interfaces error: %w", err)
 	}
+	module.ExposedAPICount = intPointer(len(module.ExposedInterfaces))
 
 	// What consumed interfaces?
 	err = repo.db.Select(&module.ConsumedInterfaces, "SELECT interface_id FROM mod_consumed_interface WHERE module_id = $1 ORDER BY interface_id", id)
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select consumed-interfaces error: %w", err)
 	}
+	module.ConsumedAPICount = intPointer(len(module.ConsumedInterfaces))
 
 	// What databases?
 	err = repo.db.Select(&module.Databases, "SELECT database_id FROM mod_database WHERE module_id = $1 ORDER BY database_id", id)
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select database error: %w", err)
 	}
+	module.DatabaseCount = intPointer(len(module.Databases))
 
 	// What jobs?
 	err = repo.db.Select(&module.Jobs, "SELECT job_id FROM mod_job WHERE module_id = $1 ORDER BY job_id", id)
 	if err != nil {
 		return Module{}, false, fmt.Errorf("select jobs error: %w", err)
 	}
+	module.JobCount = intPointer(len(module.Jobs))
 
 	module.ComplexityScore = module.CalculateComplexityScore()
 
 	return module, true, nil
+}
+
+func intPointer(val int) *int {
+	return &val
 }
 
 // GetInterfaceOnID retrieves an interface by its ID.

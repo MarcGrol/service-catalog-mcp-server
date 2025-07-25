@@ -70,13 +70,12 @@ const (
 
 // CalculateComplexityScore calculates the complexity score for a module.
 func (m Module) CalculateComplexityScore() float32 {
-	complexityScore := ((float32(m.LineCount) * lineCountWeight) +
+	complexityScore := ((float32(m.LineCount/1000) * lineCountWeight) +
 		(valueOrZero(m.DatabaseCount) * databaseCountWeight) +
 		(valueOrZero(m.TeamCount) * teamCountWeight) +
 		(valueOrZero(m.ExposedAPICount) * exposedAPICountWeight) +
 		(valueOrZero(m.ConsumedAPICount) * consumedAPICountWeight) +
 		(valueOrZero(m.JobCount) * jobCountWeight) +
-		(float32(m.FileCount) * fileCountWeight) +
 		(valueOrZero(m.FlowCount) * flowCountWeight) +
 		(valueOrZero(m.KindCount) * kindCountWeight)) * complexityScoreMultiplier
 

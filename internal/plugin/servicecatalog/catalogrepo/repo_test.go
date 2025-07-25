@@ -32,10 +32,10 @@ func TestListModulesByComplexity(t *testing.T) {
 		return m.ModuleID
 	})
 
-	assert.Equal(t, []string{"psp",
-		"onboarding-and-compliance/kyc/webapp/kyc",
-		"paymentengine/acm/webapp/acm",
-		"bcm-container/protocol/step2/sct", "vias"}, top5)
+	assert.Equal(t, []string{
+		"psp", "onboarding-and-compliance/kyc/webapp/kyc",
+		"paymentengine/acm/webapp/acm", "backoffice",
+		"bcm-container/protocol/step2/sct"}, top5)
 }
 
 func TestListModulesFilered(t *testing.T) {

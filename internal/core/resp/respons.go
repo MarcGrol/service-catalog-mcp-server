@@ -22,7 +22,7 @@ type mcpSuccessResponse struct {
 type mcpErrorResponse struct {
 	Status     mcpStatus           `json:"status"`
 	Error      mcpErrorDetails     `json:"error,omitempty"`
-	Suggestion map[string][]string `json:"data,Ssuggestion"`
+	Suggestion map[string][]string `json:"suggestion"`
 }
 
 type mcpErrorDetails struct {
