@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The mcp-server exposes a "service-catalog". It allows AI agents (like Claude Desktop, Gemini CLI) to query the structure of very large software platform via natural text.
+This mcp-server exposes a "service-catalog". It allows AI agents (like Claude Desktop, Gemini CLI) to query the structure of very large software platform via natural text.
 I can answer questions about system architecture, module ownership, interface dependencies and database usage.
 
 ## Features
