@@ -50,11 +50,6 @@ Lists all critical business flows in the system (e.g., online payments, onboardi
 #### `list_flow_participants(flow_id)`
 Lists all modules that participate in a specific business flow.
 
-### Catalog Information Tools
-
-#### `list_kinds()`
-Lists all available module types/categories in the system.
-
 ### SLO Management Tools
 
 #### `suggest_slos(keyword, limit_to)`
