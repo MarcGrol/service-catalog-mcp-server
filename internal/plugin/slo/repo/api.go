@@ -2,6 +2,7 @@ package repo
 
 import "context"
 
+// SLO represents the structure of the SLO data.
 type SLO struct {
 	UID                  string  `json:"uid" db:"UID"`
 	CreatedAt            string  `json:"created_at" db:"CreatedAt"`
@@ -35,6 +36,8 @@ type SLO struct {
 	CriticalFlows        string  `json:"critical_flows" db:"CriticalFlows"`
 }
 
+// SLORepo defines the interface for SLO repository operations.
+//
 //go:generate mockgen -source=api.go -destination=mock_repo.go -package=repo SLORepo
 type SLORepo interface {
 	Open(ctx context.Context) error
