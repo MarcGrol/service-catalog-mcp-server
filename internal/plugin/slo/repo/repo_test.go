@@ -27,6 +27,20 @@ func TestRepo(t *testing.T) {
 		assert.False(t, found)
 	})
 
+	// Test ListSLOs
+	t.Run("ListSLOs", func(t *testing.T) {
+		slos, err := repo.ListSLOs(ctx)
+		assert.NoError(t, err)
+
+		assert.GreaterOrEqual(t, len(slos), 1)
+		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
+		assert.Equal(t, "be-internal_services", slos[0].Team)
+		assert.Equal(t, "accessportal", slos[0].Application)
+		assert.Equal(t, "accessportal", slos[0].Service)
+		assert.Equal(t, "main", slos[0].Component)
+		assert.Equal(t, "Availability", slos[0].Category)
+	})
+
 	// Test ListSLOsByTeam
 	t.Run("ListSLOsByTeam", func(t *testing.T) {
 		slos, err := repo.ListSLOsByTeam(ctx, "be-internal_services")

@@ -8,6 +8,7 @@ import context "context"
 type SLORepo interface {
 	Open(ctx context.Context) error
 	Close(ctx context.Context) error
+	ListSLOs(ctx context.Context) ([]SLO, error)
 	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
 	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, error)
 	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, error)
@@ -50,7 +51,7 @@ type SLO struct {
 }
 
 // CalculateOperationalReadinessMultiplier calculates a score based on operational support.
-func (s SLO) CalculateOperationalReadinessMultiplier() float64 {
+func (s SLO) calculateOperationalReadinessMultiplier() float64 {
 	multiplier := 1.0
 
 	if s.DashboardLinkCount > 0 {
@@ -70,7 +71,7 @@ func (s SLO) CalculateOperationalReadinessMultiplier() float64 {
 }
 
 // CalculateBusinessCriticalityMultiplier calculates a score based on business criticality.
-func (s SLO) CalculateBusinessCriticalityMultiplier() float64 {
+func (s SLO) calculateBusinessCriticalityMultiplier() float64 {
 	multiplier := 1.0
 
 	if s.IsCritical {

@@ -96,7 +96,7 @@ func (r *sloRepo) Close(ctx context.Context) error {
 // GetSLOByID retrieves a single SLO by its UID.
 func (r *sloRepo) GetSLOByID(ctx context.Context, id string) (SLO, bool, error) {
 	slo := SLO{}
-	err := r.db.Get(&slo, `SELECT * FROM slo WHERE uid = ? ORDER BY uid`, id)
+	err := r.db.Get(&slo, `SELECT * FROM slo WHERE uid = ?`, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return SLO{}, false, nil // Not found
@@ -107,23 +107,26 @@ func (r *sloRepo) GetSLOByID(ctx context.Context, id string) (SLO, bool, error) 
 	return addMetricsToSLO(slo), true, nil
 }
 
-func addMetricsToSLOs(slos []SLO) []SLO {
-	for i, slo := range slos {
-		slos[i] = addMetricsToSLO(slo)
+func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
+	slos := []SLO{}
+	// The row header is also part of the result set, but these have the wrong type, so they break parsing
+	// So this is why we filter out the row with 'UID'
+	err := r.db.Select(&slos, `SELECT * FROM slo WHERE uid IS NOT 'UID' ORDER BY uid`)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return slos, nil // Not found
+		}
+		return nil, fmt.Errorf("failed to select all SLOs: %w", err)
 	}
-	return slos
-}
-
-func addMetricsToSLO(slo SLO) SLO {
-	slo.OperationalReadiness = slo.CalculateOperationalReadinessMultiplier()
-	slo.BusinessCriticality = slo.CalculateBusinessCriticalityMultiplier()
-	return slo
+	return slos, nil
 }
 
 // ListSLOsByTeam retrieves all SLOs for a given team.
 func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team = ? ORDER BY uid`, teamID)
+	err := r.db.Select(&slos, `SELECT UID, CreatedAt, LastModified, ModificationCount, Filename, DisplayName, Team, Application, Service, Component, Category, RelativeThroughput, PromQLQuery, TargetSLO,
+  Duration, SLI, DashboardLinkCount, AlertLinkCount, EmailChannelCount, ChatChannelCount, IsEnriched, IsCritical, IsFrontdoor, IsOnlinePaymentsFlow, IsIPPPaymentsFlow,
+  IsPayoutFlow, IsReportingFlow, IsOnboardingFlow, IsCustomerPortalFlow, CriticalFlows	FROM slo WHERE team = ? ORDER BY uid`, teamID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, nil // Not found
@@ -137,7 +140,9 @@ func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, err
 // ListSLOsByApplication retrieves all SLOs for a given application.
 func (r *sloRepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE application = ? ORDER BY UID`, id)
+	err := r.db.Select(&slos, `SELECT UID, CreatedAt, LastModified, ModificationCount, Filename, DisplayName, Team, Application, Service, Component, Category, RelativeThroughput, PromQLQuery, TargetSLO,
+  Duration, SLI, DashboardLinkCount, AlertLinkCount, EmailChannelCount, ChatChannelCount, IsEnriched, IsCritical, IsFrontdoor, IsOnlinePaymentsFlow, IsIPPPaymentsFlow,
+  IsPayoutFlow, IsReportingFlow, IsOnboardingFlow, IsCustomerPortalFlow, CriticalFlows	FROM slo WHERE application = ? ORDER BY uid`, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, nil // Not found
@@ -145,4 +150,17 @@ func (r *sloRepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, 
 		return nil, fmt.Errorf("failed to select SLOs by application: %w", err)
 	}
 	return addMetricsToSLOs(slos), nil
+}
+
+func addMetricsToSLOs(slos []SLO) []SLO {
+	for i, slo := range slos {
+		slos[i] = addMetricsToSLO(slo)
+	}
+	return slos
+}
+
+func addMetricsToSLO(slo SLO) SLO {
+	slo.OperationalReadiness = slo.calculateOperationalReadinessMultiplier()
+	slo.BusinessCriticality = slo.calculateBusinessCriticalityMultiplier()
+	return slo
 }
