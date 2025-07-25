@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
+
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
 )
 
 func (h *mcpHandler) getSLOByIDTool() server.ServerTool {

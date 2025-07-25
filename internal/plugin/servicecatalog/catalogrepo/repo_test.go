@@ -4,9 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
 )
 
 func TestListModules(t *testing.T) {

@@ -4,11 +4,12 @@ import (
 	"context"
 	"testing"
 
+	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/stretchr/testify/assert"
+
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
-	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSuggestCandidatesSuccess(t *testing.T) {

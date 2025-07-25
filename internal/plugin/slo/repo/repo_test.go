@@ -4,8 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 )
 
 func TestRepo(t *testing.T) {
