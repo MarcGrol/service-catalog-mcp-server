@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
+	"github.com/MarcGrol/service-catalog-mcp-server/data"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 )
 
@@ -57,8 +57,13 @@ func TestSearchIndex_Search(t *testing.T) {
 func setup(t *testing.T) (catalogrepo.Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := catalogrepo.New(catalogconstants.CatalogDatabaseFilename())
-	err := repo.Open(ctx)
+	serviceCatalogDatabaseFilename, _, fileCleanup, err := data.UnpackDatabases(ctx)
+	assert.NoError(t, err)
+	defer fileCleanup()
+
+	repo := catalogrepo.New(serviceCatalogDatabaseFilename)
+
+	err = repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {
 		repo.Close(ctx)

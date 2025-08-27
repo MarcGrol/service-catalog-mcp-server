@@ -7,16 +7,19 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
+	"github.com/MarcGrol/service-catalog-mcp-server/data"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
 	ctx := context.Background()
+	serviceCatalogDatabaseFilename, _, fileCleanup, err := data.UnpackDatabases(ctx)
+	assert.NoError(t, err)
+	defer fileCleanup()
 
-	repo := catalogrepo.New(catalogconstants.CatalogDatabaseFilename())
-	err := repo.Open(ctx)
+	repo := catalogrepo.New(serviceCatalogDatabaseFilename)
+	err = repo.Open(ctx)
 	assert.NoError(t, err)
 
 	cleanup := func() {

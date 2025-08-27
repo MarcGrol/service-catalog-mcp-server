@@ -7,14 +7,19 @@ import (
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 
+	"github.com/MarcGrol/service-catalog-mcp-server/data"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
 )
 
 func TestSuggestCandidatesSuccess(t *testing.T) {
 	ctx := context.Background()
-	repo := repo.New(sloconstants.SLODatabaseFilename())
+
+	_, sloDatabaseFilename, fileCleanup, err := data.UnpackDatabases(ctx)
+	assert.NoError(t, err)
+	defer fileCleanup()
+
+	repo := repo.New(sloDatabaseFilename)
 	repo.Open(ctx)
 	idx := slosearch.NewSearchIndex(ctx, repo)
 

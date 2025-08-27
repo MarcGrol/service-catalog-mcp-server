@@ -22,9 +22,11 @@ install:
 	go install
 
 docker:
-	docker build \
+	docker  --log-level debug build \
+	    --no-cache \
+	    -t service-catalog-mcp-server:local \
 	    -f Dockerfile \
-	    -t service-catalog-mcp-server:local .
+	    .
 
 clean:
 	go clean

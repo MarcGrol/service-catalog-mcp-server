@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/MarcGrol/service-catalog-mcp-server/data"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
 )
 
 func TestSearchIndex_Search(t *testing.T) {
@@ -48,8 +48,12 @@ func TestSearchIndex_Search(t *testing.T) {
 func setup(t *testing.T) (repo.SLORepo, context.Context, func()) {
 	ctx := context.TODO()
 
-	repo := repo.New(sloconstants.SLODatabaseFilename())
-	err := repo.Open(ctx)
+	_, sloDatabaseFilename, fileCleanup, err := data.UnpackDatabases(ctx)
+	assert.NoError(t, err)
+	defer fileCleanup()
+
+	repo := repo.New(sloDatabaseFilename)
+	err = repo.Open(ctx)
 	assert.NoError(t, err)
 	cleanup := func() {
 		repo.Close(ctx)

@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
+	"github.com/MarcGrol/service-catalog-mcp-server/data"
 )
 
 func TestRepo(t *testing.T) {
@@ -78,8 +78,13 @@ func TestRepo(t *testing.T) {
 
 func createRealDatabase(t *testing.T) (SLORepo, context.Context, func()) {
 	ctx := context.Background()
-	repo := New(sloconstants.SLODatabaseFilename())
-	err := repo.Open(ctx)
+
+	_, sloDatabaseFilename, fileCleanup, err := data.UnpackDatabases(ctx)
+	assert.NoError(t, err)
+	defer fileCleanup()
+
+	repo := New(sloDatabaseFilename)
+	err = repo.Open(ctx)
 	assert.NoError(t, err)
 	return repo, ctx, func() {
 		repo.Close(ctx)

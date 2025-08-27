@@ -33,17 +33,14 @@ func run() error {
 
 	ctx := context.Background()
 
-	cfg := loadConfig()
-
 	// Override if embedded files exist
 	serviceCatalogDatabaseFilename, slosDatabaseFilename, databaseCleanup, err := data.UnpackDatabases(ctx)
 	if err != nil {
 		log.Warn().Err(err).Msgf("Failed to unpack databases: %s", err)
 	} else {
-		cfg.PluginConfigs[catalogconstants.CatalogDatabaseFilenameKey] = serviceCatalogDatabaseFilename
-		cfg.PluginConfigs[sloconstants.SLODatabaseFilenameKey] = slosDatabaseFilename
 		defer databaseCleanup()
 	}
+	cfg := loadConfig(serviceCatalogDatabaseFilename, slosDatabaseFilename)
 
 	var serviceCatalogHandler core.MCPService = nil
 	{
@@ -71,7 +68,6 @@ func run() error {
 		if err != nil {
 			return err
 		}
-		defer sloRepo.Close(ctx)
 
 		// Initialize slo search index
 		sloSearchIndex := slosearch.NewSearchIndex(ctx, sloRepo)

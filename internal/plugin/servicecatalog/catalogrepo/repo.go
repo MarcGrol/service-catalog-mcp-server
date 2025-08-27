@@ -312,6 +312,11 @@ func (r *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]Int
 
 // ListInterfacesByComplexity lists interfaces ordered by complexity.
 func (r *CatalogRepo) ListInterfacesByComplexity(ctx context.Context, limit int) ([]Interface, error) {
+	if r.db == nil {
+		// already opened
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
 	interfaces := []Interface{}
 	err := r.db.Select(&interfaces, `
 	SELECT 
@@ -386,6 +391,11 @@ func (r *CatalogRepo) ListDatabaseConsumers(ctx context.Context, id string) ([]s
 
 // ListDatabases lists all databases.
 func (r *CatalogRepo) ListDatabases(ctx context.Context) ([]string, error) {
+	if r.db == nil {
+		// already opened
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
 	databases := []string{}
 	err := r.db.Select(&databases, "SELECT DISTINCT database_id FROM database ORDER BY database_id ASC")
 	if err != nil {
@@ -399,6 +409,11 @@ func (r *CatalogRepo) ListDatabases(ctx context.Context) ([]string, error) {
 
 // ListTeams lists all teams.
 func (r *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
+	if r.db == nil {
+		// already opened
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
 	teams := []string{}
 	err := r.db.Select(&teams, "SELECT DISTINCT team_id FROM team ORDER BY team_id ASC")
 	if err != nil {
@@ -413,6 +428,11 @@ func (r *CatalogRepo) ListTeams(ctx context.Context) ([]string, error) {
 
 // ListFlows lists all flows.
 func (r *CatalogRepo) ListFlows(ctx context.Context) ([]string, error) {
+	if r.db == nil {
+		// already opened
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
 	flows := []string{}
 	err := r.db.Select(&flows, "SELECT DISTINCT flow_id FROM flow ORDER BY flow_id ASC")
 	if err != nil {
@@ -453,6 +473,11 @@ func (r *CatalogRepo) ListParticpantsOfFlow(ctx context.Context, id string) ([]s
 
 // ListKinds lists all module kinds.
 func (r *CatalogRepo) ListKinds(ctx context.Context) ([]string, error) {
+	if r.db == nil {
+		// already opened
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
 	flows := []string{}
 	err := r.db.Select(&flows, "SELECT DISTINCT kind_id FROM kind ORDER BY kind_id ASC")
 	if err != nil {
