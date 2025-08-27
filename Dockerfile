@@ -3,10 +3,12 @@ FROM acr-main.is.adyen.com/containers/golang-base AS build-stage
 
 WORKDIR /app
 
+# Download 3rd party dependencies
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
+# Copy source code from local machine
 COPY . ./
 COPY data/service-catalog.sqlite data
 COPY data/slos.sqlite data
@@ -15,8 +17,7 @@ COPY data/slos.sqlite data
 RUN go test -v ./...
 
 # Build the executable
-RUN go build .
-
+RUN go build -o /app/service-catalog-mcp-server
 
 # Deploy the application binary into a lean image
 FROM acr-main.is.adyen.com/containers/golang-base AS runtime-stage
@@ -25,8 +26,6 @@ WORKDIR /
 
 COPY --from=build-stage /app/service-catalog-mcp-server /service-catalog-mcp-server
 
-EXPOSE 8080
+EXPOSE 8000
 
-#USER nonroot:nonroot
-
-ENTRYPOINT ["/service-catalog-mcp-server"]
+ENTRYPOINT ["/service-catalog-mcp-server", "-http", "-port", "8000"]
