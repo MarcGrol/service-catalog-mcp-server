@@ -63,14 +63,14 @@ By default, the server runs in `stdio` mode. You can test it by pasting JSON-RPC
 ```
 The server will print the JSON-RPC response to standard output. For more examples, see `examples.md`.
 
-## Integration with Claude-desktop
+## Integration with LLM agents like gemini-cli or Claude-desktop
 
-To integrate the `service-catalog-mcp-server` with Claude-desktop using `stdio` transport, follow these steps:
+To integrate the `service-catalog-mcp-server` with gemini-cli or Claude-desktop using `stdio` transport, follow these steps:
 
 1.  **Build the project**:
     Ensure you have built the `service-catalog-mcp-server` executable as described in the "Installation" section.
 
-2.  **Configure `claude_desktop_config.json`**:
+2.  **Adjust `~/.gemini/settings.json` or `claude_desktop_config.json` to reflect example below**:
     Locate your `claude_desktop_config.json` file (its location varies by operating system, but it's typically in your user's configuration directory for Claude-desktop). Add the following entry:
 
     ```json
@@ -86,7 +86,7 @@ To integrate the `service-catalog-mcp-server` with Claude-desktop using `stdio` 
     ```
     **Important**: Replace `/path/to/your/service-catalog-mcp-server` with the actual absolute path to your `service-catalog-mcp-server` executable.
 
-3.  **Restart Claude-desktop**:
+3.  **Restart gemini-cli or Claude-desktop**:
     After saving the `claude_desktop_config.json` file, restart Claude-desktop for the changes to take effect. The `service-catalog` MCP server should now be available for use.
 
 ## Project Structure
