@@ -87,7 +87,7 @@ To integrate the `service-catalog-mcp-server` with gemini-cli or Claude-desktop 
     **Important**: Replace `/path/to/your/service-catalog-mcp-server` with the actual absolute path to your `service-catalog-mcp-server` executable.
 
 3.  **Restart gemini-cli or Claude-desktop**:
-    After saving the `claude_desktop_config.json` file, restart Claude-desktop for the changes to take effect. The `service-catalog` MCP server should now be available for use.
+    After restart Claude-desktop for the changes to take effect. The `service-catalog` MCP server should now be available for use.
 
 ## Project Structure
 
