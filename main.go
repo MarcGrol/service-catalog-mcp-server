@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
+	"github.com/MarcGrol/service-catalog-mcp-server/data"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
@@ -19,11 +22,28 @@ import (
 )
 
 func main() {
+	err := run()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Fatal error: %v", err)
+	}
+}
+
+func run() error {
 	zerolog.TimeFieldFormat = time.RFC3339
 
 	ctx := context.Background()
 
 	cfg := loadConfig()
+
+	// Override if embedded files exist
+	serviceCatalogDatabaseFilename, slosDatabaseFilename, databaseCleanup, err := data.UnpackDatabases(ctx)
+	if err != nil {
+		log.Warn().Err(err).Msgf("Failed to unpack databases: %s", err)
+	} else {
+		cfg.PluginConfigs[catalogconstants.CatalogDatabaseFilenameKey] = serviceCatalogDatabaseFilename
+		cfg.PluginConfigs[sloconstants.SLODatabaseFilenameKey] = slosDatabaseFilename
+		defer databaseCleanup()
+	}
 
 	var serviceCatalogHandler core.MCPService = nil
 	{
@@ -31,7 +51,8 @@ func main() {
 		catalogRepo := catalogrepo.New(cfg.PluginConfigs[catalogconstants.CatalogDatabaseFilenameKey])
 		err := catalogRepo.Open(ctx)
 		if err != nil {
-			log.Fatal().Msgf("Error opening catalog-database: %v", err)
+			log.Warn().Msgf("Error opening catalog-database: %v", err)
+			return err
 		}
 		defer catalogRepo.Close(ctx)
 
@@ -48,8 +69,9 @@ func main() {
 		sloRepo := repo.New(cfg.PluginConfigs[sloconstants.SLODatabaseFilenameKey])
 		err := sloRepo.Open(ctx)
 		if err != nil {
-			log.Fatal().Msgf("Error opening SLO database: %v", err)
+			return err
 		}
+		defer sloRepo.Close(ctx)
 
 		// Initialize slo search index
 		sloSearchIndex := slosearch.NewSearchIndex(ctx, sloRepo)
@@ -62,13 +84,17 @@ func main() {
 
 	cleanup, err := application.Initialize(ctx)
 	if err != nil {
-		log.Fatal().Msgf("Error initializing application: %v", err)
+		log.Warn().Msgf("Error initializing application: %v", err)
+		return err
 	}
 	if cleanup != nil {
 		defer cleanup()
 	}
 
-	if err := application.Run(); err != nil {
-		log.Fatal().Msgf("Error running application: %v", err)
+	err = application.Run()
+	if err != nil {
+		log.Warn().Msgf("Error running application: %v", err)
+		return err
 	}
+	return nil
 }

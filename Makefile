@@ -21,6 +21,11 @@ test:
 install:
 	go install
 
+docker:
+	docker build \
+	    -f Dockerfile \
+	    -t service-catalog-mcp-server:local .
+
 clean:
 	go clean
 	rm -f service-catalog-mcp-server

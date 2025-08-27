@@ -28,7 +28,6 @@ func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServe
 		//h.listSLOTool(), // Response is too big
 		h.listSLOByTeamTool(),
 		h.listSLOByApplicationTool(),
-		h.listSLOByTeamTool(),
 		h.getSLOByIDTool(),
 		h.suggestCandidatesTool(),
 	)
