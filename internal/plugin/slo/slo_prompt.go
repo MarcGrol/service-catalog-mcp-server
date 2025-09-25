@@ -45,9 +45,8 @@ You now have access to SLO (Service Level Objective) search tools that complemen
 These tools allow you to query and analyze service reliability metrics, performance targets, and operational health indicators across the system architecture.
 
 ## Available SLO Tools
-- "suggest_slos(keyword, limit_to)": Searches for SLOs, teams, and applications matching a keyword. Returns structured results with SLOs, related teams, and applications.
-- "list_slos_by_team(team_id)": Lists all SLOs owned by a specific team.
-- "list_slos_by_application(application_id)" Lists all SLOs for a specific application.
+- "suggest_slos(keyword, limit_to)": Searches for SLOs, teams, and applications matching a keyword. Returns structured results with matching teams, applications, services, components or methods.
+- "search_slos(category, keyword)": Searches all SLOs based on category and keyword. The following categories are available: team, application, service, component or methods.
 
 Note that each SLO has 2 attributes that are important:
 - "business_criticality": High value means that the SLO is critical for the business.

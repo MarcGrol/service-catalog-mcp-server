@@ -1,6 +1,6 @@
 package repo
 
-import context "context"
+import "context"
 
 // SLORepo defines the interface for SLO repository operations.
 //
@@ -12,6 +12,10 @@ type SLORepo interface {
 	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
 	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, bool, error)
 	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, bool, error)
+	ListSLOsByService(ctx context.Context, id string) ([]SLO, bool, error)
+	ListSLOsByComponent(ctx context.Context, id string) ([]SLO, bool, error)
+	ListSLOsByMethods(ctx context.Context, id string) ([]SLO, bool, error)
+	SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error)
 }
 
 // SLO represents the structure of the SLO data.
@@ -29,6 +33,9 @@ type SLO struct {
 	Category             string  `json:"category" db:"Category"`
 	RelativeThroughput   float64 `json:"relative_throughput" db:"RelativeThroughput"`
 	PromQLQuery          string  `json:"promql_query" db:"PromQLQuery"`
+	PromQLMetrics        string  `json:"promQLMetrics" db:"PromQLMetrics"`
+	PromQLService        string  `json:"promQLService" db:"PromQLService"`
+	PromQLMethods        string  `json:"promQLMethods" db:"PromQLMethods"`
 	TargetSLO            float64 `json:"target_slo" db:"TargetSLO"`
 	Duration             string  `json:"duration" db:"Duration"`
 	SLI                  float64 `json:"sli" db:"SLI"`

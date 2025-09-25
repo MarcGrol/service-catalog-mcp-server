@@ -41,6 +41,27 @@ func TestSearchIndex_Search(t *testing.T) {
 		Applications: []string{
 			"partner",
 		},
+		Services: []string{
+			"PartnerTermsResource",
+			"PartnerUsersResource",
+			"PartnerReferralResource",
+			"all-partner-portal",
+			"PartnerOnboardingResource",
+		},
+		Components: []string{
+			"partner-flow",
+			"v1_webhooks_alelo_partner_order_responses",
+			"v1_webhooks_alelo_partner_order_enablements",
+			"palauthorisation_internal",
+			"capabilityprofilestatusconsumer",
+		},
+		Methods: []string{
+			"/v1/webhooks/Alelo/partner-order/responses",
+			"/v1/webhooks/Alelo/partner-order/enablements",
+			"getAllCostContractPartnerPricingPlan,getAllPartnerPricingPlanAssignment,getBulkableSettings,updateSettingsForAccounts",
+			"accountCanBeBilled,createCostContractPartnerPricingPlan,createPartnerPricingPlanAssignment,deleteCostContractPartnerPricingPlan,deletePartnerPricingPlanAssignment,getBillingInvoiceSettings,getPartnerPricingPlanAssignment,getSettingOptions,kycInfo,updateBillingInvoiceSettings",
+			"accountCanBeBilled,createCostContractPartnerPricingPlan,createPartnerPricingPlanAssignment,deleteCostContractPartnerPricingPlan,deletePartnerPricingPlanAssignment,getBillingInvoiceSettings,getPartnerPricingPlanAssignment,getSettingOptions,kycInfo,setDefaultBilling,updateBillingInvoiceSettings",
+		},
 	}, result)
 
 }
@@ -48,7 +69,7 @@ func TestSearchIndex_Search(t *testing.T) {
 func setup(t *testing.T) (repo.SLORepo, context.Context, func()) {
 	ctx := context.TODO()
 
-	_, sloDatabaseFilename, fileCleanup, err := data.UnpackDatabases(ctx)
+	sloDatabaseFilename, fileCleanup, err := data.UnpackSLODatabase(ctx)
 	assert.NoError(t, err)
 	defer fileCleanup()
 

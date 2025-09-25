@@ -57,7 +57,7 @@ func TestSearchIndex_Search(t *testing.T) {
 func setup(t *testing.T) (catalogrepo.Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	serviceCatalogDatabaseFilename, _, fileCleanup, err := data.UnpackDatabases(ctx)
+	serviceCatalogDatabaseFilename, fileCleanup, err := data.UnpackServiceCatalogDatabase(ctx)
 	assert.NoError(t, err)
 	defer fileCleanup()
 

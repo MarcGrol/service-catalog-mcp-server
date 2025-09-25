@@ -95,6 +95,54 @@ func (mr *MockSLORepoMockRecorder) ListSLOsByApplication(ctx, id interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByApplication", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByApplication), ctx, id)
 }
 
+// ListSLOsByComponent mocks base method.
+func (m *MockSLORepo) ListSLOsByComponent(ctx context.Context, id string) ([]SLO, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListSLOsByComponent", ctx, id)
+	ret0, _ := ret[0].([]SLO)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListSLOsByComponent indicates an expected call of ListSLOsByComponent.
+func (mr *MockSLORepoMockRecorder) ListSLOsByComponent(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByComponent", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByComponent), ctx, id)
+}
+
+// ListSLOsByMethods mocks base method.
+func (m *MockSLORepo) ListSLOsByMethods(ctx context.Context, id string) ([]SLO, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListSLOsByMethods", ctx, id)
+	ret0, _ := ret[0].([]SLO)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListSLOsByMethods indicates an expected call of ListSLOsByMethods.
+func (mr *MockSLORepoMockRecorder) ListSLOsByMethods(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByMethods", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByMethods), ctx, id)
+}
+
+// ListSLOsByService mocks base method.
+func (m *MockSLORepo) ListSLOsByService(ctx context.Context, id string) ([]SLO, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListSLOsByService", ctx, id)
+	ret0, _ := ret[0].([]SLO)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListSLOsByService indicates an expected call of ListSLOsByService.
+func (mr *MockSLORepoMockRecorder) ListSLOsByService(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByService", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByService), ctx, id)
+}
+
 // ListSLOsByTeam mocks base method.
 func (m *MockSLORepo) ListSLOsByTeam(ctx context.Context, id string) ([]SLO, bool, error) {
 	m.ctrl.T.Helper()
@@ -123,4 +171,20 @@ func (m *MockSLORepo) Open(ctx context.Context) error {
 func (mr *MockSLORepoMockRecorder) Open(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Open", reflect.TypeOf((*MockSLORepo)(nil).Open), ctx)
+}
+
+// SearchSLOs mocks base method.
+func (m *MockSLORepo) SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SearchSLOs", ctx, category, keyword)
+	ret0, _ := ret[0].([]SLO)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// SearchSLOs indicates an expected call of SearchSLOs.
+func (mr *MockSLORepoMockRecorder) SearchSLOs(ctx, category, keyword interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SearchSLOs", reflect.TypeOf((*MockSLORepo)(nil).SearchSLOs), ctx, category, keyword)
 }

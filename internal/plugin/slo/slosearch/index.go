@@ -21,6 +21,9 @@ type searchIndex struct {
 	SLOs         []string
 	Teams        []string
 	Applications []string
+	Services     []string
+	Components   []string
+	Methods      []string
 }
 
 // NewSearchIndex creates a new search index.
@@ -29,20 +32,36 @@ func NewSearchIndex(ctx context.Context, r repo.SLORepo) Index {
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing slos for search index")
 	}
-	sloNames := lo.Uniq(lo.Map(slos, func(m repo.SLO, index int) string {
-		return m.UID
+	sloNames := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.UID
 	}))
 	teams := lo.Uniq(lo.Map(slos, func(m repo.SLO, index int) string {
 		return m.Team
 	}))
-	applications := lo.Uniq(lo.Map(slos, func(m repo.SLO, index int) string {
-		return m.Application
+	applications := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.Application
+	}))
+	services1 := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.Service
+	}))
+	services2 := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.PromQLService
+	}))
+	services := lo.Uniq(append(services1, services2...))
+	components := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.Component
+	}))
+	methods := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.PromQLMethods
 	}))
 
 	return &searchIndex{
 		SLOs:         sloNames,
 		Teams:        teams,
 		Applications: applications,
+		Services:     services,
+		Components:   components,
+		Methods:      methods,
 	}
 }
 
@@ -51,6 +70,9 @@ type Result struct {
 	SLOs         []string
 	Teams        []string
 	Applications []string
+	Services     []string
+	Components   []string
+	Methods      []string
 }
 
 const flowSearchLimitMultiplier = 2
@@ -60,6 +82,9 @@ func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) R
 		SLOs:         matchesToSlice(fuzzy.Find(keyword, idx.SLOs), limit),
 		Teams:        matchesToSlice(fuzzy.Find(keyword, idx.Teams), limit),
 		Applications: matchesToSlice(fuzzy.Find(keyword, idx.Applications), limit),
+		Services:     matchesToSlice(fuzzy.Find(keyword, idx.Services), limit),
+		Components:   matchesToSlice(fuzzy.Find(keyword, idx.Components), limit),
+		Methods:      matchesToSlice(fuzzy.Find(keyword, idx.Methods), limit),
 	}
 }
 

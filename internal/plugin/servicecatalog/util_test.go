@@ -14,7 +14,7 @@ import (
 
 func setup(t *testing.T) (catalogrepo.Cataloger, search.Index, context.Context, func()) {
 	ctx := context.Background()
-	serviceCatalogDatabaseFilename, _, fileCleanup, err := data.UnpackDatabases(ctx)
+	serviceCatalogDatabaseFilename, fileCleanup, err := data.UnpackServiceCatalogDatabase(ctx)
 	assert.NoError(t, err)
 	defer fileCleanup()
 

@@ -16,33 +16,41 @@ var serviceCatalogDatabase []byte
 //go:embed slos.sqlite
 var sloDatabase []byte
 
-// UnpackDatabases copies databases from embedding to the filesystem
-func UnpackDatabases(c context.Context) (string, string, func(), error) {
+// UnpackSLODatabase copies databases from embedding to the filesystem
+func UnpackServiceCatalogDatabase(c context.Context) (string, func(), error) {
 	serviceCatalogatabaseFilename, err := copyDatabase("service-catalog.sqlite", serviceCatalogDatabase)
 	if err != nil {
-		return "", "", nil, err
+		return "", nil, err
 	}
-	sloDatabaseFilename, err := copyDatabase("slos.sqlite", sloDatabase)
-	if err != nil {
-		return "", "", nil, err
-	}
-
 	log.Info().Msgf("Service-catalog-database filename: %s", serviceCatalogatabaseFilename)
-	log.Info().Msgf("SLO-database filename: %s", sloDatabaseFilename)
 
 	cleanup := func() {
-		log.Info().Msgf("Removing temporary databases %s and %s",
-			serviceCatalogatabaseFilename, sloDatabaseFilename)
+		log.Info().Msgf("Removing temporary databases %s",
+			serviceCatalogatabaseFilename)
 		err := os.Remove(serviceCatalogatabaseFilename)
 		if err != nil {
 			log.Warn().Err(err).Msgf("Failed to remove service catalog database file %s: %s", serviceCatalogatabaseFilename, err)
 		}
+	}
+	return serviceCatalogatabaseFilename, cleanup, nil
+}
+func UnpackSLODatabase(c context.Context) (string, func(), error) {
+	sloDatabaseFilename, err := copyDatabase("slos.sqlite", sloDatabase)
+	if err != nil {
+		return "", nil, err
+	}
+
+	log.Info().Msgf("SLO-database filename: %s", sloDatabaseFilename)
+
+	cleanup := func() {
+		log.Info().Msgf("Removing temporary databases %s",
+			sloDatabaseFilename)
 		err = os.Remove(sloDatabaseFilename)
 		if err != nil {
 			log.Warn().Err(err).Msgf("Failed to remove service catalog database file %s: %s", sloDatabaseFilename, err)
 		}
 	}
-	return serviceCatalogatabaseFilename, sloDatabaseFilename, cleanup, nil
+	return sloDatabaseFilename, cleanup, nil
 }
 
 func copyDatabase(name string, databaseBlob []byte) (string, error) {

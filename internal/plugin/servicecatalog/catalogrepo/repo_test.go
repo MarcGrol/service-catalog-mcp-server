@@ -333,13 +333,14 @@ func TestListAppsWithKind(t *testing.T) {
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
 	ctx := context.TODO()
 
-	serviceCatalogDatabaseFilename, _, fileCleanup, err := data.UnpackDatabases(ctx)
+	serviceCatalogDatabaseFilename, fileCleanup, err := data.UnpackServiceCatalogDatabase(ctx)
 	assert.NoError(t, err)
 	defer fileCleanup()
 
 	repo := New(serviceCatalogDatabaseFilename)
 	err = repo.Open(ctx)
 	assert.NoError(t, err)
+
 	cleanup := func() {
 		repo.Close(ctx)
 	}

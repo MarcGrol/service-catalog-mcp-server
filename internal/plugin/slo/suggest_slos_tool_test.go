@@ -15,7 +15,7 @@ import (
 func TestSuggestCandidatesSuccess(t *testing.T) {
 	ctx := context.Background()
 
-	_, sloDatabaseFilename, fileCleanup, err := data.UnpackDatabases(ctx)
+	sloDatabaseFilename, fileCleanup, err := data.UnpackSLODatabase(ctx)
 	assert.NoError(t, err)
 	defer fileCleanup()
 

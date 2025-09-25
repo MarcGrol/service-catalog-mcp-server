@@ -34,12 +34,20 @@ func run() error {
 	ctx := context.Background()
 
 	// Override if embedded files exist
-	serviceCatalogDatabaseFilename, slosDatabaseFilename, databaseCleanup, err := data.UnpackDatabases(ctx)
+	serviceCatalogDatabaseFilename, serviceCatalogDatabaseCleanup, err := data.UnpackServiceCatalogDatabase(ctx)
 	if err != nil {
-		log.Warn().Err(err).Msgf("Failed to unpack databases: %s", err)
-	} else {
-		defer databaseCleanup()
+		log.Warn().Err(err).Msgf("Failed to unpack service-catalog database: %s", err)
+		return err
 	}
+	defer serviceCatalogDatabaseCleanup()
+
+	slosDatabaseFilename, sloDatabaseCleanup, err := data.UnpackSLODatabase(ctx)
+	if err != nil {
+		log.Warn().Err(err).Msgf("Failed to unpack slo database: %s", err)
+		return err
+	}
+	defer sloDatabaseCleanup()
+
 	cfg := loadConfig(serviceCatalogDatabaseFilename, slosDatabaseFilename)
 
 	var serviceCatalogHandler core.MCPService = nil
@@ -78,13 +86,13 @@ func run() error {
 
 	application := core.New(cfg, serviceCatalogHandler, sloHandler)
 
-	cleanup, err := application.Initialize(ctx)
+	applicationCleanup, err := application.Initialize(ctx)
 	if err != nil {
 		log.Warn().Msgf("Error initializing application: %v", err)
 		return err
 	}
-	if cleanup != nil {
-		defer cleanup()
+	if applicationCleanup != nil {
+		defer applicationCleanup()
 	}
 
 	err = application.Run()

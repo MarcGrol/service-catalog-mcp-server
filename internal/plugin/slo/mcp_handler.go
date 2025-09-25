@@ -26,8 +26,9 @@ func NewMCPHandler(repo repo.SLORepo, idx slosearch.Index) *mcpHandler {
 func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServer) {
 	s.AddTools(
 		//h.listSLOTool(), // Response is too big
-		h.listSLOByTeamTool(),
-		h.listSLOByApplicationTool(),
+		//h.listSLOByTeamTool(),
+		//h.listSLOByApplicationTool(),
+		h.searchSLOs(),
 		h.getSLOByIDTool(),
 		h.suggestCandidatesTool(),
 	)

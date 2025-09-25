@@ -68,6 +68,9 @@ func (r *sloRepo) Open(ctx context.Context) error {
 		Category TEXT NOT NULL,
 		RelativeThroughput REAL NOT NULL,
 		PromQLQuery TEXT,
+		PromQLMetrics TEXT,
+		PromQLService TEXT,
+		Methods TEXT,
 		TargetSLO REAL NOT NULL,
 		Duration TEXT,
 		SLI REAL NOT NULL,
@@ -133,30 +136,90 @@ func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
 }
 
 // ListSLOsByTeam retrieves all SLOs for a given team.
-func (r *sloRepo) ListSLOsByTeam(ctx context.Context, teamID string) ([]SLO, bool, error) {
+func (r *sloRepo) ListSLOsByTeam(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team = ? ORDER BY uid ASC`, teamID)
+	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team like ? ORDER BY uid ASC`, wildcard(keyword))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, false, nil // Not found
 		}
-		return nil, false, fmt.Errorf("failed to select SLOs by team: %w", err)
+		return nil, false, fmt.Errorf("failed to select SLOs by team '%s': %w", keyword, err)
 	}
 
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
 // ListSLOsByApplication retrieves all SLOs for a given application.
-func (r *sloRepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, bool, error) {
+func (r *sloRepo) ListSLOsByApplication(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE application = ? ORDER BY uid`, id)
+	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE application LIKE ? ORDER BY application`, wildcard(keyword))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, false, nil // Not found
 		}
-		return nil, false, fmt.Errorf("failed to select SLOs by application: %w", err)
+		return nil, false, fmt.Errorf("failed to select SLOs by application '%s': %w", keyword, err)
 	}
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
+}
+
+// ListSLOsByComponent retrieves all SLOs for a given application.
+func (r *sloRepo) ListSLOsByComponent(ctx context.Context, keyword string) ([]SLO, bool, error) {
+	slos := []SLO{}
+	err := r.db.Select(&slos, `SELECT * FROM slo WHERE component like ? ORDER BY component`, wildcard(keyword))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []SLO{}, false, nil // Not found
+		}
+		return nil, false, fmt.Errorf("failed to select SLOs by component '%s': %w", keyword, err)
+	}
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
+}
+
+// ListSLOsByComponent retrieves all SLOs for a given application.
+func (r *sloRepo) ListSLOsByService(ctx context.Context, keyword string) ([]SLO, bool, error) {
+	slos := []SLO{}
+	err := r.db.Select(&slos, `SELECT *FROM slo WHERE service LIKE ? OR PromQLService LIKE ? ORDER BY service,PromQLService`,
+		wildcard(keyword), wildcard(keyword))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []SLO{}, false, nil // Not found
+		}
+		return nil, false, fmt.Errorf("failed to select SLOs by service '%s': %w", keyword, err)
+	}
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
+}
+
+// ListSLOsByMethods retrieves all SLOs for a given service.
+func (r *sloRepo) ListSLOsByMethods(ctx context.Context, keyword string) ([]SLO, bool, error) {
+	slos := []SLO{}
+	err := r.db.Select(&slos, `SELECT * FROM slo WHERE PromQLMethods like ? ORDER BY PromQLMethods`,
+		wildcard(keyword))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []SLO{}, false, nil // Not found
+		}
+		return nil, false, fmt.Errorf("failed to select SLOs by method '%s': %w", keyword, err)
+	}
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
+}
+
+// SearchSLOs searches all SLOs based on category and keyword
+func (r *sloRepo) SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error) {
+	switch category {
+	case "team":
+		return r.ListSLOsByTeam(ctx, keyword)
+	case "application":
+		return r.ListSLOsByApplication(ctx, keyword)
+	case "service":
+		return r.ListSLOsByService(ctx, keyword)
+	case "component":
+		return r.ListSLOsByComponent(ctx, keyword)
+	case "methods":
+		return r.ListSLOsByMethods(ctx, keyword)
+	default:
+		return nil, false, fmt.Errorf("unknown category: %s", category)
+	}
+
 }
 
 func addMetricsToSLOs(slos []SLO) []SLO {
@@ -175,4 +238,11 @@ func addMetricsToSLO(slo SLO) SLO {
 	slo.OperationalReadiness = slo.calculateOperationalReadinessMultiplier()
 	slo.BusinessCriticality = slo.calculateBusinessCriticalityMultiplier()
 	return slo
+}
+
+func wildcard(in string) string {
+	if in == "" {
+		return in
+	}
+	return "%" + in + "%"
 }
