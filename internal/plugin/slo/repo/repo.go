@@ -13,7 +13,7 @@ import (
 )
 
 // New creates a new CatalogRepo.
-func New(filename string) SLORepo {
+func New(filename string) *sloRepo {
 	return newSLORepo(filename)
 }
 
@@ -135,8 +135,8 @@ func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
 	return slos, nil
 }
 
-// ListSLOsByTeam retrieves all SLOs for a given team.
-func (r *sloRepo) ListSLOsByTeam(ctx context.Context, keyword string) ([]SLO, bool, error) {
+// listSLOsByTeam retrieves all SLOs for a given team.
+func (r *sloRepo) listSLOsByTeam(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
 	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team like ? ORDER BY uid ASC`, wildcard(keyword))
 	if err != nil {
@@ -149,8 +149,8 @@ func (r *sloRepo) ListSLOsByTeam(ctx context.Context, keyword string) ([]SLO, bo
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
-// ListSLOsByApplication retrieves all SLOs for a given application.
-func (r *sloRepo) ListSLOsByApplication(ctx context.Context, keyword string) ([]SLO, bool, error) {
+// listSLOsByApplication retrieves all SLOs for a given application.
+func (r *sloRepo) listSLOsByApplication(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
 	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE application LIKE ? ORDER BY application`, wildcard(keyword))
 	if err != nil {
@@ -162,8 +162,8 @@ func (r *sloRepo) ListSLOsByApplication(ctx context.Context, keyword string) ([]
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
-// ListSLOsByComponent retrieves all SLOs for a given application.
-func (r *sloRepo) ListSLOsByComponent(ctx context.Context, keyword string) ([]SLO, bool, error) {
+// listSLOsByComponent retrieves all SLOs for a given application.
+func (r *sloRepo) listSLOsByComponent(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
 	err := r.db.Select(&slos, `SELECT * FROM slo WHERE component like ? ORDER BY component`, wildcard(keyword))
 	if err != nil {
@@ -175,8 +175,8 @@ func (r *sloRepo) ListSLOsByComponent(ctx context.Context, keyword string) ([]SL
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
-// ListSLOsByComponent retrieves all SLOs for a given application.
-func (r *sloRepo) ListSLOsByService(ctx context.Context, keyword string) ([]SLO, bool, error) {
+// listSLOsByService retrieves all SLOs for a given service.
+func (r *sloRepo) listSLOsByService(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
 	err := r.db.Select(&slos, `SELECT *FROM slo WHERE service LIKE ? OR PromQLService LIKE ? ORDER BY service,PromQLService`,
 		wildcard(keyword), wildcard(keyword))
@@ -189,8 +189,22 @@ func (r *sloRepo) ListSLOsByService(ctx context.Context, keyword string) ([]SLO,
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
-// ListSLOsByMethods retrieves all SLOs for a given service.
-func (r *sloRepo) ListSLOsByMethods(ctx context.Context, keyword string) ([]SLO, bool, error) {
+// ListSLOsByPromQLService retrieves all SLOs for a given promql-servoce.
+func (r *sloRepo) ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error) {
+	slos := []SLO{}
+	err := r.db.Select(&slos, `SELECT *FROM slo WHERE PromQLService LIKE ? ORDER BY service,PromQLService`,
+		wildcard(serviceName))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []SLO{}, false, nil // Not found
+		}
+		return nil, false, fmt.Errorf("failed to select SLOs by service '%s': %w", serviceName, err)
+	}
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
+}
+
+// listSLOsByMethods retrieves all SLOs for a given service.
+func (r *sloRepo) listSLOsByMethods(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
 	err := r.db.Select(&slos, `SELECT * FROM slo WHERE PromQLMethods like ? ORDER BY PromQLMethods`,
 		wildcard(keyword))
@@ -207,15 +221,15 @@ func (r *sloRepo) ListSLOsByMethods(ctx context.Context, keyword string) ([]SLO,
 func (r *sloRepo) SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error) {
 	switch category {
 	case "team":
-		return r.ListSLOsByTeam(ctx, keyword)
+		return r.listSLOsByTeam(ctx, keyword)
 	case "application":
-		return r.ListSLOsByApplication(ctx, keyword)
+		return r.listSLOsByApplication(ctx, keyword)
 	case "service":
-		return r.ListSLOsByService(ctx, keyword)
+		return r.listSLOsByService(ctx, keyword)
 	case "component":
-		return r.ListSLOsByComponent(ctx, keyword)
+		return r.listSLOsByComponent(ctx, keyword)
 	case "methods":
-		return r.ListSLOsByMethods(ctx, keyword)
+		return r.listSLOsByMethods(ctx, keyword)
 	default:
 		return nil, false, fmt.Errorf("unknown category: %s", category)
 	}

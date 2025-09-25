@@ -79,84 +79,20 @@ func (mr *MockSLORepoMockRecorder) ListSLOs(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOs", reflect.TypeOf((*MockSLORepo)(nil).ListSLOs), ctx)
 }
 
-// ListSLOsByApplication mocks base method.
-func (m *MockSLORepo) ListSLOsByApplication(ctx context.Context, id string) ([]SLO, bool, error) {
+// ListSLOsByPromQLService mocks base method.
+func (m *MockSLORepo) ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListSLOsByApplication", ctx, id)
+	ret := m.ctrl.Call(m, "ListSLOsByPromQLService", ctx, serviceName)
 	ret0, _ := ret[0].([]SLO)
 	ret1, _ := ret[1].(bool)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// ListSLOsByApplication indicates an expected call of ListSLOsByApplication.
-func (mr *MockSLORepoMockRecorder) ListSLOsByApplication(ctx, id interface{}) *gomock.Call {
+// ListSLOsByPromQLService indicates an expected call of ListSLOsByPromQLService.
+func (mr *MockSLORepoMockRecorder) ListSLOsByPromQLService(ctx, serviceName interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByApplication", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByApplication), ctx, id)
-}
-
-// ListSLOsByComponent mocks base method.
-func (m *MockSLORepo) ListSLOsByComponent(ctx context.Context, id string) ([]SLO, bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListSLOsByComponent", ctx, id)
-	ret0, _ := ret[0].([]SLO)
-	ret1, _ := ret[1].(bool)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ListSLOsByComponent indicates an expected call of ListSLOsByComponent.
-func (mr *MockSLORepoMockRecorder) ListSLOsByComponent(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByComponent", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByComponent), ctx, id)
-}
-
-// ListSLOsByMethods mocks base method.
-func (m *MockSLORepo) ListSLOsByMethods(ctx context.Context, id string) ([]SLO, bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListSLOsByMethods", ctx, id)
-	ret0, _ := ret[0].([]SLO)
-	ret1, _ := ret[1].(bool)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ListSLOsByMethods indicates an expected call of ListSLOsByMethods.
-func (mr *MockSLORepoMockRecorder) ListSLOsByMethods(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByMethods", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByMethods), ctx, id)
-}
-
-// ListSLOsByService mocks base method.
-func (m *MockSLORepo) ListSLOsByService(ctx context.Context, id string) ([]SLO, bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListSLOsByService", ctx, id)
-	ret0, _ := ret[0].([]SLO)
-	ret1, _ := ret[1].(bool)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ListSLOsByService indicates an expected call of ListSLOsByService.
-func (mr *MockSLORepoMockRecorder) ListSLOsByService(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByService", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByService), ctx, id)
-}
-
-// ListSLOsByTeam mocks base method.
-func (m *MockSLORepo) ListSLOsByTeam(ctx context.Context, id string) ([]SLO, bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListSLOsByTeam", ctx, id)
-	ret0, _ := ret[0].([]SLO)
-	ret1, _ := ret[1].(bool)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ListSLOsByTeam indicates an expected call of ListSLOsByTeam.
-func (mr *MockSLORepoMockRecorder) ListSLOsByTeam(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByTeam", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByTeam), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByPromQLService", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByPromQLService), ctx, serviceName)
 }
 
 // Open mocks base method.

@@ -10,11 +10,7 @@ type SLORepo interface {
 	Close(ctx context.Context) error
 	ListSLOs(ctx context.Context) ([]SLO, error)
 	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
-	ListSLOsByTeam(ctx context.Context, id string) ([]SLO, bool, error)
-	ListSLOsByApplication(ctx context.Context, id string) ([]SLO, bool, error)
-	ListSLOsByService(ctx context.Context, id string) ([]SLO, bool, error)
-	ListSLOsByComponent(ctx context.Context, id string) ([]SLO, bool, error)
-	ListSLOsByMethods(ctx context.Context, id string) ([]SLO, bool, error)
+	ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error)
 	SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error)
 }
 

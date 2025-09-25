@@ -46,7 +46,7 @@ func TestRepo(t *testing.T) {
 
 	// Test ListSLOsByTeam
 	t.Run("ListSLOsByTeam", func(t *testing.T) {
-		slos, exists, err := repo.ListSLOsByTeam(ctx, "be-internal_services")
+		slos, exists, err := repo.listSLOsByTeam(ctx, "be-internal_services")
 		assert.NoError(t, err)
 		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
@@ -54,7 +54,7 @@ func TestRepo(t *testing.T) {
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
 		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
-		slos, exists, err = repo.ListSLOsByTeam(ctx, "nonexistent")
+		slos, exists, err = repo.listSLOsByTeam(ctx, "nonexistent")
 		assert.NoError(t, err)
 		assert.False(t, exists)
 		assert.Len(t, slos, 0.0)
@@ -62,7 +62,7 @@ func TestRepo(t *testing.T) {
 
 	// Test ListSLOsByApplication
 	t.Run("ListSLOsByApplication", func(t *testing.T) {
-		slos, exists, err := repo.ListSLOsByApplication(ctx, "accessportal")
+		slos, exists, err := repo.listSLOsByApplication(ctx, "accessportal")
 		assert.NoError(t, err)
 		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
@@ -70,7 +70,7 @@ func TestRepo(t *testing.T) {
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
 		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
-		slos, exists, err = repo.ListSLOsByApplication(ctx, "nonexistent")
+		slos, exists, err = repo.listSLOsByApplication(ctx, "nonexistent")
 		assert.NoError(t, err)
 		assert.False(t, exists)
 		assert.Len(t, slos, 0)
@@ -93,7 +93,7 @@ func TestRepo(t *testing.T) {
 	})
 }
 
-func createRealDatabase(t *testing.T) (SLORepo, context.Context, func()) {
+func createRealDatabase(t *testing.T) (*sloRepo, context.Context, func()) {
 	ctx := context.Background()
 
 	sloDatabaseFilename, fileCleanup, err := data.UnpackSLODatabase(ctx)
