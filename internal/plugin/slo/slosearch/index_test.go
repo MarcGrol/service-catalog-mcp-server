@@ -33,18 +33,11 @@ func TestSearchIndex_Search(t *testing.T) {
 		},
 		Teams: []string{
 			"partner-experience",
-			"platform-integration-experience-test-latency",
-			"platform-integration-experience-live-latency",
-			"payments-engine-alternative-singapore-critical",
-			"platform-integration-experience-test-availability",
 		},
 		Applications: []string{
 			"partner",
 		},
-		Webapps: []string{
-			"jobs-BankInterestPayoutConsumerJob-BankInterestPayoutConsumerJob",
-			"jobs-IdrLemCapabilityConsumersJob-IdrLemCapabilityConsumersJob",
-		},
+		Webapps: []string{},
 		Services: []string{
 			"PartnerTermsResource",
 			"PartnerUsersResource",
@@ -57,7 +50,6 @@ func TestSearchIndex_Search(t *testing.T) {
 			"v1_webhooks_alelo_partner_order_responses",
 			"v1_webhooks_alelo_partner_order_enablements",
 			"palauthorisation_internal",
-			"capabilityprofilestatusconsumer",
 		},
 		Methods: []string{
 			"/v1/webhooks/Alelo/partner-order/responses",

@@ -91,7 +91,10 @@ func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) R
 }
 
 func matchesToSlice(matches fuzzy.Matches, limit int) []string {
-	slice := lo.Map(matches, func(item fuzzy.Match, index int) string {
+	filtered := lo.Filter(matches, func(item fuzzy.Match, index int) bool {
+		return item.Score > 0
+	})
+	slice := lo.Map(filtered, func(item fuzzy.Match, index int) string {
 		return item.Str
 	})
 	// Limit to top 5 per category

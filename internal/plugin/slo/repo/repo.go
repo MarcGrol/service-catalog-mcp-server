@@ -192,13 +192,13 @@ func (r *sloRepo) listSLOsByService(ctx context.Context, keyword string) ([]SLO,
 // ListSLOsByPromQLService retrieves all SLOs for a given promql-servoce.
 func (r *sloRepo) ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *FROM slo WHERE PromQLService LIKE ? ORDER BY service,PromQLService`,
+	err := r.db.Select(&slos, `SELECT *FROM slo WHERE PromQLService LIKE ? ORDER BY PromQLService`,
 		wildcard(serviceName))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, false, nil // Not found
 		}
-		return nil, false, fmt.Errorf("failed to select SLOs by service '%s': %w", serviceName, err)
+		return nil, false, fmt.Errorf("failed to select SLOs by promQL-service '%s': %w", serviceName, err)
 	}
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
@@ -211,7 +211,7 @@ func (r *sloRepo) ListSLOsByPromQLModule(ctx context.Context, webappName string)
 		if err == sql.ErrNoRows {
 			return []SLO{}, false, nil // Not found
 		}
-		return nil, false, fmt.Errorf("failed to select SLOs by webapp '%s': %w", webappName, err)
+		return nil, false, fmt.Errorf("failed to select SLOs by promQL-webapp '%s': %w", webappName, err)
 	}
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
@@ -243,7 +243,7 @@ func (r *sloRepo) SearchSLOs(ctx context.Context, category, keyword string) ([]S
 		return r.listSLOsByService(ctx, keyword)
 	case "component":
 		return r.listSLOsByComponent(ctx, keyword)
-	case "methods":
+	case "method", "methods":
 		return r.listSLOsByMethods(ctx, keyword)
 	default:
 		return nil, false, fmt.Errorf("unknown category: %s", category)

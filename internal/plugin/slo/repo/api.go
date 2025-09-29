@@ -10,9 +10,9 @@ type SLORepo interface {
 	Close(ctx context.Context) error
 	ListSLOs(ctx context.Context) ([]SLO, error)
 	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
+	SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error)
 	ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error)
 	ListSLOsByPromQLModule(ctx context.Context, serviceName string) ([]SLO, bool, error)
-	SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error)
 }
 
 // SLO represents the structure of the SLO data.
