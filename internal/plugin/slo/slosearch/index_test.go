@@ -41,6 +41,10 @@ func TestSearchIndex_Search(t *testing.T) {
 		Applications: []string{
 			"partner",
 		},
+		Webapps: []string{
+			"jobs-BankInterestPayoutConsumerJob-BankInterestPayoutConsumerJob",
+			"jobs-IdrLemCapabilityConsumersJob-IdrLemCapabilityConsumersJob",
+		},
 		Services: []string{
 			"PartnerTermsResource",
 			"PartnerUsersResource",

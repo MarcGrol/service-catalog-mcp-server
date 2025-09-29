@@ -1,25 +1,25 @@
 
 .PHONY: all generate test lint install clean dockerbuild dockerrun dockerview dockertest
 
-all: tidy generate fmt lint test install
-
-tidy:
-	go mod tidy
+all: generate fmt lint test install tidy
 
 generate:
 	go generate ./...
 
-fmt:
+fmt: generate
 	find . -name "*.go" -exec goimports -l -w -local github.com/MarcGrol/service-catalog-mcp-server {} \;
 
-lint:
+lint: fmt
 	golint ./...
 
-test:
+test: lint
 	go test ./...
 
-install:
+install: test
 	go install
+
+tidy:
+	go mod tidy
 
 dockerbuild:
 	docker  --log-level debug build \

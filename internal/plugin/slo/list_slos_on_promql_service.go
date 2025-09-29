@@ -10,12 +10,12 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
 )
 
-func (h *mcpHandler) listSLOsOnExposedService() server.ServerTool {
+func (h *mcpHandler) listSLOsOnPromQLWebService() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"list_slos_on_service",
-			mcp.WithDescription("Search all SLO's based on a service"),
-			mcp.WithString("service-name", mcp.Required(), mcp.Description("Name of the service to list SLOs for")),
+			mcp.WithDescription("Search all SLO's based on a web service"),
+			mcp.WithString("service-name", mcp.Required(), mcp.Description("Name of the web-service to list SLOs for")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

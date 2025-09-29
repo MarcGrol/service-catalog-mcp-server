@@ -21,6 +21,7 @@ type searchIndex struct {
 	SLOs         []string
 	Teams        []string
 	Applications []string
+	Webapps      []string
 	Services     []string
 	Components   []string
 	Methods      []string
@@ -41,6 +42,9 @@ func NewSearchIndex(ctx context.Context, r repo.SLORepo) Index {
 	applications := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
 		return slo.Application
 	}))
+	webapps := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
+		return slo.PromQLWebapp
+	}))
 	services1 := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
 		return slo.Service
 	}))
@@ -59,6 +63,7 @@ func NewSearchIndex(ctx context.Context, r repo.SLORepo) Index {
 		SLOs:         sloNames,
 		Teams:        teams,
 		Applications: applications,
+		Webapps:      webapps,
 		Services:     services,
 		Components:   components,
 		Methods:      methods,
@@ -70,6 +75,7 @@ type Result struct {
 	SLOs         []string
 	Teams        []string
 	Applications []string
+	Webapps      []string
 	Services     []string
 	Components   []string
 	Methods      []string
@@ -82,6 +88,7 @@ func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) R
 		SLOs:         matchesToSlice(fuzzy.Find(keyword, idx.SLOs), limit),
 		Teams:        matchesToSlice(fuzzy.Find(keyword, idx.Teams), limit),
 		Applications: matchesToSlice(fuzzy.Find(keyword, idx.Applications), limit),
+		Webapps:      matchesToSlice(fuzzy.Find(keyword, idx.Webapps), limit),
 		Services:     matchesToSlice(fuzzy.Find(keyword, idx.Services), limit),
 		Components:   matchesToSlice(fuzzy.Find(keyword, idx.Components), limit),
 		Methods:      matchesToSlice(fuzzy.Find(keyword, idx.Methods), limit),

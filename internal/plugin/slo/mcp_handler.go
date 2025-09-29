@@ -27,7 +27,7 @@ func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServe
 	s.AddTools(
 		h.suggestCandidatesTool(),
 		h.searchSLOs(),
-		h.listSLOsOnExposedService(),
+		h.listSLOsOnPromQLWebService(),
 		h.listSLOsOnPromQLModule(),
 		h.getSLOByIDTool(),
 	)
