@@ -14,8 +14,8 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool(
 			"search_slos",
-			mcp.WithDescription("Search all SLO's based on application,service, component or methods"),
-			mcp.WithString("category", mcp.Required(), mcp.Description("Category to search on: Must be one of 'team', 'application', 'service', 'component' or 'methods'")),
+			mcp.WithDescription("Search all SLO's based on application, webapp,service, component or methods"),
+			mcp.WithString("category", mcp.Required(), mcp.Description("Category to search on: Must be one of 'team', 'application', 'webapp', 'service', 'component' or 'methods'")),
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to list SLOs for")),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {

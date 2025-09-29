@@ -11,6 +11,7 @@ type SLORepo interface {
 	ListSLOs(ctx context.Context) ([]SLO, error)
 	GetSLOByID(ctx context.Context, id string) (SLO, bool, error)
 	ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error)
+	ListSLOsByPromQLModule(ctx context.Context, serviceName string) ([]SLO, bool, error)
 	SearchSLOs(ctx context.Context, category, keyword string) ([]SLO, bool, error)
 }
 
@@ -30,6 +31,7 @@ type SLO struct {
 	RelativeThroughput   float64 `json:"relative_throughput" db:"RelativeThroughput"`
 	PromQLQuery          string  `json:"promql_query" db:"PromQLQuery"`
 	PromQLMetrics        string  `json:"promQLMetrics" db:"PromQLMetrics"`
+	PromQLWebapp         string  `json:"promQLWebapp" db:"PromQLWebapp"`
 	PromQLService        string  `json:"promQLService" db:"PromQLService"`
 	PromQLMethods        string  `json:"promQLMethods" db:"PromQLMethods"`
 	TargetSLO            float64 `json:"target_slo" db:"TargetSLO"`

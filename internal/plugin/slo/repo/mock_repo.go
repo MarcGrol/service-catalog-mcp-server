@@ -79,6 +79,22 @@ func (mr *MockSLORepoMockRecorder) ListSLOs(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOs", reflect.TypeOf((*MockSLORepo)(nil).ListSLOs), ctx)
 }
 
+// ListSLOsByPromQLModule mocks base method.
+func (m *MockSLORepo) ListSLOsByPromQLModule(ctx context.Context, serviceName string) ([]SLO, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListSLOsByPromQLModule", ctx, serviceName)
+	ret0, _ := ret[0].([]SLO)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListSLOsByPromQLModule indicates an expected call of ListSLOsByPromQLModule.
+func (mr *MockSLORepoMockRecorder) ListSLOsByPromQLModule(ctx, serviceName interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOsByPromQLModule", reflect.TypeOf((*MockSLORepo)(nil).ListSLOsByPromQLModule), ctx, serviceName)
+}
+
 // ListSLOsByPromQLService mocks base method.
 func (m *MockSLORepo) ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error) {
 	m.ctrl.T.Helper()

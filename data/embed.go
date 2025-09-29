@@ -16,7 +16,7 @@ var serviceCatalogDatabase []byte
 //go:embed slos.sqlite
 var sloDatabase []byte
 
-// UnpackSLODatabase copies databases from embedding to the filesystem
+// UnpackServiceCatalogDatabase copies the ServiceCatalog databases from embedding to the filesystem
 func UnpackServiceCatalogDatabase(c context.Context) (string, func(), error) {
 	serviceCatalogatabaseFilename, err := copyDatabase("service-catalog.sqlite", serviceCatalogDatabase)
 	if err != nil {
@@ -34,6 +34,8 @@ func UnpackServiceCatalogDatabase(c context.Context) (string, func(), error) {
 	}
 	return serviceCatalogatabaseFilename, cleanup, nil
 }
+
+// UnpackSLODatabase copies the SLO databases from embedding to the filesystem
 func UnpackSLODatabase(c context.Context) (string, func(), error) {
 	sloDatabaseFilename, err := copyDatabase("slos.sqlite", sloDatabase)
 	if err != nil {

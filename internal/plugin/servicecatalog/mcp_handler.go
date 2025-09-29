@@ -14,7 +14,7 @@ type mcpHandler struct {
 	idx  search.Index
 }
 
-// NewMCPHandler creates a new instance of MCPHandler.
+// NewMCPHandler creates a new instance of mcpHandler.
 func NewMCPHandler(repo catalogrepo.Cataloger, idx search.Index) *mcpHandler {
 	return &mcpHandler{
 		repo: repo,

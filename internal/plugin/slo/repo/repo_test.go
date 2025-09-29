@@ -21,7 +21,7 @@ func TestRepo(t *testing.T) {
 		assert.True(t, found)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slo.UID)
 		assert.Equal(t, "Access Portal - Availability", slo.DisplayName)
-		assert.Equal(t, 1.05, slo.OperationalReadiness)
+		assert.Equal(t, 1.0, slo.OperationalReadiness)
 		assert.Equal(t, 0.0, slo.BusinessCriticality)
 
 		// Test not found
@@ -51,7 +51,7 @@ func TestRepo(t *testing.T) {
 		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
-		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
+		assert.Equal(t, 1.0, slos[0].OperationalReadiness)
 		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
 		slos, exists, err = repo.listSLOsByTeam(ctx, "nonexistent")
@@ -67,7 +67,39 @@ func TestRepo(t *testing.T) {
 		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "accessportal_accessportal_main_availability", slos[0].UID)
+		assert.Equal(t, 1.0, slos[0].OperationalReadiness)
+		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
+
+		slos, exists, err = repo.listSLOsByApplication(ctx, "nonexistent")
+		assert.NoError(t, err)
+		assert.False(t, exists)
+		assert.Len(t, slos, 0)
+	})
+
+	// Test ListSLOsByWebapp
+	t.Run("ListSLOsByWebapp", func(t *testing.T) {
+		slos, exists, err := repo.ListSLOsByPromQLModule(ctx, "realtimebalance")
+		assert.NoError(t, err)
+		assert.True(t, exists)
+		assert.GreaterOrEqual(t, len(slos), 1)
+		assert.Equal(t, "realtimebalance_realtimebalancewebapp_authorisebalance_availability", slos[0].UID)
 		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
+		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
+
+		slos, exists, err = repo.listSLOsByApplication(ctx, "nonexistent")
+		assert.NoError(t, err)
+		assert.False(t, exists)
+		assert.Len(t, slos, 0)
+	})
+
+	// Test ListSLOsByPromQLService
+	t.Run("ListSLOsByWebapp", func(t *testing.T) {
+		slos, exists, err := repo.ListSLOsByPromQLService(ctx, "StoreAndForward")
+		assert.NoError(t, err)
+		assert.True(t, exists)
+		assert.GreaterOrEqual(t, len(slos), 1)
+		assert.Equal(t, "checkoutpos_checkoutpos_store_and_forward_batch_availability", slos[0].UID)
+		assert.InDelta(t, 1.15, slos[0].OperationalReadiness, 0.01)
 		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
 		slos, exists, err = repo.listSLOsByApplication(ctx, "nonexistent")

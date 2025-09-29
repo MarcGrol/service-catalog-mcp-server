@@ -12,7 +12,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// New creates a new CatalogRepo.
+// New creates a new sloRepo.
 func New(filename string) *sloRepo {
 	return newSLORepo(filename)
 }
@@ -203,6 +203,19 @@ func (r *sloRepo) ListSLOsByPromQLService(ctx context.Context, serviceName strin
 	return addMetricsToSLOs(slos), len(slos) > 0, nil
 }
 
+func (r *sloRepo) ListSLOsByPromQLModule(ctx context.Context, webappName string) ([]SLO, bool, error) {
+	slos := []SLO{}
+	err := r.db.Select(&slos, `SELECT *FROM slo WHERE PromQLWebapp LIKE ? ORDER BY PromQLWebapp`,
+		wildcard(webappName))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []SLO{}, false, nil // Not found
+		}
+		return nil, false, fmt.Errorf("failed to select SLOs by webapp '%s': %w", webappName, err)
+	}
+	return addMetricsToSLOs(slos), len(slos) > 0, nil
+}
+
 // listSLOsByMethods retrieves all SLOs for a given service.
 func (r *sloRepo) listSLOsByMethods(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
@@ -224,7 +237,9 @@ func (r *sloRepo) SearchSLOs(ctx context.Context, category, keyword string) ([]S
 		return r.listSLOsByTeam(ctx, keyword)
 	case "application":
 		return r.listSLOsByApplication(ctx, keyword)
-	case "service":
+	case "webapp", "module":
+		return r.ListSLOsByPromQLModule(ctx, keyword)
+	case "service", "webservice":
 		return r.listSLOsByService(ctx, keyword)
 	case "component":
 		return r.listSLOsByComponent(ctx, keyword)

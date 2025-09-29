@@ -14,7 +14,7 @@ type mcpHandler struct {
 	idx  slosearch.Index
 }
 
-// NewMCPHandler creates a new instance of MCPHandler.
+// NewMCPHandler creates a new instance of mcpHandler.
 func NewMCPHandler(repo repo.SLORepo, idx slosearch.Index) *mcpHandler {
 	return &mcpHandler{
 		repo: repo,
@@ -25,10 +25,11 @@ func NewMCPHandler(repo repo.SLORepo, idx slosearch.Index) *mcpHandler {
 // RegisterAllHandlers registers all tools, resources, and prompts with the MCP server.
 func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServer) {
 	s.AddTools(
+		h.suggestCandidatesTool(),
 		h.searchSLOs(),
 		h.listSLOsOnExposedService(),
+		h.listSLOsOnPromQLModule(),
 		h.getSLOByIDTool(),
-		h.suggestCandidatesTool(),
 	)
 	s.AddResources(
 		h.sloResource(),
