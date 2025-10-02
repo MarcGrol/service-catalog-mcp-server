@@ -76,8 +76,8 @@ func TestRepo(t *testing.T) {
 		assert.Len(t, slos, 0)
 	})
 
-	// Test ListSLOsByWebapp
-	t.Run("ListSLOsByWebapp", func(t *testing.T) {
+	// Test ListSLOsByPromQLModule
+	t.Run("ListSLOsByPromQLModule", func(t *testing.T) {
 		slos, exists, err := repo.ListSLOsByPromQLModule(ctx, "realtimebalance")
 		assert.NoError(t, err)
 		assert.True(t, exists)
@@ -93,7 +93,7 @@ func TestRepo(t *testing.T) {
 	})
 
 	// Test ListSLOsByPromQLService
-	t.Run("ListSLOsByWebapp", func(t *testing.T) {
+	t.Run("ListSLOsByPromQLService", func(t *testing.T) {
 		slos, exists, err := repo.ListSLOsByPromQLService(ctx, "StoreAndForward")
 		assert.NoError(t, err)
 		assert.True(t, exists)

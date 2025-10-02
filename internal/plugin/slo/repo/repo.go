@@ -138,7 +138,7 @@ func (r *sloRepo) ListSLOs(ctx context.Context) ([]SLO, error) {
 // listSLOsByTeam retrieves all SLOs for a given team.
 func (r *sloRepo) listSLOsByTeam(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *	FROM slo WHERE team like ? ORDER BY uid ASC`, wildcard(keyword))
+	err := r.db.Select(&slos, `SELECT *FROM slo WHERE team LIKE ? ORDER BY uid ASC`, wildcard(keyword))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []SLO{}, false, nil // Not found
@@ -192,7 +192,7 @@ func (r *sloRepo) listSLOsByService(ctx context.Context, keyword string) ([]SLO,
 // ListSLOsByPromQLService retrieves all SLOs for a given promql-servoce.
 func (r *sloRepo) ListSLOsByPromQLService(ctx context.Context, serviceName string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *FROM slo WHERE PromQLService LIKE ? ORDER BY PromQLService`,
+	err := r.db.Select(&slos, `SELECT * FROM slo WHERE PromQLService LIKE ? ORDER BY PromQLService`,
 		wildcard(serviceName))
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -205,7 +205,7 @@ func (r *sloRepo) ListSLOsByPromQLService(ctx context.Context, serviceName strin
 
 func (r *sloRepo) ListSLOsByPromQLModule(ctx context.Context, webappName string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT *FROM slo WHERE PromQLWebapp LIKE ? ORDER BY PromQLWebapp`,
+	err := r.db.Select(&slos, `SELECT * FROM slo WHERE PromQLWebapp LIKE ? ORDER BY PromQLWebapp`,
 		wildcard(webappName))
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -219,7 +219,7 @@ func (r *sloRepo) ListSLOsByPromQLModule(ctx context.Context, webappName string)
 // listSLOsByMethods retrieves all SLOs for a given service.
 func (r *sloRepo) listSLOsByMethods(ctx context.Context, keyword string) ([]SLO, bool, error) {
 	slos := []SLO{}
-	err := r.db.Select(&slos, `SELECT * FROM slo WHERE PromQLMethods like ? ORDER BY PromQLMethods`,
+	err := r.db.Select(&slos, `SELECT * FROM slo WHERE PromQLMethods LIKE ? ORDER BY PromQLMethods`,
 		wildcard(keyword))
 	if err != nil {
 		if err == sql.ErrNoRows {

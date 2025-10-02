@@ -86,7 +86,8 @@ func (r *CatalogRepo) ListModules(ctx context.Context, keyword string) ([]Module
 	}
 
 	modules := []Module{}
-	err := r.db.Select(&modules, "SELECT * FROM module WHERE module_id LIKE $1 ORDER BY line_count DESC", "%"+keyword+"%")
+	err := r.db.Select(&modules, "SELECT * FROM module WHERE module_id LIKE $1 ORDER BY line_count DESC",
+		wildcard(keyword))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return modules, nil
@@ -299,7 +300,7 @@ func (r *CatalogRepo) ListInterfaces(ctx context.Context, keyword string) ([]Int
 	WHERE 
 		i.interface_id LIKE $1
 	ORDER BY 
-		i.interface_id`, "%"+keyword+"%")
+		i.interface_id`, wildcard(keyword))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return interfaces, nil
@@ -514,4 +515,11 @@ func (r *CatalogRepo) ListModulesWithKind(ctx context.Context, id string) ([]str
 	}
 
 	return interfaces, true, nil
+}
+
+func wildcard(in string) string {
+	if in == "" {
+		return in
+	}
+	return "%" + in + "%"
 }
