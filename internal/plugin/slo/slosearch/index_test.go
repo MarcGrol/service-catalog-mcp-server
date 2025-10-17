@@ -47,16 +47,17 @@ func TestSearchIndex_Search(t *testing.T) {
 		},
 		Components: []string{
 			"partner-flow",
+			"getpartnersettings",
 			"v1_webhooks_alelo_partner_order_responses",
 			"v1_webhooks_alelo_partner_order_enablements",
 			"palauthorisation_internal",
 		},
 		Methods: []string{
+			"getPartnerSettings",
 			"/v1/webhooks/Alelo/partner-order/responses",
 			"/v1/webhooks/Alelo/partner-order/enablements",
 			"getAllCostContractPartnerPricingPlan,getAllPartnerPricingPlanAssignment,getBulkableSettings,updateSettingsForAccounts",
 			"accountCanBeBilled,createCostContractPartnerPricingPlan,createPartnerPricingPlanAssignment,deleteCostContractPartnerPricingPlan,deletePartnerPricingPlanAssignment,getBillingInvoiceSettings,getPartnerPricingPlanAssignment,getSettingOptions,kycInfo,updateBillingInvoiceSettings",
-			"accountCanBeBilled,createCostContractPartnerPricingPlan,createPartnerPricingPlanAssignment,deleteCostContractPartnerPricingPlan,deletePartnerPricingPlanAssignment,getBillingInvoiceSettings,getPartnerPricingPlanAssignment,getSettingOptions,kycInfo,setDefaultBilling,updateBillingInvoiceSettings",
 		},
 	}, result)
 

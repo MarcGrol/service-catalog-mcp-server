@@ -7,7 +7,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
@@ -38,8 +37,8 @@ func TestListSLOsOnPromQLModuleTool(t *testing.T) {
 		assert.NotNil(t, result)
 
 		expectSuccess(t, result, `"status": "success"`)
-		textResult := result.Content[0].(mcp.TextContent)
-		assert.Contains(t, textResult.Text, `"uid": "slo1",`)
+		textResult := result.Content[0].(mcp.TextContent).Text
+		assert.Contains(t, textResult, `"uid": "slo1",`)
 	})
 
 	t.Run("SLOs for module not found", func(t *testing.T) {
@@ -51,11 +50,10 @@ func TestListSLOsOnPromQLModuleTool(t *testing.T) {
 		result, err := tool.Handler(ctx, req)
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
-		textResult := result.Content[0].(mcp.TextContent)
-		log.Printf("%s", textResult.Text)
 		expectError(t, result, `"status": "not_found"`)
-		assert.Contains(t, textResult.Text, "No SLOs with module_id nonexistent-module found")
-		assert.Contains(t, textResult.Text, "suggested-module")
+		textResult := result.Content[0].(mcp.TextContent).Text
+		assert.Contains(t, textResult, "No SLOs with module_id nonexistent-module found")
+		assert.Contains(t, textResult, "suggested-module")
 	})
 
 	t.Run("Repository error", func(t *testing.T) {
@@ -68,13 +66,9 @@ func TestListSLOsOnPromQLModuleTool(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
 		expectError(t, result, `"status": "error"`)
-		textResult := result.Content[0].(mcp.TextContent)
-		assert.Contains(t, textResult.Text, "error searching slos on module_id error-module: database error")
+		textResult := result.Content[0].(mcp.TextContent).Text
+		assert.Contains(t, textResult, "error searching slos on module_id error-module: database error")
 	})
-	/*
-		"{\n  \"status\": \"not_found\",\n  \"error\": {\n    \"message\": \"No SLOs with module_id nonexistent-module found\"\n  },\n  \"suggestion\": {\n    \"module_id\": null\n  }\n}" does not contain "suggested-slo"
-
-	*/
 
 	t.Run("Missing module_id", func(t *testing.T) {
 		req := createRequest("list_slos_on_module", map[string]interface{}{})
@@ -82,7 +76,7 @@ func TestListSLOsOnPromQLModuleTool(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
 		expectError(t, result, `"status": "invalid_input"`)
-		textResult := result.Content[0].(mcp.TextContent)
-		assert.Contains(t, textResult.Text, "Missing module_id")
+		textResult := result.Content[0].(mcp.TextContent).Text
+		assert.Contains(t, textResult, "Missing module_id")
 	})
 }

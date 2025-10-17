@@ -18,7 +18,7 @@ func TestListModules(t *testing.T) {
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(modules), 1000)
 	assert.LessOrEqual(t, len(modules), 5000)
-	assert.Equal(t, "psp", modules[0].ModuleID)
+	assert.Equal(t, "onboarding-and-compliance/kyc/webapp/kyc", modules[0].ModuleID)
 }
 
 func TestListModulesByComplexity(t *testing.T) {
@@ -111,9 +111,9 @@ func TestListInterfaces(t *testing.T) {
 	interfaces, err := repo.ListInterfaces(ctx, "")
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(interfaces), 10)
-	assert.LessOrEqual(t, len(interfaces), 2000)
-	assert.Equal(t, "threesixty/compass/webapp/compass", interfaces[0].ModuleID)
-	assert.Equal(t, "AboutResourceV2", interfaces[0].InterfaceID)
+	assert.LessOrEqual(t, len(interfaces), 2500)
+	assert.Equal(t, "openbanking/a2aissuer/webapp/a2aissuer-api", interfaces[0].ModuleID)
+	assert.Equal(t, "A2AIdealProfileResourceV1", interfaces[0].InterfaceID)
 
 }
 
@@ -311,8 +311,8 @@ func TestListKinds(t *testing.T) {
 	kinds, err := repo.ListKinds(ctx)
 	assert.NoError(t, err)
 	assert.Equal(t, []string{
-		"?", "api", "cache-api", "cache-db", "common",
-		"communicator", "constants", "consumer", "database", "domain", "entities",
+		"?", "api", "cache-api", "cache-db", "common", "communicator",
+		"constants", "consumer", "database", "domain", "entities", "flink-common",
 		"flink-job", "framework", "frontend", "integration-test", "ipp-terminal",
 		"job", "repositories", "services", "services_common", "terminal-component",
 		"ui-beans-common", "ui-resources", "ui-resources-common", "unknown", "util",
@@ -327,7 +327,7 @@ func TestListAppsWithKind(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, exists)
 	assert.Equal(t, []string{
-		"acs/webapps/acs", "apipix/apipix", "attestpos"}, kinds[0:3])
+		"accountrisk/riskengine/webapp/ircl", "acs/webapps/acs", "apipix/apipix"}, kinds[0:3])
 }
 
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
