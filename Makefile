@@ -16,7 +16,7 @@ test: lint
 	go test ./...
 
 install: test
-	go install
+	go install ./...
 
 tidy:
 	go mod tidy

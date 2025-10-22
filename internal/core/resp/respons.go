@@ -27,7 +27,7 @@ type mcpErrorResponse struct {
 
 type mcpErrorDetails struct {
 	Message               string `json:"message"`
-	InvalidOrMissimgField string `json:"missing_field,omitempty"`
+	InvalidOrMissingField string `json:"missing_field,omitempty"`
 	Hint                  string `json:"hint,omitempty"`
 	Details               string `json:"details,omitempty"`
 }
@@ -49,7 +49,7 @@ func InvalidInput(ctx context.Context, msg string, invalidOrMissimgField string,
 		Status: statusInvalidInput,
 		Error: mcpErrorDetails{
 			Message:               msg,
-			InvalidOrMissimgField: invalidOrMissimgField,
+			InvalidOrMissingField: invalidOrMissimgField,
 			Hint:                  hint,
 		},
 	}

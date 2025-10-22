@@ -57,16 +57,16 @@ func UnpackSLODatabase(c context.Context) (string, func(), error) {
 
 func copyDatabase(name string, databaseBlob []byte) (string, error) {
 	// Create temporary file for database.
-	tmpDB, err := os.CreateTemp("", name)
+	fp, err := os.CreateTemp("", name)
 	if err != nil {
-		return "", fmt.Errorf("error creating database %s: %v", name, err)
+		return "", fmt.Errorf("error creating file for database %s: %v", name, err)
 	}
 
 	// Write database to file.
-	_, err = tmpDB.Write(databaseBlob)
+	_, err = fp.Write(databaseBlob)
 	if err != nil {
 		return "", fmt.Errorf("error copying database %s: %v", name, err)
 	}
 
-	return tmpDB.Name(), nil
+	return fp.Name(), nil
 }

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/mock/gomock"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"

@@ -15,7 +15,7 @@ import (
 )
 
 //go:embed crash_logs.json
-var crashesJson []byte
+var crashesJSON []byte
 
 type crashlogReport map[string]string
 
@@ -34,7 +34,7 @@ func main() {
 
 func parseCrashlogs() ([]crashlogReport, error) {
 	reports := []crashlogReport{}
-	err := json.Unmarshal(crashesJson, &reports)
+	err := json.Unmarshal(crashesJSON, &reports)
 	if err != nil {
 		return reports, fmt.Errorf("error unmarshalling crashes json: %v", err)
 	}
@@ -74,7 +74,7 @@ func parseSubLog(report crashlogReport) (crashlogReport, error) {
 func collectColumnNames(reports []crashlogReport) []string {
 	keyMap := map[string]bool{}
 	for _, report := range reports {
-		for field, _ := range report {
+		for field := range report {
 			keyMap[field] = true
 		}
 	}
