@@ -25,7 +25,7 @@ type Application struct {
 }
 
 // New creates a new Application instance.
-func New(cfg config.Config, mcpServices ...MCPService) *Application {
+func New(cfg config.Config, mcpServices []MCPService) *Application {
 	return &Application{
 		config:      cfg,
 		mcpServices: mcpServices,
@@ -42,7 +42,18 @@ func (a *Application) Initialize(ctx context.Context) (func(), error) {
 		server.WithPromptCapabilities(true),
 		server.WithToolCapabilities(true),
 		server.WithLogging(),
-		server.WithHooks(loggingHooks()))
+		server.WithHooks(loggingHooks()),
+		server.WithToolHandlerMiddleware(func(f server.ToolHandlerFunc) server.ToolHandlerFunc {
+			return func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+				log.Info().
+					Str("middleware", "true").
+					Str("method", request.Method).
+					Any("params", request.Params).
+					Any("args", request.GetArguments()).
+					Send()
+				return f(ctx, request)
+			}
+		}))
 
 	for _, service := range a.mcpServices {
 		service.RegisterAllHandlers(ctx, a.mcpServer)

@@ -17,6 +17,7 @@ func loadConfig(catalogDatabaseFilename, sloDatabaseFilename string) config.Conf
 	catalogDatabaseFile := flag.String("catalog-databasefile", catalogDatabaseFilename, "Full path to the catalog SQLite database file")
 	sloDatabaseFile := flag.String("slo-databasefile", sloDatabaseFilename, "Full path to the SLO SQLite database file")
 	apiKey := flag.String("api-key", "", "API key for authentication (default empty)")
+	mode := flag.String("mode", "both", "slo, service-catalog or both")
 	flag.Parse()
 
 	return config.Config{
@@ -25,6 +26,7 @@ func loadConfig(catalogDatabaseFilename, sloDatabaseFilename string) config.Conf
 		Port:          *port,
 		BaseURL:       *baseURL,
 		APIKey:        *apiKey,
+		Mode:          config.Mode(*mode),
 		PluginConfigs: map[string]string{
 			catalogconstants.CatalogDatabaseFilenameKey: *catalogDatabaseFile,
 			sloconstants.SLODatabaseFilenameKey:         *sloDatabaseFile,

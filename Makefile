@@ -22,11 +22,16 @@ tidy:
 	go mod tidy
 
 dockerbuild:
-	docker  --log-level debug build \
+	docker build \
+		--log-level debug  \
 	    --no-cache \
-	    -t service-catalog-mcp-server:local \
+	    -t acr-main.is.adyen.com/is/service-catalog-mcp-server:0.1 \
 	    -f Dockerfile \
 	    .
+dockerpush:
+	docker tag service-catalog-mcp-server:0.1 acr-main.is.adyen.com/is/service-catalog-mcp-server:0.1
+	docker login acr-main.is.adyen.com/is
+	docker push acr-main.is.adyen.com/is/service-catalog-mcp-server:0.1
 
 dockerrun:
 	docker run \

@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/data"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
@@ -50,8 +51,8 @@ func run() error {
 
 	cfg := loadConfig(serviceCatalogDatabaseFilename, slosDatabaseFilename)
 
-	var serviceCatalogHandler core.MCPService = nil
-	{
+	mcpHandlers := []core.MCPService{}
+	if cfg.Mode == config.Both || cfg.Mode == config.ServiceCatalog {
 		// Initialize catalog repository
 		catalogRepo := catalogrepo.New(cfg.PluginConfigs[catalogconstants.CatalogDatabaseFilenameKey])
 		err := catalogRepo.Open(ctx)
@@ -65,11 +66,10 @@ func run() error {
 		catalogSearchIndex := search.NewSearchIndex(ctx, catalogRepo)
 
 		// Initialize MCP handler
-		serviceCatalogHandler = servicecatalog.NewMCPHandler(catalogRepo, catalogSearchIndex)
+		mcpHandlers = append(mcpHandlers, servicecatalog.NewMCPHa	ndler(catalogRepo, catalogSearchIndex))
 	}
 
-	var sloHandler core.MCPService = nil
-	{
+	if cfg.Mode == config.Both || cfg.Mode == config.SLO {
 		// Initialize SLO repository
 		sloRepo := repo.New(cfg.PluginConfigs[sloconstants.SLODatabaseFilenameKey])
 		err := sloRepo.Open(ctx)
@@ -81,10 +81,10 @@ func run() error {
 		sloSearchIndex := slosearch.NewSearchIndex(ctx, sloRepo)
 
 		// Initialize MCP handler
-		sloHandler = slo.NewMCPHandler(sloRepo, sloSearchIndex)
+		mcpHandlers = append(mcpHandlers, slo.NewMCPHandler(sloRepo, sloSearchIndex))
 	}
 
-	application := core.New(cfg, serviceCatalogHandler, sloHandler)
+	application := core.New(cfg, mcpHandlers)
 
 	applicationCleanup, err := application.Initialize(ctx)
 	if err != nil {
