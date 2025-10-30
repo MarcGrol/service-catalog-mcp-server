@@ -66,7 +66,7 @@ func run() error {
 		catalogSearchIndex := search.NewSearchIndex(ctx, catalogRepo)
 
 		// Initialize MCP handler
-		mcpHandlers = append(mcpHandlers, servicecatalog.NewMCPHa	ndler(catalogRepo, catalogSearchIndex))
+		mcpHandlers = append(mcpHandlers, servicecatalog.NewMCPHandler(catalogRepo, catalogSearchIndex))
 	}
 
 	if cfg.Mode == config.Both || cfg.Mode == config.SLO {
