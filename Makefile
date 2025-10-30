@@ -1,7 +1,12 @@
 
-.PHONY: all generate test lint install clean dockerbuild dockerrun dockerview dockertest
+.PHONY: all install generate test lint install clean dockerbuild dockerrun dockerview dockertest
 
-all: generate fmt lint test install tidy
+all: generate fmt lint test build tidy
+
+install:
+	go install go.uber.org/mock/mockgen@latest
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install golang.org/x/lint/golint@latest
 
 generate:
 	go generate ./...
@@ -15,7 +20,7 @@ lint: fmt
 test: lint
 	go test ./...
 
-install: test
+build: test
 	go install ./...
 
 tidy:

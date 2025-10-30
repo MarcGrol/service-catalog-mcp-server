@@ -5,7 +5,6 @@ go 1.25
 require (
 	github.com/ghetzel/go-stockutil v1.13.0
 	github.com/glebarez/go-sqlite v1.22.0
-	github.com/golang/mock v1.6.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/mark3labs/mcp-go v0.42.0
 	github.com/rs/zerolog v1.34.0
