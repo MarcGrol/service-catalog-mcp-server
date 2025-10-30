@@ -4,7 +4,7 @@ import "context"
 
 // SLORepo defines the interface for SLO repository operations.
 //
-//go:generate mockgen -source=api.go -destination=mock_repo.go -package=repo SLORepo
+//go:generate go tool mockgen -source=api.go -destination=mock_repo.go -package=repo SLORepo
 type SLORepo interface {
 	Open(ctx context.Context) error
 	Close(ctx context.Context) error

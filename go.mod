@@ -56,3 +56,9 @@ require (
 	modernc.org/memory v1.11.0 // indirect
 	modernc.org/sqlite v1.39.1 // indirect
 )
+
+tool (
+	go.uber.org/mock/mockgen
+	golang.org/x/lint/golint
+	golang.org/x/tools/cmd/goimports
+)

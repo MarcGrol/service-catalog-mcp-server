@@ -12,7 +12,7 @@ import (
 
 // Index defines the interface for a search index.
 //
-//go:generate mockgen -source=index.go -destination=mock_index.go -package=search Index
+//go:generate go tool mockgen -source=index.go -destination=mock_index.go -package=search Index
 type Index interface {
 	Search(ctx context.Context, keyword string, limit int) Result
 }

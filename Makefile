@@ -1,9 +1,9 @@
 
-.PHONY: all install generate test lint install clean dockerbuild dockerrun dockerview dockertest
+.PHONY: all install-tools generate format test lint install clean dockerbuild dockerrun dockerview dockertest
 
-all: generate fmt lint test build tidy
+all: generate format lint test build tidy
 
-install:
+install-tools:
 	go install go.uber.org/mock/mockgen@latest
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install golang.org/x/lint/golint@latest
@@ -11,10 +11,10 @@ install:
 generate:
 	go generate ./...
 
-fmt: generate
+format: generate
 	find . -name "*.go" -exec goimports -l -w -local github.com/MarcGrol/service-catalog-mcp-server {} \;
 
-lint: fmt
+lint: format
 	golint ./...
 
 test: lint
