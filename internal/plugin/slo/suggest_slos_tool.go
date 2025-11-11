@@ -8,7 +8,6 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
 )
 
@@ -22,7 +21,7 @@ func (h *mcpHandler) suggestCandidatesTool() server.ServerTool {
 			mcp.WithNumber("limit_to", mcp.Description("Maximum number of results per category to return.")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[search.Result](),
+			mcp.WithOutputSchema[slosearch.Result](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			keyword, err := request.RequireString("keyword")
