@@ -31,7 +31,6 @@ func TestSuggestCandidatesSuccess(t *testing.T) {
 
 	// then
 	assert.NoError(t, err)
-	expectSuccess(t, result, `"status": "success"`)
 	textResult := result.Content[0].(mcp.TextContent)
 	assert.Contains(t, textResult.Text, `partner_referral_general_latency`)
 }

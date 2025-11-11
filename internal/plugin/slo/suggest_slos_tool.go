@@ -9,6 +9,7 @@ import (
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
 )
 
 // NewSuggestCandidatesTool returns the MCP tool definition and its handler for listing interfaces.
@@ -40,7 +41,7 @@ func (h *mcpHandler) suggestCandidatesTool() server.ServerTool {
 						fmt.Sprintf("error searching for slos like %s: %s", keyword, err))), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, searchResult)), nil
+			return mcp.NewToolResultJSON[slosearch.Result](searchResult)
 		},
 	}
 }

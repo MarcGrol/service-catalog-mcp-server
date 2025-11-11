@@ -30,7 +30,7 @@ func (h *mcpHandler) listFlowsTool() server.ServerTool {
 						fmt.Sprintf("error listing flows: %s", err))), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, flows)), nil
+			return mcp.NewToolResultJSON[[]string](flows)
 		},
 	}
 }

@@ -48,7 +48,7 @@ func (h *mcpHandler) getSingleModuleTool() server.ServerTool {
 					)), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, module)), nil
+			return mcp.NewToolResultJSON[catalogrepo.Module](module)
 		},
 	}
 }

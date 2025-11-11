@@ -255,7 +255,7 @@ func (r *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Interfac
 	}
 
 	// What methods?
-	err = r.db.Select(&api.Methods, "SELECT method_id FROM interface_method WHERE interface_id = $1 ORDER BY method_id", id)
+	err = r.db.Select(&api.Methods, "SELECT method_id FROM interface_method WHERE interface_id LIKE $1 ORDER BY method_id", id)
 	if err != nil {
 		return Interface{}, false, fmt.Errorf("select meth error: %w", err)
 	}
@@ -361,6 +361,24 @@ func (r *CatalogRepo) ListInterfaceConsumers(ctx context.Context, id string) ([]
 	}
 
 	return interfaces, true, nil
+}
+
+// ListMethods lists all web-methods.
+func (r *CatalogRepo) ListMethods(ctx context.Context) ([]string, error) {
+	if r.db == nil {
+		// already opened
+		return nil, fmt.Errorf("database not yet opened")
+	}
+
+	methods := []string{}
+	err := r.db.Select(&methods, "SELECT DISTINCT method_id FROM interface_method ORDER BY method_id ASC")
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return methods, nil
+		}
+		return []string{}, fmt.Errorf("select interfaces error: %w", err)
+	}
+	return methods, nil
 }
 
 // ListDatabaseConsumers lists modules that consume a given database.

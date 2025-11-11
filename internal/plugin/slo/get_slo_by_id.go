@@ -32,7 +32,7 @@ func (h *mcpHandler) getSLOByIDTool() server.ServerTool {
 			}
 
 			// call business logic
-			module, exists, err := h.repo.GetSLOByID(ctx, sloID)
+			slo, exists, err := h.repo.GetSLOByID(ctx, sloID)
 			if err != nil {
 				return mcp.NewToolResultError(
 					resp.InternalError(ctx,
@@ -47,7 +47,7 @@ func (h *mcpHandler) getSLOByIDTool() server.ServerTool {
 					)), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, module)), nil
+			return mcp.NewToolResultJSON[repo.SLO](slo)
 		},
 	}
 }

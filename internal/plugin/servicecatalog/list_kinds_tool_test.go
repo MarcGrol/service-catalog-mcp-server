@@ -27,7 +27,6 @@ func TestListKindsTool_Success(t *testing.T) {
 
 	// Then
 	assert.NoError(t, err)
-	expectSuccess(t, result, `"status": "success"`)
 	assert.Len(t, result.Content, 1)
 	textResult := result.Content[0].(mcp.TextContent)
 	assert.Contains(t, textResult.Text, "kind1")

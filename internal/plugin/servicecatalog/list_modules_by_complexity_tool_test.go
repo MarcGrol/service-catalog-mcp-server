@@ -32,7 +32,6 @@ func TestListModulesByComplexityTool_SuccessWithLimit(t *testing.T) {
 
 	// Then
 	assert.NoError(t, err)
-	expectSuccess(t, result, `"status": "success"`)
 	textResult := result.Content[0].(mcp.TextContent)
 	assert.Contains(t, textResult.Text, "module1")
 	assert.Contains(t, textResult.Text, "Module One")
@@ -60,7 +59,6 @@ func TestListModulesByComplexityTool_SuccessWithoutLimit(t *testing.T) {
 
 	// Then
 	assert.NoError(t, err)
-	expectSuccess(t, result, `"status": "success"`)
 	textResult := result.Content[0].(mcp.TextContent)
 	assert.Contains(t, textResult.Text, "moduleA")
 	assert.Contains(t, textResult.Text, "Module A")

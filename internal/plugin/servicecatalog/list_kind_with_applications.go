@@ -47,7 +47,7 @@ func (h *mcpHandler) listModulesWithKindTool() server.ServerTool {
 			}
 
 			// return result
-			return mcp.NewToolResultText(resp.Success(ctx, moduleNames)), nil
+			return mcp.NewToolResultJSON[[]string](moduleNames)
 		},
 	}
 }

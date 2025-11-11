@@ -19,7 +19,7 @@ func (h *mcpHandler) listModulesTool() server.ServerTool {
 			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter modules by.")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]moduleDescriptor](),
+			mcp.WithOutputSchema[[]ModuleDescriptor](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -39,20 +39,20 @@ func (h *mcpHandler) listModulesTool() server.ServerTool {
 						fmt.Sprintf("error listing modules with keyword %s: %s", keyword, err))), nil
 			}
 
-			results := []moduleDescriptor{}
+			results := []ModuleDescriptor{}
 			for _, mod := range modules {
-				results = append(results, moduleDescriptor{
+				results = append(results, ModuleDescriptor{
 					ModuleID:    mod.ModuleID,
 					Name:        mod.Name,
 					Description: mod.Description,
 				})
 			}
-			return mcp.NewToolResultText(resp.Success(ctx, results)), nil
+			return mcp.NewToolResultJSON[[]ModuleDescriptor](results)
 		},
 	}
 }
 
-type moduleDescriptor struct {
+type ModuleDescriptor struct {
 	ModuleID        string
 	Name            string
 	Description     string

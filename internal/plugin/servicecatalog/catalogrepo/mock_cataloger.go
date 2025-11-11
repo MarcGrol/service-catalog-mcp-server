@@ -193,6 +193,21 @@ func (mr *MockCatalogerMockRecorder) ListKinds(ctx any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListKinds", reflect.TypeOf((*MockCataloger)(nil).ListKinds), ctx)
 }
 
+// ListMethods mocks base method.
+func (m *MockCataloger) ListMethods(ctx context.Context) ([]string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListMethods", ctx)
+	ret0, _ := ret[0].([]string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListMethods indicates an expected call of ListMethods.
+func (mr *MockCatalogerMockRecorder) ListMethods(ctx any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMethods", reflect.TypeOf((*MockCataloger)(nil).ListMethods), ctx)
+}
+
 // ListModules mocks base method.
 func (m *MockCataloger) ListModules(ctx context.Context, keyword string) ([]Module, error) {
 	m.ctrl.T.Helper()

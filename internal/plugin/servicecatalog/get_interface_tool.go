@@ -48,7 +48,7 @@ func (h *mcpHandler) getSingleInterfaceTool() server.ServerTool {
 					)), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, iface)), nil
+			return mcp.NewToolResultJSON[catalogrepo.Interface](iface)
 		},
 	}
 }

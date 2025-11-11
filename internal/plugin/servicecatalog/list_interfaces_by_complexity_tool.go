@@ -19,7 +19,7 @@ func (h *mcpHandler) listInterfacesByComplexityTool() server.ServerTool {
 			mcp.WithNumber("limit_to", mcp.Description("Maximum number of interfaces to list.")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]interfaceDescriptor](),
+			mcp.WithOutputSchema[[]InterfaceDescriptor](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -33,16 +33,16 @@ func (h *mcpHandler) listInterfacesByComplexityTool() server.ServerTool {
 						fmt.Sprintf("error listing interfaces by complexity: %s", err))), nil
 			}
 
-			results := []interfaceDescriptor{}
+			results := []InterfaceDescriptor{}
 			for _, i := range interfaces {
-				results = append(results, interfaceDescriptor{
+				results = append(results, InterfaceDescriptor{
 					InterfaceID:     i.InterfaceID,
 					Description:     i.Description,
 					Kind:            i.Kind,
 					ComplexityScore: i.MethodCount,
 				})
 			}
-			return mcp.NewToolResultText(resp.Success(ctx, results)), nil
+			return mcp.NewToolResultJSON[[]InterfaceDescriptor](results)
 		},
 	}
 }

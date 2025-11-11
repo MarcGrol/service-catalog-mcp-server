@@ -3,6 +3,7 @@ package servicecatalog
 import (
 	"testing"
 
+	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,5 +19,6 @@ func TestSuggestCandidatesSuccess(t *testing.T) {
 
 	// then
 	assert.NoError(t, err)
-	expectSuccess(t, result, `"status": "success"`)
+	textResult := result.Content[0].(mcp.TextContent)
+	assert.Contains(t, textResult.Text, `{"Modules":["partner","partner-jobs"`)
 }

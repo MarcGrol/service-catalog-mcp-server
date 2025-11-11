@@ -3,6 +3,7 @@ package servicecatalog
 import (
 	"testing"
 
+	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,8 +18,8 @@ func TestGetInterfaceTool_Success(t *testing.T) {
 
 	// then
 	assert.NoError(t, err)
-	expectSuccess(t, result, `"status": "success"`)
-	t.Logf("result: %+v", result)
+	textResult := result.Content[0].(mcp.TextContent)
+	assert.Contains(t, textResult.Text, `{"ModuleID":"paymentengine/acm/webapp/acm",`)
 }
 
 func TestGetInterfaceTool_NotFound(t *testing.T) {

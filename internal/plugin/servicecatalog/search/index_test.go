@@ -46,6 +46,13 @@ func TestSearchIndex_Search(t *testing.T) {
 		Databases: []string{
 			"partner",
 		},
+		Methods: []string{
+			"OnboardPartner",
+			"GetPartnerTerms",
+			"InvitePartnerUser",
+			"CreatePartnerTerms",
+			"AcceptPartnerTerms",
+		},
 		Flows: []string{},
 		Kinds: []string{},
 	}, result)

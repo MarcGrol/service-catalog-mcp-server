@@ -34,9 +34,8 @@ func TestGetLOByIDTool(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
 
-		expectSuccess(t, result, `"status": "success"`)
 		textResult := result.Content[0].(mcp.TextContent)
-		assert.Contains(t, textResult.Text, `"uid": "slo1",`)
+		assert.Contains(t, textResult.Text, `"uid":"slo1",`)
 	})
 
 	t.Run("Application not found", func(t *testing.T) {

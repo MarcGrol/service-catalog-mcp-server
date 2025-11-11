@@ -47,7 +47,7 @@ func (h *mcpHandler) listModulesOfTeamsTool() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, moduleNames)), nil
+			return mcp.NewToolResultJSON[[]string](moduleNames)
 		},
 	}
 }

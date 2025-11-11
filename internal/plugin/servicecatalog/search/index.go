@@ -23,31 +23,43 @@ type searchIndex struct {
 	Interfaces []string
 	Databases  []string
 	Flows      []string
+	Methods    []string
 	Kinds      []string
 }
 
 // NewSearchIndex creates a new search index.
 func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
+
 	modules, err := cataloger.ListModules(ctx, "")
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing modules for search index")
 	}
+
 	interfaces, err := cataloger.ListInterfaces(ctx, "")
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing interfaces for search index")
 	}
+
 	databases, err := cataloger.ListDatabases(ctx)
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing databases for search index")
 	}
+
 	teams, err := cataloger.ListTeams(ctx)
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing teams for search index")
 	}
+
 	flows, err := cataloger.ListFlows(ctx)
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing flows for search index")
 	}
+
+	methods, err := cataloger.ListMethods(ctx)
+	if err != nil {
+		log.Error().Err(err).Msg("Error listing methods for search index")
+	}
+
 	kinds, err := cataloger.ListKinds(ctx)
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing kinds for search index")
@@ -63,6 +75,7 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 		Teams:     teams,
 		Databases: databases,
 		Flows:     flows,
+		Methods:   methods,
 		Kinds:     kinds,
 	}
 }
@@ -74,6 +87,7 @@ type Result struct {
 	Interfaces []string
 	Databases  []string
 	Flows      []string
+	Methods    []string
 	Kinds      []string
 }
 
@@ -86,6 +100,7 @@ func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) R
 		Interfaces: matchesToSlice(fuzzy.Find(keyword, idx.Interfaces), limit),
 		Databases:  matchesToSlice(fuzzy.Find(keyword, idx.Databases), limit),
 		Flows:      matchesToSlice(fuzzy.Find(keyword, idx.Flows), limit*flowSearchLimitMultiplier),
+		Methods:    matchesToSlice(fuzzy.Find(keyword, idx.Methods), limit),
 		Kinds:      matchesToSlice(fuzzy.Find(keyword, idx.Kinds), limit*4),
 	}
 }

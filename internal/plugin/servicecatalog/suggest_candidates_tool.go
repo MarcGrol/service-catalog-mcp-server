@@ -40,7 +40,7 @@ func (h *mcpHandler) suggestCandidatesTool() server.ServerTool {
 						fmt.Sprintf("error searching for candidates like %s: %s", keyword, err))), nil
 			}
 
-			return mcp.NewToolResultText(resp.Success(ctx, searchResult)), nil
+			return mcp.NewToolResultJSON[search.Result](searchResult)
 		},
 	}
 }
