@@ -19,7 +19,7 @@ func (h *mcpHandler) listFlowParticipantsTool() server.ServerTool {
 			mcp.WithString("flow_id", mcp.Required(), mcp.Description("The ID of the flow")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]string](),
+			mcp.WithOutputSchema[resp.List](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -47,7 +47,7 @@ func (h *mcpHandler) listFlowParticipantsTool() server.ServerTool {
 			}
 
 			// return result
-			return mcp.NewToolResultJSON[[]string](moduleNames)
+			return mcp.NewToolResultJSON[resp.List](resp.SliceToList(moduleNames))
 		},
 	}
 }

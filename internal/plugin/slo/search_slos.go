@@ -52,7 +52,7 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultJSON[[]repo.SLO](slos)
+			return mcp.NewToolResultJSON[SLOList](SLOList{SLOs: slos})
 		},
 	}
 }

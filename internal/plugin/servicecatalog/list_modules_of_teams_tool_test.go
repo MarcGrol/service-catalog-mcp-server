@@ -13,6 +13,21 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
+func TestListModulesOfTeamsTool_Real(t *testing.T) {
+	store, idx, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	// when
+	result, err := NewMCPHandler(store, idx).listModulesOfTeamsTool().Handler(ctx, createRequest("team_id", map[string]interface{}{
+		"team_id": "IPP_Payments",
+	}))
+
+	// then
+	assert.NoError(t, err)
+	textResult := result.Content[0].(mcp.TextContent)
+	assert.Contains(t, textResult.Text, `{"names":["adyen","common/cardapplication","common/hsm","common/payshield-connector",`)
+}
+
 func TestListModulesOfTeamsTool_Success(t *testing.T) {
 	// Given
 	ctrl := gomock.NewController(t)
@@ -33,8 +48,7 @@ func TestListModulesOfTeamsTool_Success(t *testing.T) {
 	// Then
 	assert.NoError(t, err)
 	textResult := result.Content[0].(mcp.TextContent)
-	assert.Contains(t, textResult.Text, "module1")
-	assert.Contains(t, textResult.Text, "module2")
+	assert.Contains(t, textResult.Text, `{"names":["module1","module2"`)
 }
 
 func TestListModulesOfTeamsTool_NotFound(t *testing.T) {

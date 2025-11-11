@@ -19,7 +19,7 @@ func (h *mcpHandler) listModulesByComplexityTool() server.ServerTool {
 			mcp.WithNumber("limit_to", mcp.Description("Maximum number of modules to return.")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]ModuleDescriptor](),
+			mcp.WithOutputSchema[ModuleDescriptorList](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -42,7 +42,13 @@ func (h *mcpHandler) listModulesByComplexityTool() server.ServerTool {
 					ComplexityScore: mod.ComplexityScore,
 				})
 			}
-			return mcp.NewToolResultJSON[[]ModuleDescriptor](results)
+			return mcp.NewToolResultJSON[ModuleDescriptorList](ModuleDescriptorList{
+				Modules: results,
+			})
 		},
 	}
+}
+
+type ModuleDescriptorList struct {
+	Modules []ModuleDescriptor `json:"modules"`
 }

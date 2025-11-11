@@ -272,6 +272,18 @@ func TestListTeams(t *testing.T) {
 	assert.Equal(t, "AMLTech", teams[0])
 }
 
+func TestListModulesOfTeams(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	modules, exists, err := repo.ListModulesOfTeam(ctx, "IPP_Payments")
+	assert.NoError(t, err)
+	assert.True(t, exists)
+	assert.GreaterOrEqual(t, len(modules), 20)
+	assert.LessOrEqual(t, len(modules), 50)
+	assert.Equal(t, "adyen", modules[0])
+}
+
 func TestListFlows(t *testing.T) {
 	repo, ctx, cleanup := setup(t)
 	defer cleanup()

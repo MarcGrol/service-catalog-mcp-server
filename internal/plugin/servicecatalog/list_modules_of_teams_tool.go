@@ -20,7 +20,7 @@ func (h *mcpHandler) listModulesOfTeamsTool() server.ServerTool {
 			mcp.WithString("team_id", mcp.Required(), mcp.Description("The ID of the team to list modules for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]string](),
+			mcp.WithOutputSchema[resp.List](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			log.Info()
@@ -47,7 +47,7 @@ func (h *mcpHandler) listModulesOfTeamsTool() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultJSON[[]string](moduleNames)
+			return mcp.NewToolResultJSON[resp.List](resp.SliceToList(moduleNames))
 		},
 	}
 }

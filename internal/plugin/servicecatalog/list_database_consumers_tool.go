@@ -46,7 +46,7 @@ func (h *mcpHandler) listMDatabaseConsumersTool() server.ServerTool {
 					)), nil
 			}
 
-			return mcp.NewToolResultJSON[[]string](moduleNames)
+			return mcp.NewToolResultJSON[resp.List](resp.SliceToList(moduleNames))
 		},
 	}
 }

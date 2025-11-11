@@ -19,7 +19,7 @@ func (h *mcpHandler) listInterfacesTool() server.ServerTool {
 			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter interfaces by.")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]InterfaceDescriptor](),
+			mcp.WithOutputSchema[InterfaceDescriptorList](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -47,7 +47,9 @@ func (h *mcpHandler) listInterfacesTool() server.ServerTool {
 					Kind:        i.Kind,
 				})
 			}
-			return mcp.NewToolResultJSON[[]InterfaceDescriptor](results)
+			return mcp.NewToolResultJSON[InterfaceDescriptorList](InterfaceDescriptorList{
+				Interfaces: results,
+			})
 		},
 	}
 }

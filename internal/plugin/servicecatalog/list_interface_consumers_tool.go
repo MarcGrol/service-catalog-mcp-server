@@ -47,7 +47,7 @@ func (h *mcpHandler) listInterfaceConsumersTool() server.ServerTool {
 			}
 
 			// return result
-			return mcp.NewToolResultJSON[[]string](moduleNames)
+			return mcp.NewToolResultJSON[resp.List](resp.SliceToList(moduleNames))
 		},
 	}
 }

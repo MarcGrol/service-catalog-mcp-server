@@ -19,7 +19,7 @@ func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("Name of the module to list SLOs for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]repo.SLO](),
+			mcp.WithOutputSchema[SLOList](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -45,7 +45,13 @@ func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultJSON[[]repo.SLO](slos)
+			return mcp.NewToolResultJSON[SLOList](SLOList{
+				SLOs: slos,
+			})
 		},
 	}
+}
+
+type SLOList struct {
+	SLOs []repo.SLO `json:"slos"`
 }

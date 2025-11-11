@@ -19,7 +19,7 @@ func (h *mcpHandler) listModulesTool() server.ServerTool {
 			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter modules by.")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]ModuleDescriptor](),
+			mcp.WithOutputSchema[ModuleDescriptorList](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -47,7 +47,9 @@ func (h *mcpHandler) listModulesTool() server.ServerTool {
 					Description: mod.Description,
 				})
 			}
-			return mcp.NewToolResultJSON[[]ModuleDescriptor](results)
+			return mcp.NewToolResultJSON[ModuleDescriptorList](ModuleDescriptorList{
+				Modules: results,
+			})
 		},
 	}
 }
