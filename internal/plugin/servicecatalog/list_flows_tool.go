@@ -16,6 +16,11 @@ func (h *mcpHandler) listFlowsTool() server.ServerTool {
 		Tool: mcp.NewTool(
 			"list_flows",
 			mcp.WithDescription("Lists all critical flows in the catalog."),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[[]string](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 

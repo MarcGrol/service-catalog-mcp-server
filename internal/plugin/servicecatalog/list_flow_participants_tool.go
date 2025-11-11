@@ -17,6 +17,11 @@ func (h *mcpHandler) listFlowParticipantsTool() server.ServerTool {
 			"list_flow_participants",
 			mcp.WithDescription("List all modules that that are participants of this flow"),
 			mcp.WithString("flow_id", mcp.Required(), mcp.Description("The ID of the flow")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[[]string](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

@@ -8,6 +8,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
 // NewSuggestCandidatesTool returns the MCP tool definition and its handler for listing interfaces.
@@ -18,6 +19,11 @@ func (h *mcpHandler) suggestCandidatesTool() server.ServerTool {
 			mcp.WithDescription("Suggest matching modules, interfaces, databases, or teams based on user input."),
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to search modules, interfaces, databases, or teams for.")),
 			mcp.WithNumber("limit_to", mcp.Description("Maximum number of results per category to return.")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[search.Result](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			keyword, err := request.RequireString("keyword")

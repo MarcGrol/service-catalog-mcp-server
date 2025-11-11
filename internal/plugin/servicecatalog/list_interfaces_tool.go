@@ -17,6 +17,11 @@ func (h *mcpHandler) listInterfacesTool() server.ServerTool {
 			"list_interfaces",
 			mcp.WithDescription("Lists all interfaces (=web-api's) in the catalog"),
 			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter interfaces by.")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[[]interfaceDescriptor](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

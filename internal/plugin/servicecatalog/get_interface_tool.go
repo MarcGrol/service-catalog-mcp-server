@@ -8,6 +8,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
 )
 
 // NewLGetSingleInterfaceTool returns the MCP tool definition and its handler for listing interfaces.
@@ -17,6 +18,11 @@ func (h *mcpHandler) getSingleInterfaceTool() server.ServerTool {
 			"get_interface",
 			mcp.WithDescription("Gives details about a single interface (=web-api)"),
 			mcp.WithString("interface_id", mcp.Required(), mcp.Description("The ID of the interface to get details for")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[catalogrepo.Interface](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

@@ -8,6 +8,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
 )
 
 func (h *mcpHandler) searchSLOs() server.ServerTool {
@@ -17,6 +18,11 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 			mcp.WithDescription("Search all SLO's based on application, webapp,service, component or methods"),
 			mcp.WithString("category", mcp.Required(), mcp.Description("Category to search on: Must be one of 'team', 'application', 'webapp', 'service', 'component' or 'methods'")),
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to list SLOs for")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[[]repo.SLO](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

@@ -8,6 +8,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
 )
 
 func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
@@ -16,6 +17,11 @@ func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
 			"list_slos_on_module",
 			mcp.WithDescription("Search all SLO's based on their module"),
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("Name of the module to list SLOs for")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[[]repo.SLO](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

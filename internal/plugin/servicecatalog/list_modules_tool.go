@@ -17,6 +17,11 @@ func (h *mcpHandler) listModulesTool() server.ServerTool {
 			"list_modules",
 			mcp.WithDescription("Lists all modules in the catalog."),
 			mcp.WithString("filter_keyword", mcp.Required(), mcp.Description("The keyword to filter modules by.")),
+			mcp.WithDestructiveHintAnnotation(false),
+			mcp.WithIdempotentHintAnnotation(true),
+			mcp.WithReadOnlyHintAnnotation(true),
+			mcp.WithOpenWorldHintAnnotation(false),
+			mcp.WithOutputSchema[[]moduleDescriptor](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
