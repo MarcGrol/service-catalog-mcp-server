@@ -19,7 +19,7 @@ func (h *mcpHandler) listMDatabaseConsumersTool() server.ServerTool {
 			mcp.WithString("database_id", mcp.Required(), mcp.Description("The ID of the database to list modules for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]string](),
+			mcp.WithOutputSchema[resp.List](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params

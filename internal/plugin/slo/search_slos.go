@@ -8,7 +8,6 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
 )
 
 func (h *mcpHandler) searchSLOs() server.ServerTool {
@@ -20,7 +19,7 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to list SLOs for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[[]repo.SLO](),
+			mcp.WithOutputSchema[SLOList](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
