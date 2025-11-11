@@ -17,8 +17,6 @@ func (h *mcpHandler) getSLOByIDTool() server.ServerTool {
 			"get_slo",
 			mcp.WithDescription("Gives details about a single slo"),
 			mcp.WithString("slo_id", mcp.Required(), mcp.Description("The ID of the slo to get details for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[repo.SLO](),

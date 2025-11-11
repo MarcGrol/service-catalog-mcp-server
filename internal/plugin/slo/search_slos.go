@@ -18,8 +18,6 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 			mcp.WithDescription("Search all SLO's based on application, webapp,service, component or methods"),
 			mcp.WithString("category", mcp.Required(), mcp.Description("Category to search on: Must be one of 'team', 'application', 'webapp', 'service', 'component' or 'methods'")),
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to list SLOs for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]repo.SLO](),

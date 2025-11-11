@@ -17,8 +17,6 @@ func (h *mcpHandler) listMDatabaseConsumersTool() server.ServerTool {
 			"list_database_consumers",
 			mcp.WithDescription("List all modules that consume a given database"),
 			mcp.WithString("database_id", mcp.Required(), mcp.Description("The ID of the database to list modules for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]string](),

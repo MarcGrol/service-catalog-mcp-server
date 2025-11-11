@@ -18,8 +18,6 @@ func (h *mcpHandler) listModulesOfTeamsTool() server.ServerTool {
 			"list_modules_of_teams",
 			mcp.WithDescription("List all modules owned by a team"),
 			mcp.WithString("team_id", mcp.Required(), mcp.Description("The ID of the team to list modules for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]string](),

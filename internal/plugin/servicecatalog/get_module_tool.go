@@ -18,8 +18,6 @@ func (h *mcpHandler) getSingleModuleTool() server.ServerTool {
 			"get_module",
 			mcp.WithDescription("Gives details about a single module in the catalog"),
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("The ID of the module to get details for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[catalogrepo.Module](),

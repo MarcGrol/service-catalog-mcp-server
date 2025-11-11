@@ -16,8 +16,6 @@ func (h *mcpHandler) listKindsTool() server.ServerTool {
 		Tool: mcp.NewTool(
 			"list_kinds",
 			mcp.WithDescription("Lists all module kinds in the catalog."),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]string](),

@@ -17,8 +17,6 @@ func (h *mcpHandler) listModulesByComplexityTool() server.ServerTool {
 			"list_modules_by_complexity",
 			mcp.WithDescription("Lists all modules in the catalog ordered DESC on complexity limited up to limit_to modules."),
 			mcp.WithNumber("limit_to", mcp.Description("Maximum number of modules to return.")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]moduleDescriptor](),

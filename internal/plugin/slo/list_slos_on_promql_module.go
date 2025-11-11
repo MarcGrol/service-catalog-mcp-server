@@ -17,8 +17,6 @@ func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
 			"list_slos_on_module",
 			mcp.WithDescription("Search all SLO's based on their module"),
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("Name of the module to list SLOs for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]repo.SLO](),

@@ -17,8 +17,6 @@ func (h *mcpHandler) listInterfaceConsumersTool() server.ServerTool {
 			"list_interface_consumers",
 			mcp.WithDescription("List all modules that consume a given interface (=web-api)"),
 			mcp.WithString("interface_id", mcp.Required(), mcp.Description("The ID of the interface (=web-api) to list modules for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]string](),

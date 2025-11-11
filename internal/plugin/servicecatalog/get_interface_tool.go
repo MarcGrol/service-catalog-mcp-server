@@ -18,8 +18,6 @@ func (h *mcpHandler) getSingleInterfaceTool() server.ServerTool {
 			"get_interface",
 			mcp.WithDescription("Gives details about a single interface (=web-api)"),
 			mcp.WithString("interface_id", mcp.Required(), mcp.Description("The ID of the interface to get details for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[catalogrepo.Interface](),

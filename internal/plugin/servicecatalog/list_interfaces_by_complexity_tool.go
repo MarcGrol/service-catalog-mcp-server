@@ -17,8 +17,6 @@ func (h *mcpHandler) listInterfacesByComplexityTool() server.ServerTool {
 			"list_interfaces_by_complexity",
 			mcp.WithDescription("Lists all interfaces in the catalog ordered DESC on complexity limited up to limit_to interfaces."),
 			mcp.WithNumber("limit_to", mcp.Description("Maximum number of interfaces to list.")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]interfaceDescriptor](),

@@ -17,8 +17,6 @@ func (h *mcpHandler) listSLOsOnPromQLWebService() server.ServerTool {
 			"list_slos_on_service",
 			mcp.WithDescription("Search all SLO's based on a web service"),
 			mcp.WithString("service-name", mcp.Required(), mcp.Description("Name of the web-service to list SLOs for")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]repo.SLO](),

@@ -17,8 +17,6 @@ func (h *mcpHandler) listModulesWithKindTool() server.ServerTool {
 			"list_modules_with_kind",
 			mcp.WithDescription("List all modules that are of this kind"),
 			mcp.WithString("kind_id", mcp.Required(), mcp.Description("The ID of the kind")),
-			mcp.WithDestructiveHintAnnotation(false),
-			mcp.WithIdempotentHintAnnotation(true),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
 			mcp.WithOutputSchema[[]string](),
