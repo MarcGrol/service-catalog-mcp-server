@@ -54,6 +54,7 @@ func (h *mcpHandler) listInterfacesTool() server.ServerTool {
 	}
 }
 
+// InterfaceDescriptor is the short version of an Interface
 type InterfaceDescriptor struct {
 	InterfaceID     string
 	Description     string

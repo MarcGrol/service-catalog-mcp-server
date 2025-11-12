@@ -54,6 +54,7 @@ func (h *mcpHandler) listModulesTool() server.ServerTool {
 	}
 }
 
+// ModuleDescriptor is the short version of a Module
 type ModuleDescriptor struct {
 	ModuleID        string
 	Name            string

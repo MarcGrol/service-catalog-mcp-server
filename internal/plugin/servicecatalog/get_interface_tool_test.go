@@ -19,7 +19,7 @@ func TestGetInterfaceTool_Success(t *testing.T) {
 	// then
 	assert.NoError(t, err)
 	textResult := result.Content[0].(mcp.TextContent)
-	assert.Contains(t, textResult.Text, `{"ModuleID":"paymentengine/acm/webapp/acm",`)
+	assert.Contains(t, textResult.Text, `{"moduleID":"paymentengine/acm/webapp/acm",`)
 }
 
 func TestGetInterfaceTool_NotFound(t *testing.T) {

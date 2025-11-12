@@ -32,28 +32,28 @@ type Cataloger interface {
 
 // Module represents a software module in the catalog.
 type Module struct {
-	Version            string   `db:"version"  json:",omitempty" yaml:",omitempty"`
-	ModuleID           string   `db:"module_id"`
-	Name               string   `db:"name"`
-	Description        string   `db:"description"`
-	Spec               string   `db:"specification"`
-	FileCount          int      `db:"file_count"`
-	LineCount          int      `db:"line_count"`
-	ComplexityScore    float32  `json:",omitempty" yaml:",omitempty"`
-	KindCount          *int     `db:"kind_count" json:",omitempty" yaml:",omitempty"`
-	TeamCount          *int     `db:"team_count" json:",omitempty" yaml:",omitempty"`
-	ExposedAPICount    *int     `db:"exposed_api_count" json:",omitempty" yaml:",omitempty"`
-	ConsumedAPICount   *int     `db:"consumed_api_count" json:",omitempty" yaml:",omitempty"`
-	DatabaseCount      *int     `db:"database_count" json:",omitempty" yaml:",omitempty"`
-	JobCount           *int     `db:"job_count" json:",omitempty" yaml:",omitempty"`
-	FlowCount          *int     `db:"flow_count" json:",omitempty" yaml:",omitempty"`
-	ApplicationKinds   []string `db:"-" json:",omitempty" yaml:",omitempty"`
-	Teams              []string `db:"-" json:",omitempty" yaml:",omitempty"`
-	Flows              []string `db:"-" json:",omitempty" yaml:",omitempty"`
-	ExposedInterfaces  []string `db:"-" json:",omitempty" yaml:",omitempty"`
-	ConsumedInterfaces []string `db:"-" json:",omitempty" yaml:",omitempty"`
-	Jobs               []string `db:"-" json:",omitempty" yaml:",omitempty"`
-	Databases          []string `db:"-" json:",omitempty" yaml:",omitempty"`
+	Version            string   `db:"version" json:"version"`
+	ModuleID           string   `db:"module_id" json:"moduleID"`
+	Name               string   `db:"name" json:"name"`
+	Description        string   `db:"description" json:"description"`
+	Spec               string   `db:"specification" json:"specification"`
+	FileCount          int      `db:"file_count" json:"fileCount"`
+	LineCount          int      `db:"line_count"  json:"lineCount"`
+	ComplexityScore    float32  `json:",omitempty" json:"complexityScore,omitempty"`
+	KindCount          *int     `db:"kind_count" json:"kindCount,omitempty"`
+	TeamCount          *int     `db:"team_count" json:"teamCount,omitempty"`
+	ExposedAPICount    *int     `db:"exposed_api_count" json:",omitempty"`
+	ConsumedAPICount   *int     `db:"consumed_api_count" json:"exposedAPICount,omitempty"`
+	DatabaseCount      *int     `db:"database_count" json:"databaseCount,omitempty"`
+	JobCount           *int     `db:"job_count" json:"jobCount,omitempty"`
+	FlowCount          *int     `db:"flow_count" json:"flowCount,omitempty"`
+	ApplicationKinds   []string `db:"-" json:"applicationKinds,omitempty"`
+	Teams              []string `db:"-" json:"teams,omitempty"`
+	Flows              []string `db:"-" json:"flows,omitempty"`
+	ExposedInterfaces  []string `db:"-" json:"exposedInterfaces,omitempty"`
+	ConsumedInterfaces []string `db:"-" json:"consumedInterfaces,omitempty"`
+	Jobs               []string `db:"-" json:"jobs,omitempty"`
+	Databases          []string `db:"-" json:"databases,omitempty"`
 }
 
 const (
@@ -97,13 +97,13 @@ func (m Module) String() string {
 
 // Interface represents a web API in the catalog.
 type Interface struct {
-	ModuleID      string   `db:"module_id" yaml:",omitempty"`
-	InterfaceID   string   `db:"interface_id" yaml:",omitempty"`
-	Description   string   `db:"description" yaml:",omitempty"`
-	Kind          string   `db:"kind" yaml:",omitempty"`
-	OpenAPISpecs  *string  `db:"openapi_specification" yaml:",omitempty"`
-	RPLSpecs      *string  `db:"rpl_specification" yaml:",omitempty"`
-	MethodCount   int      `db:"method_count" yaml:",omitempty"`
-	Methods       []string `db:"-" yaml:",omitempty"`
-	MethodBasedID string   `db:"method_based_interface_id" yaml:",omitempty"`
+	ModuleID      string   `db:"module_id" json:"moduleID,omitempty"`
+	InterfaceID   string   `db:"interface_id" json:"interfaceID,omitempty"`
+	Description   string   `db:"description" json:"description,omitempty"`
+	Kind          string   `db:"kind" json:"kind,omitempty"`
+	OpenAPISpecs  *string  `db:"openapi_specification" json:"-"` // API can not deal with null returned for string
+	RPLSpecs      *string  `db:"rpl_specification" json:"-"`     // API can not deal with null returned for string
+	MethodCount   int      `db:"method_count" json:"methodCount,omitempty"`
+	Methods       []string `db:"-" json:"methods,omitempty"`
+	MethodBasedID string   `db:"method_based_interface_id" json:"methodBasedID,omitempty"`
 }
