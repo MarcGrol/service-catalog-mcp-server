@@ -8,7 +8,6 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
 )
 
 func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
@@ -19,7 +18,7 @@ func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("Name of the module to list SLOs for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[SLOList](),
+			mcp.WithOutputSchema[List](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -45,14 +44,9 @@ func (h *mcpHandler) listSLOsOnPromQLModule() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultJSON[SLOList](SLOList{
+			return mcp.NewToolResultJSON[List](List{
 				SLOs: slos,
 			})
 		},
 	}
-}
-
-// SLOList wraps a list into a single object (because the API does not allow lists)
-type SLOList struct {
-	SLOs []repo.SLO `json:"slos"`
 }

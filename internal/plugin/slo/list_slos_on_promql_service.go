@@ -18,7 +18,7 @@ func (h *mcpHandler) listSLOsOnPromQLWebService() server.ServerTool {
 			mcp.WithString("service-name", mcp.Required(), mcp.Description("Name of the web-service to list SLOs for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[SLOList](),
+			mcp.WithOutputSchema[List](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -44,7 +44,7 @@ func (h *mcpHandler) listSLOsOnPromQLWebService() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultJSON[SLOList](SLOList{
+			return mcp.NewToolResultJSON[List](List{
 				SLOs: slos,
 			})
 		},

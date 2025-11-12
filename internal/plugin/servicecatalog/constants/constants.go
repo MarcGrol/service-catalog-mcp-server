@@ -1,4 +1,4 @@
-package catalogconstants
+package constants
 
 const (
 	// CatalogDatabaseFilenameKey offers a typestrong key for the catalog database filename

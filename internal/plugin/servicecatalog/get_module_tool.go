@@ -8,7 +8,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 // NewGetSingleModuleTool returns the MCP tool definition and its handler for listing interfaces.
@@ -20,7 +20,7 @@ func (h *mcpHandler) getSingleModuleTool() server.ServerTool {
 			mcp.WithString("module_id", mcp.Required(), mcp.Description("The ID of the module to get details for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[catalogrepo.Module](),
+			mcp.WithOutputSchema[repo.Module](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -48,7 +48,7 @@ func (h *mcpHandler) getSingleModuleTool() server.ServerTool {
 					)), nil
 			}
 
-			return mcp.NewToolResultJSON[catalogrepo.Module](module)
+			return mcp.NewToolResultJSON[repo.Module](module)
 		},
 	}
 }

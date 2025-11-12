@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
@@ -33,7 +33,7 @@ func TestListModulesOfTeamsTool_Success(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesOfTeam(gomock.Any(), "team1").Return([]string{"module1", "module2"}, true, nil)
 
 	idx := search.NewMockIndex(ctrl)
@@ -56,7 +56,7 @@ func TestListModulesOfTeamsTool_NotFound(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesOfTeam(gomock.Any(), "nonexistent_team").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
@@ -82,7 +82,7 @@ func TestListModulesOfTeamsTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesOfTeam(gomock.Any(), "team_with_error").Return(nil, false, errors.New("failed to list modules"))
 
 	idx := search.NewMockIndex(ctrl)
@@ -106,7 +106,7 @@ func TestListModulesOfTeamsTool_MissingTeamID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
 	tool := NewMCPHandler(repo, idx).listModulesOfTeamsTool()

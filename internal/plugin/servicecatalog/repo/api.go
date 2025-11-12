@@ -1,4 +1,4 @@
-package catalogrepo
+package repo
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 
 // Cataloger defines the interface for interacting with the service catalog repository.
 //
-//go:generate go tool mockgen -source=api.go -destination=mock_cataloger.go -package=catalogrepo Cataloger
+//go:generate go tool mockgen -source=api.go -destination=mock_cataloger.go -package=repo Cataloger
 type Cataloger interface {
 	Open(ctx context.Context) error
 	Close(ctx context.Context) error

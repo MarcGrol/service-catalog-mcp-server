@@ -10,7 +10,7 @@ import (
 	"go.uber.org/mock/gomock"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/search"
 )
 
 func TestListSLOsOnPromQLModuleTool(t *testing.T) {
@@ -18,7 +18,7 @@ func TestListSLOsOnPromQLModuleTool(t *testing.T) {
 	defer ctrl.Finish()
 
 	repoMock := repo.NewMockSLORepo(ctrl)
-	idxMock := slosearch.NewMockIndex(ctrl)
+	idxMock := search.NewMockIndex(ctrl)
 
 	h := NewMCPHandler(repoMock, idxMock)
 	tool := h.listSLOsOnPromQLModule()
@@ -43,7 +43,7 @@ func TestListSLOsOnPromQLModuleTool(t *testing.T) {
 	t.Run("SLOs for module not found", func(t *testing.T) {
 		moduleID := "nonexistent-module"
 		repoMock.EXPECT().ListSLOsByPromQLModule(ctx, moduleID).Return([]repo.SLO{}, false, nil).Times(1)
-		idxMock.EXPECT().Search(ctx, moduleID, gomock.Any()).Return(slosearch.Result{Webapps: []string{"suggested-module"}}).Times(1)
+		idxMock.EXPECT().Search(ctx, moduleID, gomock.Any()).Return(search.Result{Webapps: []string{"suggested-module"}}).Times(1)
 
 		req := createRequest("list_slos_on_module", map[string]interface{}{"module_id": moduleID})
 		result, err := tool.Handler(ctx, req)

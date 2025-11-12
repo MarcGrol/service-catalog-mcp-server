@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 func TestListKindsTool_Success(t *testing.T) {
@@ -17,7 +17,7 @@ func TestListKindsTool_Success(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListKinds(gomock.Any()).Return([]string{"kind1", "kind2"}, nil)
 
 	tool := NewMCPHandler(repo, nil).listKindsTool()
@@ -38,7 +38,7 @@ func TestListKindsTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListKinds(gomock.Any()).Return(nil, errors.New("failed to list types"))
 
 	tool := NewMCPHandler(repo, nil).listKindsTool()

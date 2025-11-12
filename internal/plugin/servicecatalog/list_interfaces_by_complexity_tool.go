@@ -48,8 +48,3 @@ func (h *mcpHandler) listInterfacesByComplexityTool() server.ServerTool {
 		},
 	}
 }
-
-// InterfaceDescriptorList wraps a list into a single object (because the API does not allow lists)
-type InterfaceDescriptorList struct {
-	Interfaces []InterfaceDescriptor `json:"interfaces"`
-}

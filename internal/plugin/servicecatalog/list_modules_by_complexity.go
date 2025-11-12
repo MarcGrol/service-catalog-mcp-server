@@ -48,8 +48,3 @@ func (h *mcpHandler) listModulesByComplexityTool() server.ServerTool {
 		},
 	}
 }
-
-// ModuleDescriptorList wraps a list into a single object (because the API does not allow lists)
-type ModuleDescriptorList struct {
-	Modules []ModuleDescriptor `json:"modules"`
-}

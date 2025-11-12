@@ -4,8 +4,8 @@ import (
 	"flag"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
+	catalog_constants "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/constants"
+	slo_constants "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/constants"
 )
 
 // loadConfig loads the application configuration from command-line flags.
@@ -28,8 +28,8 @@ func loadConfig(catalogDatabaseFilename, sloDatabaseFilename string) config.Conf
 		APIKey:        *apiKey,
 		Mode:          config.Mode(*mode),
 		PluginConfigs: map[string]string{
-			catalogconstants.CatalogDatabaseFilenameKey: *catalogDatabaseFile,
-			sloconstants.SLODatabaseFilenameKey:         *sloDatabaseFile,
+			catalog_constants.CatalogDatabaseFilenameKey: *catalogDatabaseFile,
+			slo_constants.SLODatabaseFilenameKey:         *sloDatabaseFile,
 		},
 	}
 }

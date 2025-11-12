@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
@@ -18,7 +18,7 @@ func TestListKindWithApplicationsTool_Success(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesWithKind(gomock.Any(), "kind1").Return([]string{"participant1", "participant2"}, true, nil)
 
 	idx := search.NewMockIndex(ctrl)
@@ -42,7 +42,7 @@ func TestListKindWithApplicationsTool_NotFound(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesWithKind(gomock.Any(), "nonexistent_kind").Return(nil, false, nil)
 
 	idx := search.NewMockIndex(ctrl)
@@ -68,7 +68,7 @@ func TestListKindParticipantsTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesWithKind(gomock.Any(), "kind_with_error").Return(nil, false, errors.New("failed to list kinds"))
 
 	idx := search.NewMockIndex(ctrl)
@@ -92,7 +92,7 @@ func TestListKindParticipantsTool_MissingKindID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	idx := search.NewMockIndex(ctrl)
 
 	tool := NewMCPHandler(repo, idx).listModulesWithKindTool()

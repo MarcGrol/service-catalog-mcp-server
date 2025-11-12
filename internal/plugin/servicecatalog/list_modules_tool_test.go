@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 func TestListModulesTool_SuccessWithKeyword(t *testing.T) {
@@ -17,13 +17,13 @@ func TestListModulesTool_SuccessWithKeyword(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().ListModules(gomock.Any(), "test").Return([]catalogrepo.Module{
+	repository := repo.NewMockCataloger(ctrl)
+	repository.EXPECT().ListModules(gomock.Any(), "test").Return([]repo.Module{
 		{ModuleID: "module1", Name: "Module One", Description: "Desc One"},
 		{ModuleID: "module2", Name: "Module Two", Description: "Desc Two"},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).listModulesTool()
+	tool := NewMCPHandler(repository, nil).listModulesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules", map[string]interface{}{
@@ -44,7 +44,7 @@ func TestListModulesTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModules(gomock.Any(), "error").Return(nil, errors.New("failed to list modules"))
 
 	tool := NewMCPHandler(repo, nil).listModulesTool()
@@ -66,7 +66,7 @@ func TestListModulesTool_MissingKeyword(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 
 	tool := NewMCPHandler(repo, nil).listModulesTool()
 

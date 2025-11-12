@@ -1,4 +1,4 @@
-package slosearch
+package search
 
 import (
 	"context"

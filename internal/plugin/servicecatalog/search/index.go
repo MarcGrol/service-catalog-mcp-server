@@ -7,7 +7,7 @@ import (
 	"github.com/sahilm/fuzzy"
 	"github.com/samber/lo"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 // Index defines the interface for a search index.
@@ -28,7 +28,7 @@ type searchIndex struct {
 }
 
 // NewSearchIndex creates a new search index.
-func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index {
+func NewSearchIndex(ctx context.Context, cataloger repo.Cataloger) Index {
 
 	modules, err := cataloger.ListModules(ctx, "")
 	if err != nil {
@@ -66,10 +66,10 @@ func NewSearchIndex(ctx context.Context, cataloger catalogrepo.Cataloger) Index 
 	}
 
 	return &searchIndex{
-		Modules: lo.Map(modules, func(m catalogrepo.Module, index int) string {
+		Modules: lo.Map(modules, func(m repo.Module, index int) string {
 			return m.ModuleID
 		}),
-		Interfaces: lo.Map(interfaces, func(m catalogrepo.Interface, index int) string {
+		Interfaces: lo.Map(interfaces, func(m repo.Interface, index int) string {
 			return m.InterfaceID
 		}),
 		Teams:     teams,

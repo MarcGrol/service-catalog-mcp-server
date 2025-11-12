@@ -1,4 +1,4 @@
-package catalogrepo
+package repo
 
 import (
 	"context"
@@ -255,7 +255,7 @@ func (r *CatalogRepo) GetInterfaceOnID(ctx context.Context, id string) (Interfac
 	}
 
 	// What methods?
-	err = r.db.Select(&api.Methods, "SELECT method_id FROM interface_method WHERE interface_id LIKE $1 ORDER BY method_id", id)
+	err = r.db.Select(&api.Methods, "SELECT method_id FROM interface_method WHERE interface_id = $1 ORDER BY method_id", id)
 	if err != nil {
 		return Interface{}, false, fmt.Errorf("select meth error: %w", err)
 	}

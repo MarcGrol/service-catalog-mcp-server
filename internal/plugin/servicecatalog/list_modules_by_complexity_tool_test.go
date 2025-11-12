@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 func TestListModulesByComplexityTool_SuccessWithLimit(t *testing.T) {
@@ -17,13 +17,13 @@ func TestListModulesByComplexityTool_SuccessWithLimit(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().ListModulesByCompexity(gomock.Any(), 5).Return([]catalogrepo.Module{
+	repository := repo.NewMockCataloger(ctrl)
+	repository.EXPECT().ListModulesByCompexity(gomock.Any(), 5).Return([]repo.Module{
 		{ModuleID: "module1", Name: "Module One", Description: "Desc One", ComplexityScore: 10.5},
 		{ModuleID: "module2", Name: "Module Two", Description: "Desc Two", ComplexityScore: 8.2},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).listModulesByComplexityTool()
+	tool := NewMCPHandler(repository, nil).listModulesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_by_complexity", map[string]interface{}{
@@ -46,13 +46,13 @@ func TestListModulesByComplexityTool_SuccessWithoutLimit(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().ListModulesByCompexity(gomock.Any(), 20).Return([]catalogrepo.Module{
+	repository := repo.NewMockCataloger(ctrl)
+	repository.EXPECT().ListModulesByCompexity(gomock.Any(), 20).Return([]repo.Module{
 		{ModuleID: "moduleA", Name: "Module A", Description: "Desc A", ComplexityScore: 50.1},
 		{ModuleID: "moduleB", Name: "Module B", Description: "Desc B", ComplexityScore: 30.9},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).listModulesByComplexityTool()
+	tool := NewMCPHandler(repository, nil).listModulesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_modules_by_complexity", nil))
@@ -73,7 +73,7 @@ func TestListModulesByComplexityTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListModulesByCompexity(gomock.Any(), gomock.Any()).Return(nil, errors.New("failed to list modules"))
 
 	tool := NewMCPHandler(repo, nil).listModulesByComplexityTool()

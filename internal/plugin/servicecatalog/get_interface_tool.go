@@ -6,9 +6,10 @@ import (
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
+	"github.com/rs/zerolog/log"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core/resp"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 // NewLGetSingleInterfaceTool returns the MCP tool definition and its handler for listing interfaces.
@@ -20,7 +21,7 @@ func (h *mcpHandler) getSingleInterfaceTool() server.ServerTool {
 			mcp.WithString("interface_id", mcp.Required(), mcp.Description("The ID of the interface to get details for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[catalogrepo.Interface](),
+			mcp.WithOutputSchema[repo.Interface](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -47,8 +48,9 @@ func (h *mcpHandler) getSingleInterfaceTool() server.ServerTool {
 						h.idx.Search(ctx, interfaceID, 10).Interfaces,
 					)), nil
 			}
+			log.Printf("inline: %+v", iface)
 
-			return mcp.NewToolResultJSON[catalogrepo.Interface](iface)
+			return mcp.NewToolResultJSON[repo.Interface](iface)
 		},
 	}
 }

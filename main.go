@@ -13,13 +13,13 @@ import (
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/config"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/core"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogconstants"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
+	catalog_constants "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/constants"
+	catalog_repo "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
+	catalog_search "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/sloconstants"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
+	slo_constants "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/constants"
+	slo_repo "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
+	slo_search "github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/search"
 )
 
 func main() {
@@ -54,7 +54,7 @@ func run() error {
 	mcpHandlers := []core.MCPService{}
 	if cfg.Mode == config.Both || cfg.Mode == config.ServiceCatalog {
 		// Initialize catalog repository
-		catalogRepo := catalogrepo.New(cfg.PluginConfigs[catalogconstants.CatalogDatabaseFilenameKey])
+		catalogRepo := catalog_repo.New(cfg.PluginConfigs[catalog_constants.CatalogDatabaseFilenameKey])
 		err := catalogRepo.Open(ctx)
 		if err != nil {
 			log.Warn().Msgf("Error opening catalog-database: %v", err)
@@ -63,7 +63,7 @@ func run() error {
 		defer catalogRepo.Close(ctx)
 
 		// Initialize catalog search index
-		catalogSearchIndex := search.NewSearchIndex(ctx, catalogRepo)
+		catalogSearchIndex := catalog_search.NewSearchIndex(ctx, catalogRepo)
 
 		// Initialize MCP handler
 		mcpHandlers = append(mcpHandlers, servicecatalog.NewMCPHandler(catalogRepo, catalogSearchIndex))
@@ -71,14 +71,14 @@ func run() error {
 
 	if cfg.Mode == config.Both || cfg.Mode == config.SLO {
 		// Initialize SLO repository
-		sloRepo := repo.New(cfg.PluginConfigs[sloconstants.SLODatabaseFilenameKey])
+		sloRepo := slo_repo.New(cfg.PluginConfigs[slo_constants.SLODatabaseFilenameKey])
 		err := sloRepo.Open(ctx)
 		if err != nil {
 			return err
 		}
 
 		// Initialize slo search index
-		sloSearchIndex := slosearch.NewSearchIndex(ctx, sloRepo)
+		sloSearchIndex := slo_search.NewSearchIndex(ctx, sloRepo)
 
 		// Initialize MCP handler
 		mcpHandlers = append(mcpHandlers, slo.NewMCPHandler(sloRepo, sloSearchIndex))

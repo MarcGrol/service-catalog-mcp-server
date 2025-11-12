@@ -1,7 +1,8 @@
-package catalogrepo
+package repo
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/samber/lo"
@@ -152,15 +153,16 @@ func TestGetInterfaceOnID(t *testing.T) {
 
 	{
 		interfaceID := "com.adyen.services.acm.AcmService"
-		module, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
+		interf, exists, err := repo.GetInterfaceOnID(ctx, interfaceID)
 		assert.NoError(t, err)
 		assert.True(t, exists)
-		assert.Equal(t, "paymentengine/acm/webapp/acm", module.ModuleID)
-		assert.Equal(t, interfaceID, module.InterfaceID)
-		assert.Equal(t, "ACM", module.Description)
-		assert.Equal(t, "RPL", module.Kind)
-		assert.Nil(t, module.OpenAPISpecs)
-		assert.Equal(t, "paymentengine/acm/webapp/acm/src/main/resources/rpl-acm.xml", *module.RPLSpecs)
+		assert.Equal(t, "paymentengine/acm/webapp/acm", interf.ModuleID)
+		assert.Equal(t, interfaceID, interf.InterfaceID)
+		assert.Equal(t, "ACM", interf.Description)
+		assert.Equal(t, "RPL", interf.Kind)
+		assert.Nil(t, interf.OpenAPISpecs)
+		assert.Equal(t, "paymentengine/acm/webapp/acm/src/main/resources/rpl-acm.xml", *interf.RPLSpecs)
+		assert.Contains(t, fmt.Sprintf("%v", interf.Methods), `[addressCheck authAdvice authoriseZero bankAccountValidation cancelCashDeposit cancelCashWithdrawal cancelPos captureStatusCheck cashDepositPos cashWithdrawalPos checkAccountUpdate checkTokenStatus`)
 	}
 	{
 		interfaceID := "com.adyen.services.checkout.shopper.BinLookupService"
@@ -173,6 +175,7 @@ func TestGetInterfaceOnID(t *testing.T) {
 		assert.Equal(t, "RPL", iface.Kind)
 		assert.Nil(t, iface.OpenAPISpecs)
 		assert.Equal(t, "checkoutshopper/src/main/resources/rpl-checkoutBinLookup.xml", *iface.RPLSpecs)
+		assert.Equal(t, fmt.Sprintf("%v", iface.Methods), `[binLookup]`)
 	}
 	{
 		interfaceID := "ManagementServiceV3"
@@ -185,6 +188,7 @@ func TestGetInterfaceOnID(t *testing.T) {
 		assert.Equal(t, "OpenAPI", iface.Kind)
 		assert.Equal(t, "configurationapi/open-api-specs/prod/rpl/ManagementService-v3.json", *iface.OpenAPISpecs)
 		assert.Nil(t, iface.RPLSpecs)
+		assert.Contains(t, fmt.Sprintf("%v", iface.Methods), `[DeleteCompaniesCompanyIdApiCredentialsApiCredentialIdAllowedOriginsOriginId `)
 	}
 }
 

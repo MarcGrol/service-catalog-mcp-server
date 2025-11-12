@@ -7,7 +7,6 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-// NewServiceCatalogPrompt returns the MCP prompt contract and handler for project planning.
 func (h *mcpHandler) sloPrompt() server.ServerPrompt {
 	return server.ServerPrompt{
 		Prompt: mcp.NewPrompt(

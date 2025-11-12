@@ -10,7 +10,7 @@ import (
 	"go.uber.org/mock/gomock"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/search"
 )
 
 func TestGetLOByIDTool(t *testing.T) {
@@ -18,7 +18,7 @@ func TestGetLOByIDTool(t *testing.T) {
 	defer ctrl.Finish()
 
 	repoMock := repo.NewMockSLORepo(ctrl)
-	idxMock := slosearch.NewMockIndex(ctrl)
+	idxMock := search.NewMockIndex(ctrl)
 
 	h := NewMCPHandler(repoMock, idxMock)
 	tool := h.getSLOByIDTool()
@@ -41,7 +41,7 @@ func TestGetLOByIDTool(t *testing.T) {
 	t.Run("Application not found", func(t *testing.T) {
 		sloID := "nonexistent-slo"
 		repoMock.EXPECT().GetSLOByID(ctx, sloID).Return(repo.SLO{}, false, nil).Times(1)
-		idxMock.EXPECT().Search(ctx, sloID, gomock.Any()).Return(slosearch.Result{SLOs: []string{"suggested-slo"}}).Times(1)
+		idxMock.EXPECT().Search(ctx, sloID, gomock.Any()).Return(search.Result{SLOs: []string{"suggested-slo"}}).Times(1)
 
 		req := createRequest("get_slo", map[string]interface{}{"slo_id": sloID})
 		result, err := tool.Handler(ctx, req)

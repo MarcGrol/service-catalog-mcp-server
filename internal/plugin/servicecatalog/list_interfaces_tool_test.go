@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 func TestListInterfacesTool_SuccessWithKeyword(t *testing.T) {
@@ -17,13 +17,13 @@ func TestListInterfacesTool_SuccessWithKeyword(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().ListInterfaces(gomock.Any(), "test").Return([]catalogrepo.Interface{
+	repository := repo.NewMockCataloger(ctrl)
+	repository.EXPECT().ListInterfaces(gomock.Any(), "test").Return([]repo.Interface{
 		{InterfaceID: "interface1", Description: "desc1", Kind: "kind1"},
 		{InterfaceID: "interface2", Description: "desc2", Kind: "kind2"},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).listInterfacesTool()
+	tool := NewMCPHandler(repository, nil).listInterfacesTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces", map[string]interface{}{
@@ -46,7 +46,7 @@ func TestListInterfacesTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListInterfaces(gomock.Any(), "error").Return(nil, errors.New("failed to list interfaces"))
 
 	tool := NewMCPHandler(repo, nil).listInterfacesTool()
@@ -68,7 +68,7 @@ func TestListInterfacesTool_MissingKeyword(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 
 	tool := NewMCPHandler(repo, nil).listInterfacesTool()
 

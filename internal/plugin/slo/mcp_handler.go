@@ -6,16 +6,16 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/search"
 )
 
 type mcpHandler struct {
 	repo repo.SLORepo
-	idx  slosearch.Index
+	idx  search.Index
 }
 
 // NewMCPHandler creates a new instance of mcpHandler.
-func NewMCPHandler(repo repo.SLORepo, idx slosearch.Index) *mcpHandler {
+func NewMCPHandler(repo repo.SLORepo, idx search.Index) *mcpHandler {
 	return &mcpHandler{
 		repo: repo,
 		idx:  idx,

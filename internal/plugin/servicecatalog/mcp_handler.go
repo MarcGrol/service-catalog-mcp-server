@@ -5,17 +5,17 @@ import (
 
 	"github.com/mark3labs/mcp-go/server"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/search"
 )
 
 type mcpHandler struct {
-	repo catalogrepo.Cataloger
+	repo repo.Cataloger
 	idx  search.Index
 }
 
 // NewMCPHandler creates a new instance of mcpHandler.
-func NewMCPHandler(repo catalogrepo.Cataloger, idx search.Index) *mcpHandler {
+func NewMCPHandler(repo repo.Cataloger, idx search.Index) *mcpHandler {
 	return &mcpHandler{
 		repo: repo,
 		idx:  idx,

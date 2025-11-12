@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/catalogrepo"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/servicecatalog/repo"
 )
 
 func TestListInterfacesByComplexityTool_SuccessWithLimit(t *testing.T) {
@@ -17,13 +17,13 @@ func TestListInterfacesByComplexityTool_SuccessWithLimit(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().ListInterfacesByComplexity(gomock.Any(), 5).Return([]catalogrepo.Interface{
+	repository := repo.NewMockCataloger(ctrl)
+	repository.EXPECT().ListInterfacesByComplexity(gomock.Any(), 5).Return([]repo.Interface{
 		{InterfaceID: "interface1", MethodCount: 10},
 		{InterfaceID: "interface2", MethodCount: 5},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).listInterfacesByComplexityTool()
+	tool := NewMCPHandler(repository, nil).listInterfacesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces_by_complexity", map[string]interface{}{
@@ -44,13 +44,13 @@ func TestListInterfacesByComplexityTool_SuccessWithoutLimit(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
-	repo.EXPECT().ListInterfacesByComplexity(gomock.Any(), 20).Return([]catalogrepo.Interface{
+	repository := repo.NewMockCataloger(ctrl)
+	repository.EXPECT().ListInterfacesByComplexity(gomock.Any(), 20).Return([]repo.Interface{
 		{InterfaceID: "interfaceA", MethodCount: 100},
 		{InterfaceID: "interfaceB", MethodCount: 50},
 	}, nil)
 
-	tool := NewMCPHandler(repo, nil).listInterfacesByComplexityTool()
+	tool := NewMCPHandler(repository, nil).listInterfacesByComplexityTool()
 
 	// When
 	result, err := tool.Handler(context.Background(), createRequest("list_interfaces_by_complexity", nil))
@@ -69,7 +69,7 @@ func TestListInterfacesByComplexityTool_Error(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	repo := catalogrepo.NewMockCataloger(ctrl)
+	repo := repo.NewMockCataloger(ctrl)
 	repo.EXPECT().ListInterfacesByComplexity(gomock.Any(), gomock.Any()).Return(nil, errors.New("failed to list interfaces"))
 
 	tool := NewMCPHandler(repo, nil).listInterfacesByComplexityTool()

@@ -20,7 +20,7 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 			mcp.WithString("keyword", mcp.Required(), mcp.Description("The keyword to list SLOs for")),
 			mcp.WithReadOnlyHintAnnotation(true),
 			mcp.WithOpenWorldHintAnnotation(false),
-			mcp.WithOutputSchema[SLOList](),
+			mcp.WithOutputSchema[List](),
 		),
 		Handler: func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 			// extract params
@@ -52,7 +52,7 @@ func (h *mcpHandler) searchSLOs() server.ServerTool {
 
 			}
 
-			return mcp.NewToolResultJSON[SLOList](SLOList{SLOs: slos})
+			return mcp.NewToolResultJSON[List](List{SLOs: slos})
 		},
 	}
 }

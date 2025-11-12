@@ -9,7 +9,7 @@ import (
 
 	"github.com/MarcGrol/service-catalog-mcp-server/data"
 	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/repo"
-	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/slosearch"
+	"github.com/MarcGrol/service-catalog-mcp-server/internal/plugin/slo/search"
 )
 
 func TestSuggestCandidatesSuccess(t *testing.T) {
@@ -21,7 +21,7 @@ func TestSuggestCandidatesSuccess(t *testing.T) {
 
 	repo := repo.New(sloDatabaseFilename)
 	repo.Open(ctx)
-	idx := slosearch.NewSearchIndex(ctx, repo)
+	idx := search.NewSearchIndex(ctx, repo)
 
 	// when
 	result, err := NewMCPHandler(nil, idx).suggestCandidatesTool().Handler(ctx,

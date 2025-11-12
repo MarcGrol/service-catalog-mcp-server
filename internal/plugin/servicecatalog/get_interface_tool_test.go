@@ -22,6 +22,22 @@ func TestGetInterfaceTool_Success(t *testing.T) {
 	assert.Contains(t, textResult.Text, `{"moduleID":"paymentengine/acm/webapp/acm",`)
 }
 
+func TestGetInterfaceTool_Success2(t *testing.T) {
+	store, idx, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	// when
+	result, err := NewMCPHandler(store, idx).getSingleInterfaceTool().Handler(ctx, createRequest("interface_id", map[string]interface{}{
+		"interface_id": "com.adyen.services.configurationapi.MeService",
+	}))
+
+	// then
+	assert.NoError(t, err)
+	textResult := result.Content[0].(mcp.TextContent)
+	t.Logf("result: %+v", textResult.Text)
+	//assert.Contains(t, textResult.Text, `{"moduleID":"paymentengine/acm/webapp/acm",`)
+}
+
 func TestGetInterfaceTool_NotFound(t *testing.T) {
 	store, idx, ctx, cleanup := setup(t)
 	defer cleanup()
