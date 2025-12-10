@@ -59,7 +59,7 @@ Once built, you can run the server:
 By default, the server runs in `stdio` mode. You can test it by pasting JSON-RPC 2.0 requests directly into the terminal. For example, to search for candidates related to "partner", paste the following JSON and press Enter:
 
 ```json
-'{"method":"tools/call","params":{"name":"suggest_candidates","arguments":{"keyword":"partner"}},"jsonrpc":"2.0","id":9}'
+{"method":"tools/call","params":{"name":"suggest_candidates","arguments":{"keyword":"partner"}},"jsonrpc":"2.0","id":9}
 ```
 The server will print the JSON-RPC response to standard output. For more examples, see `examples.md`.
 
