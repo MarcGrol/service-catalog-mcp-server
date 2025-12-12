@@ -28,19 +28,17 @@ tidy:
 
 dockerbuild:
 	docker build \
-		--log-level debug  \
 	    --no-cache \
-	    -t acr-main.is.adyen.com/is/service-catalog-mcp-server:0.1 \
+	    -t acr-main.is.adyen.com/is/service-catalog-mcp-server:0.2 \
 	    -f Dockerfile \
 	    .
 dockerpush:
-	docker tag service-catalog-mcp-server:0.1 acr-main.is.adyen.com/is/service-catalog-mcp-server:0.1
 	docker login acr-main.is.adyen.com/is
-	docker push acr-main.is.adyen.com/is/service-catalog-mcp-server:0.1
+	docker push acr-main.is.adyen.com/is/service-catalog-mcp-server:0.2
 
 dockerrun:
 	docker run \
-	-p 8000:8000 \
+	--publish 8000:8000 \
 	--rm  docker.io/library/service-catalog-mcp-server:local
 
 dockerview:

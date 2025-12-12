@@ -37,6 +37,7 @@ type Module struct {
 	Name               string   `db:"name" json:"name"`
 	Description        string   `db:"description" json:"description"`
 	Spec               string   `db:"specification" json:"specification"`
+	Team               string   `db:"team" json:"team"`
 	FileCount          int      `db:"file_count" json:"fileCount"`
 	LineCount          int      `db:"line_count"  json:"lineCount"`
 	ComplexityScore    float32  `json:",omitempty" json:"complexityScore,omitempty"`

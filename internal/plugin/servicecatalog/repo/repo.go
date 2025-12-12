@@ -140,7 +140,7 @@ func (r *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]strin
 	}
 
 	team := ""
-	err := r.db.Get(&team, "SELECT team_id FROM team WHERE team_id = $1", id)
+	err := r.db.Get(&team, "SELECT team FROM module WHERE team = $1", id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []string{}, false, nil
@@ -150,7 +150,7 @@ func (r *CatalogRepo) ListModulesOfTeam(ctx context.Context, id string) ([]strin
 
 	// Who consume this interface
 	modules := []string{}
-	err = r.db.Select(&modules, "SELECT module_id FROM mod_team WHERE team_id = $1 ORDER BY module_id", id)
+	err = r.db.Select(&modules, "SELECT distinct(module_id) FROM module WHERE team = $1 ORDER BY module_id", id)
 	if err != nil {
 		return []string{}, false, fmt.Errorf("select consumers error: %w", err)
 	}

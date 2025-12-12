@@ -19,13 +19,13 @@ func TestListModulesOfTeamsTool_Real(t *testing.T) {
 
 	// when
 	result, err := NewMCPHandler(store, idx).listModulesOfTeamsTool().Handler(ctx, createRequest("team_id", map[string]interface{}{
-		"team_id": "IPP_Payments",
+		"team_id": "ipp-payments",
 	}))
 
 	// then
 	assert.NoError(t, err)
 	textResult := result.Content[0].(mcp.TextContent)
-	assert.Contains(t, textResult.Text, `{"names":["adyen","common/cardapplication","common/hsm","common/payshield-connector",`)
+	assert.Contains(t, textResult.Text, `{"names":["common/cardapplication","common/payshield-connector","communication/services-common/payter"`)
 }
 
 func TestListModulesOfTeamsTool_Success(t *testing.T) {

@@ -33,6 +33,7 @@ func NewSearchIndex(ctx context.Context, r repo.SLORepo) Index {
 	if err != nil {
 		log.Error().Err(err).Msg("Error listing slos for search index")
 	}
+
 	sloNames := lo.Uniq(lo.Map(slos, func(slo repo.SLO, index int) string {
 		return slo.UID
 	}))
@@ -80,8 +81,6 @@ type Result struct {
 	Components   []string
 	Methods      []string
 }
-
-const flowSearchLimitMultiplier = 2
 
 func (idx *searchIndex) Search(ctx context.Context, keyword string, limit int) Result {
 	return Result{

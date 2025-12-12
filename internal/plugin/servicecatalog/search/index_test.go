@@ -32,9 +32,8 @@ func TestSearchIndex_Search(t *testing.T) {
 			"communication/services/partner",
 		},
 		Teams: []string{
-			"PartnerExperience",
-			"PartnerExperience_FE",
-			"PlatformIntegrationExperience",
+			"partner-experience",
+			"partner-experience-fe",
 		},
 		Interfaces: []string{
 			"PartnerTermsResourceV1",
