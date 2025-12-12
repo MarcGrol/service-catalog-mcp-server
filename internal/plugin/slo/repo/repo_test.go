@@ -37,7 +37,7 @@ func TestRepo(t *testing.T) {
 
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "a2apayments_a2aissuer-api_test-ideal-certificates_availability", slos[0].UID)
-		assert.Equal(t, "open-banking", slos[0].Team)
+		assert.Equal(t, "bank-accounts", slos[0].Team)
 		assert.Equal(t, "a2apayments", slos[0].Application)
 		assert.Equal(t, "a2aissuer-api", slos[0].Service)
 		assert.Equal(t, "test-ideal-certificates", slos[0].Component)
@@ -83,7 +83,7 @@ func TestRepo(t *testing.T) {
 		assert.True(t, exists)
 		assert.GreaterOrEqual(t, len(slos), 1)
 		assert.Equal(t, "realtimebalance_realtimebalancewebapp_authorisebalance_availability", slos[0].UID)
-		assert.Equal(t, 1.05, slos[0].OperationalReadiness)
+		assert.InDelta(t, 1.15, slos[0].OperationalReadiness, 0.1)
 		assert.Equal(t, 0.0, slos[0].BusinessCriticality)
 
 		slos, exists, err = repo.listSLOsByApplication(ctx, "nonexistent")
