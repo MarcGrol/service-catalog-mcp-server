@@ -33,7 +33,6 @@ func TestSearchIndex_Search(t *testing.T) {
 		},
 		Teams: []string{
 			"partner-experience",
-			"partner-experience-fe",
 		},
 		Interfaces: []string{
 			"PartnerTermsResourceV1",

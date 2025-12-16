@@ -54,6 +54,22 @@ func (mr *MockCatalogerMockRecorder) Close(ctx any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockCataloger)(nil).Close), ctx)
 }
 
+// GetGradleDependenciesOfModule mocks base method.
+func (m *MockCataloger) GetGradleDependenciesOfModule(ctx context.Context, id string) ([]string, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetGradleDependenciesOfModule", ctx, id)
+	ret0, _ := ret[0].([]string)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetGradleDependenciesOfModule indicates an expected call of GetGradleDependenciesOfModule.
+func (mr *MockCatalogerMockRecorder) GetGradleDependenciesOfModule(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGradleDependenciesOfModule", reflect.TypeOf((*MockCataloger)(nil).GetGradleDependenciesOfModule), ctx, id)
+}
+
 // GetInterfaceOnID mocks base method.
 func (m *MockCataloger) GetInterfaceOnID(ctx context.Context, id string) (Interface, bool, error) {
 	m.ctrl.T.Helper()
@@ -84,6 +100,22 @@ func (m *MockCataloger) GetModuleOnID(ctx context.Context, id string) (Module, b
 func (mr *MockCatalogerMockRecorder) GetModuleOnID(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetModuleOnID", reflect.TypeOf((*MockCataloger)(nil).GetModuleOnID), ctx, id)
+}
+
+// ListConsumersOfGradleModule mocks base method.
+func (m *MockCataloger) ListConsumersOfGradleModule(ctx context.Context, id string) ([]string, bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListConsumersOfGradleModule", ctx, id)
+	ret0, _ := ret[0].([]string)
+	ret1, _ := ret[1].(bool)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListConsumersOfGradleModule indicates an expected call of ListConsumersOfGradleModule.
+func (mr *MockCatalogerMockRecorder) ListConsumersOfGradleModule(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConsumersOfGradleModule", reflect.TypeOf((*MockCataloger)(nil).ListConsumersOfGradleModule), ctx, id)
 }
 
 // ListDatabaseConsumers mocks base method.

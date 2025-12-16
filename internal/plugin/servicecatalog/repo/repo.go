@@ -223,6 +223,15 @@ func (r *CatalogRepo) GetModuleOnID(ctx context.Context, id string) (Module, boo
 	}
 	module.JobCount = intPointer(len(module.Jobs))
 
+	// What dependencies?
+	dependencies, exists, err := r.GetGradleDependenciesOfModule(ctx, id)
+	if err != nil {
+		return Module{}, false, fmt.Errorf("select dependencies error: %w", err)
+	}
+	if exists {
+		module.Dependencies = dependencies
+		module.DependencyCount = intPointer(len(module.Dependencies))
+	}
 	module.ComplexityScore = module.CalculateComplexityScore()
 
 	return module, true, nil
@@ -533,6 +542,48 @@ func (r *CatalogRepo) ListModulesWithKind(ctx context.Context, id string) ([]str
 	}
 
 	return interfaces, true, nil
+}
+
+// GetGradleDependenciesOfModule lists gradle dependencies of module
+func (r *CatalogRepo) GetGradleDependenciesOfModule(ctx context.Context, id string) ([]string, bool, error) {
+	if r.db == nil {
+		return nil, false, fmt.Errorf("database not yet opened")
+	}
+
+	dependencies := []string{}
+	err := r.db.Select(&dependencies, `SELECT gd.module_id 
+		FROM mod_gradle as mg 
+		INNER JOIN gradle_file as gf on mg.gradle_id = gf.gradle_id 
+		INNER JOIN gradle_dependency as gd on gd.gradle_id = gf.gradle_id 
+		WHERE mg.module_id = $1 
+		ORDER BY gd.module_id`, id)
+	if err != nil {
+		return []string{}, false, fmt.Errorf("select dependencies with kind error: %w", err)
+	}
+
+	return dependencies, true, nil
+
+}
+
+// ListConsumersOfGradleModule lists consumers of gradle dependency
+func (r *CatalogRepo) ListConsumersOfGradleModule(ctx context.Context, id string) ([]string, bool, error) {
+	if r.db == nil {
+		// already opened
+
+		return nil, false, fmt.Errorf("database not yet opened")
+	}
+
+	consumers := []string{}
+	err := r.db.Select(&consumers, `SELECT mg.module_id
+            FROM mod_gradle as mg
+            INNER JOIN gradle_file as gf on mg.gradle_id = gf.gradle_id
+            INNER JOIN gradle_dependency as gd on gd.gradle_id = gf.gradle_id
+            WHERE gd.module_id = $1
+            ORDER BY mg.module_id`, id)
+	if err != nil {
+		return []string{}, false, fmt.Errorf("select consumers with kind error: %w", err)
+	}
+	return consumers, true, nil
 }
 
 func wildcard(in string) string {

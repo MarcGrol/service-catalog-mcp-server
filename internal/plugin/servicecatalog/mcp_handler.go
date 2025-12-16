@@ -39,6 +39,8 @@ func (h *mcpHandler) RegisterAllHandlers(ctx context.Context, s *server.MCPServe
 		h.listFlowParticipantsTool(),
 		h.listKindsTool(),
 		h.listModulesWithKindTool(),
+		h.listModuleConsumersTool(),
+		h.listDependenciesTool(),
 	)
 
 	s.AddResources(

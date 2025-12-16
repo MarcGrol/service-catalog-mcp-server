@@ -28,6 +28,8 @@ type Cataloger interface {
 	ListParticpantsOfFlow(ctx context.Context, id string) ([]string, bool, error)
 	ListKinds(ctx context.Context) ([]string, error)
 	ListModulesWithKind(ctx context.Context, id string) ([]string, bool, error)
+	GetGradleDependenciesOfModule(ctx context.Context, id string) ([]string, bool, error)
+	ListConsumersOfGradleModule(ctx context.Context, id string) ([]string, bool, error)
 }
 
 // Module represents a software module in the catalog.
@@ -48,6 +50,7 @@ type Module struct {
 	DatabaseCount      *int     `db:"database_count" json:"databaseCount,omitempty"`
 	JobCount           *int     `db:"job_count" json:"jobCount,omitempty"`
 	FlowCount          *int     `db:"flow_count" json:"flowCount,omitempty"`
+	DependencyCount    *int     `db:"gradle_count" json:"dependencyCount,omitempty"`
 	ApplicationKinds   []string `db:"-" json:"applicationKinds,omitempty"`
 	Teams              []string `db:"-" json:"teams,omitempty"`
 	Flows              []string `db:"-" json:"flows,omitempty"`
@@ -55,6 +58,7 @@ type Module struct {
 	ConsumedInterfaces []string `db:"-" json:"consumedInterfaces,omitempty"`
 	Jobs               []string `db:"-" json:"jobs,omitempty"`
 	Databases          []string `db:"-" json:"databases,omitempty"`
+	Dependencies       []string `db:"-" json:"dependencies,omitempty"`
 }
 
 const (

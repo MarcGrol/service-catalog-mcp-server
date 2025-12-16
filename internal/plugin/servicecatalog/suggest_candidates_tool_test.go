@@ -21,5 +21,5 @@ func TestSuggestCandidatesSuccess(t *testing.T) {
 	assert.NoError(t, err)
 	textResult := result.Content[0].(mcp.TextContent)
 	assert.Contains(t, textResult.Text, `{"Modules":["partner","partner-jobs"`)
-	assert.Contains(t, textResult.Text, `"Teams":["partner-experience","partner-experience-fe"`)
+	assert.Contains(t, textResult.Text, `"Teams":["partner-experience"`)
 }

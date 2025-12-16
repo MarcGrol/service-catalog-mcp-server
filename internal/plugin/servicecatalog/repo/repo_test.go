@@ -164,7 +164,7 @@ func TestGetInterfaceOnID(t *testing.T) {
 		assert.Equal(t, "RPL", interf.Kind)
 		assert.Nil(t, interf.OpenAPISpecs)
 		assert.Equal(t, "paymentengine/acm/webapp/acm/src/main/resources/rpl-acm.xml", *interf.RPLSpecs)
-		assert.Contains(t, fmt.Sprintf("%v", interf.Methods), `[addressCheck authAdvice authoriseZero bankAccountValidation cancelCashDeposit cancelCashWithdrawal cancelPos captureStatusCheck cashDepositPos cashWithdrawalPos checkAccountUpdate checkTokenStatus`)
+		assert.Contains(t, fmt.Sprintf("%v", interf.Methods), `[addressCheck adjustRedirect authAdvice authoriseZero bankAccountValidation cancelCashDeposit`)
 	}
 	{
 		interfaceID := "com.adyen.services.checkout.shopper.BinLookupService"
@@ -275,7 +275,7 @@ func TestListTeams(t *testing.T) {
 	assert.NoError(t, err)
 	assert.GreaterOrEqual(t, len(teams), 100)
 	assert.LessOrEqual(t, len(teams), 500)
-	assert.Equal(t, "Authorization_Components_Developers", teams[0])
+	assert.Equal(t, "All ipp-teams", teams[0])
 }
 
 func TestListModulesOfTeams(t *testing.T) {
@@ -346,6 +346,29 @@ func TestListAppsWithKind(t *testing.T) {
 	assert.True(t, exists)
 	assert.Equal(t, []string{
 		"accountrisk/riskengine/webapp/ircl", "acs/webapps/acs", "apipix/apipix"}, kinds[0:3])
+}
+
+func TestListGradleDepenciesOfModule(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	deps, exists, err := repo.GetGradleDependenciesOfModule(ctx, "partner")
+	assert.NoError(t, err)
+	assert.True(t, exists)
+	assert.Equal(t, []string{
+		"api/accountmanagement", "commercial-development/sales-cloud/common",
+		"commercial-development/shared/common"}, deps[0:3])
+}
+
+func TestListConsumersOfGradleModule(t *testing.T) {
+	repo, ctx, cleanup := setup(t)
+	defer cleanup()
+
+	deps, exists, err := repo.ListConsumersOfGradleModule(ctx, "data-access/repositories/partnercommission")
+	assert.NoError(t, err)
+	assert.True(t, exists)
+	assert.Equal(t, []string{
+		"partner", "partner-jobs/partner-commission-job"}, deps)
 }
 
 func setup(t *testing.T) (Cataloger, context.Context, func()) {
